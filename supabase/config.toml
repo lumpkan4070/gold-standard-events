@@ -1,1 +1,7 @@
 project_id = "qbhqqqhvjvonbzfkyney"
+
+[functions.send-booking-notification]
+verify_jwt = false
+
+[functions.send-push-notification]
+verify_jwt = false

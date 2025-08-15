@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Navigation } from "@/components/Navigation";
-import { Calendar, Clock, Users, MapPin, Phone, Mail, MessageCircle } from "lucide-react";
+import { Calendar, Clock, Users, MapPin, Phone, Mail, MessageCircle, Upload, Image as ImageIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -19,8 +19,10 @@ const Events = () => {
     name: "",
     email: "",
     phone: "",
+    event_title: "",
     number_of_guests: 1,
-    message: ""
+    special_requests: "",
+    event_image: null as File | null
   });
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -88,6 +90,35 @@ const Events = () => {
     setShowBookingForm(eventId);
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setBookingData(prev => ({ ...prev, event_image: file }));
+    }
+  };
+
+  const uploadImage = async (file: File): Promise<string | null> => {
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user?.id}_${Date.now()}.${fileExt}`;
+      
+      const { error: uploadError } = await supabase.storage
+        .from('event-images')
+        .upload(fileName, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data } = supabase.storage
+        .from('event-images')
+        .getPublicUrl(fileName);
+
+      return data.publicUrl;
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      return null;
+    }
+  };
+
   const handleBookingSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user || !showBookingForm) return;
@@ -96,19 +127,38 @@ const Events = () => {
       const event = events.find(e => e.id === showBookingForm);
       if (!event) return;
 
+      // Upload image if provided
+      let imageUrl = null;
+      if (bookingData.event_image) {
+        imageUrl = await uploadImage(bookingData.event_image);
+      }
+
       const { error } = await supabase
         .from("event_bookings")
         .insert({
           user_id: user.id,
           event_date: event.event_date,
+          event_title: bookingData.event_title || event.title,
           name: bookingData.name,
           email: bookingData.email,
           phone: bookingData.phone,
           number_of_guests: parseInt(bookingData.number_of_guests.toString()),
-          message: bookingData.message
+          special_requests: bookingData.special_requests,
+          event_image_url: imageUrl
         });
 
       if (error) throw error;
+
+      // Track analytics
+      await supabase.from('analytics').insert({
+        user_id: user.id,
+        event_type: 'booking_created',
+        event_data: {
+          event_id: event.id,
+          event_title: bookingData.event_title || event.title,
+          guests: bookingData.number_of_guests
+        }
+      });
 
       toast({
         title: "Booking Submitted",
@@ -120,8 +170,10 @@ const Events = () => {
         name: "",
         email: "",
         phone: "",
+        event_title: "",
         number_of_guests: 1,
-        message: ""
+        special_requests: "",
+        event_image: null
       });
     } catch (error: any) {
       toast({
@@ -224,6 +276,17 @@ const Events = () => {
                 <CardContent>
                   <form onSubmit={handleBookingSubmit} className="space-y-4">
                     <div className="space-y-2">
+                      <Label htmlFor="event_title">Event Title</Label>
+                      <Input
+                        id="event_title"
+                        value={bookingData.event_title}
+                        onChange={(e) => setBookingData(prev => ({ ...prev, event_title: e.target.value }))}
+                        placeholder="Custom event title or leave blank for default"
+                        className="bg-input border-primary/20 focus:border-primary"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
                       <Label htmlFor="name">Full Name</Label>
                       <Input
                         id="name"
@@ -273,14 +336,37 @@ const Events = () => {
                     </div>
                     
                     <div className="space-y-2">
-                      <Label htmlFor="message">Special Requests (Optional)</Label>
+                      <Label htmlFor="special_requests">Special Requests / Description</Label>
                       <Textarea
-                        id="message"
-                        value={bookingData.message}
-                        onChange={(e) => setBookingData(prev => ({ ...prev, message: e.target.value }))}
-                        placeholder="Any special requests or dietary requirements..."
+                        id="special_requests"
+                        value={bookingData.special_requests}
+                        onChange={(e) => setBookingData(prev => ({ ...prev, special_requests: e.target.value }))}
+                        placeholder="Any special requests, dietary requirements, or event details..."
                         className="bg-input border-primary/20 focus:border-primary"
+                        rows={3}
                       />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="event_image">Event Image (Optional)</Label>
+                      <div className="flex items-center gap-2">
+                        <Input
+                          id="event_image"
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageChange}
+                          className="bg-input border-primary/20 focus:border-primary"
+                        />
+                        {bookingData.event_image && (
+                          <div className="flex items-center gap-1 text-primary text-sm">
+                            <ImageIcon className="h-4 w-4" />
+                            <span>{bookingData.event_image.name}</span>
+                          </div>
+                        )}
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Upload an image to help us understand your event vision
+                      </p>
                     </div>
                     
                     <div className="flex gap-2 pt-4">
