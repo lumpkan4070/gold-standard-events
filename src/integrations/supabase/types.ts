@@ -44,42 +44,90 @@ export type Database = {
         }
         Relationships: []
       }
+      analytics: {
+        Row: {
+          created_at: string
+          event_data: Json | null
+          event_type: string
+          id: string
+          ip_address: unknown | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_data?: Json | null
+          event_type: string
+          id?: string
+          ip_address?: unknown | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_data?: Json | null
+          event_type?: string
+          id?: string
+          ip_address?: unknown | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       event_bookings: {
         Row: {
+          admin_notes: string | null
+          approved_at: string | null
+          approved_by: string | null
           created_at: string
           email: string
           event_date: string
+          event_image_url: string | null
+          event_title: string | null
           id: string
           message: string | null
           name: string
           number_of_guests: number
           phone: string
+          special_requests: string | null
           status: Database["public"]["Enums"]["booking_status"]
           updated_at: string
           user_id: string
         }
         Insert: {
+          admin_notes?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
           created_at?: string
           email: string
           event_date: string
+          event_image_url?: string | null
+          event_title?: string | null
           id?: string
           message?: string | null
           name: string
           number_of_guests: number
           phone: string
+          special_requests?: string | null
           status?: Database["public"]["Enums"]["booking_status"]
           updated_at?: string
           user_id: string
         }
         Update: {
+          admin_notes?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
           created_at?: string
           email?: string
           event_date?: string
+          event_image_url?: string | null
+          event_title?: string | null
           id?: string
           message?: string | null
           name?: string
           number_of_guests?: number
           phone?: string
+          special_requests?: string | null
           status?: Database["public"]["Enums"]["booking_status"]
           updated_at?: string
           user_id?: string
@@ -155,38 +203,175 @@ export type Database = {
         }
         Relationships: []
       }
+      offers: {
+        Row: {
+          created_at: string
+          created_by: string
+          current_uses: number
+          description: string | null
+          discount_amount: number | null
+          discount_percentage: number | null
+          id: string
+          is_active: boolean
+          max_uses: number | null
+          offer_type: string
+          title: string
+          updated_at: string
+          valid_from: string
+          valid_until: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          current_uses?: number
+          description?: string | null
+          discount_amount?: number | null
+          discount_percentage?: number | null
+          id?: string
+          is_active?: boolean
+          max_uses?: number | null
+          offer_type?: string
+          title: string
+          updated_at?: string
+          valid_from?: string
+          valid_until?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          current_uses?: number
+          description?: string | null
+          discount_amount?: number | null
+          discount_percentage?: number | null
+          id?: string
+          is_active?: boolean
+          max_uses?: number | null
+          offer_type?: string
+          title?: string
+          updated_at?: string
+          valid_from?: string
+          valid_until?: string | null
+        }
+        Relationships: []
+      }
+      photo_wall: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          caption: string | null
+          created_at: string
+          id: string
+          image_url: string
+          is_approved: boolean
+          is_featured: boolean
+          likes_count: number
+          user_id: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          caption?: string | null
+          created_at?: string
+          id?: string
+          image_url: string
+          is_approved?: boolean
+          is_featured?: boolean
+          likes_count?: number
+          user_id: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          caption?: string | null
+          created_at?: string
+          id?: string
+          image_url?: string
+          is_approved?: boolean
+          is_featured?: boolean
+          likes_count?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
+          anniversary: string | null
+          birthday: string | null
           created_at: string
           email: string | null
           first_name: string | null
           id: string
           last_name: string | null
+          last_visit: string | null
           phone: string | null
+          preferences: Json | null
+          total_bookings: number
           updated_at: string
+          user_id: string
+          vip_status: boolean
+        }
+        Insert: {
+          anniversary?: string | null
+          birthday?: string | null
+          created_at?: string
+          email?: string | null
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          last_visit?: string | null
+          phone?: string | null
+          preferences?: Json | null
+          total_bookings?: number
+          updated_at?: string
+          user_id: string
+          vip_status?: boolean
+        }
+        Update: {
+          anniversary?: string | null
+          birthday?: string | null
+          created_at?: string
+          email?: string | null
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          last_visit?: string | null
+          phone?: string | null
+          preferences?: Json | null
+          total_bookings?: number
+          updated_at?: string
+          user_id?: string
+          vip_status?: boolean
+        }
+        Relationships: []
+      }
+      user_offers: {
+        Row: {
+          id: string
+          offer_id: string
+          redeemed_at: string
           user_id: string
         }
         Insert: {
-          created_at?: string
-          email?: string | null
-          first_name?: string | null
           id?: string
-          last_name?: string | null
-          phone?: string | null
-          updated_at?: string
+          offer_id: string
+          redeemed_at?: string
           user_id: string
         }
         Update: {
-          created_at?: string
-          email?: string | null
-          first_name?: string | null
           id?: string
-          last_name?: string | null
-          phone?: string | null
-          updated_at?: string
+          offer_id?: string
+          redeemed_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "user_offers_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "offers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
