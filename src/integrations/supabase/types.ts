@@ -406,6 +406,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      increment_offer_usage: {
+        Args: { offer_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "admin" | "user"
