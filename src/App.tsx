@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
-import Admin from "./pages/Admin";
 import AdminEnhanced from "./pages/AdminEnhanced";
 import Events from "./pages/Events";
 import Order from "./pages/Order";
@@ -26,7 +25,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
-          <Route path="/admin" element={<Admin />} />
+          <Route path="/admin" element={<AdminEnhanced />} />
           <Route path="/admin-enhanced" element={<AdminEnhanced />} />
           <Route path="/events" element={<Events />} />
           <Route path="/order" element={<Order />} />
