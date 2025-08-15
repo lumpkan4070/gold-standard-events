@@ -52,6 +52,14 @@ const AdminEnhanced = () => {
     max_uses: 0
   });
 
+  const [pushNotification, setPushNotification] = useState({
+    title: '',
+    message: '',
+    notificationType: 'general' as 'general' | 'offer' | 'event' | 'fomo'
+  });
+
+  const [uploadingImage, setUploadingImage] = useState(false);
+
   const { toast } = useToast();
 
   useEffect(() => {
@@ -271,6 +279,40 @@ const AdminEnhanced = () => {
     }
   };
 
+  const uploadEventImage = async (file: File) => {
+    try {
+      setUploadingImage(true);
+      
+      const fileExt = file.name.split('.').pop();
+      const fileName = `event-${Date.now()}.${fileExt}`;
+      
+      const { error: uploadError, data } = await supabase.storage
+        .from('event-images')
+        .upload(fileName, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('event-images')
+        .getPublicUrl(fileName);
+
+      setNewEvent(prev => ({ ...prev, featured_image_url: publicUrl }));
+      
+      toast({
+        title: "Image Uploaded",
+        description: "Event image uploaded successfully"
+      });
+    } catch (error: any) {
+      toast({
+        title: "Upload Failed",
+        description: error.message,
+        variant: "destructive"
+      });
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
   const createEvent = async () => {
     try {
       const { error } = await supabase
@@ -283,9 +325,22 @@ const AdminEnhanced = () => {
 
       if (error) throw error;
 
+      // Send push notification about new event
+      try {
+        await supabase.functions.invoke('send-push-notification', {
+          body: {
+            title: "New Event Available!",
+            message: `${newEvent.title} - ${new Date(newEvent.event_date).toLocaleDateString()}`,
+            notificationType: 'event'
+          }
+        });
+      } catch (notifError) {
+        console.error('Push notification failed:', notifError);
+      }
+
       toast({
         title: "Event Created",
-        description: "New event has been created successfully"
+        description: "New event has been created and users notified"
       });
 
       setNewEvent({
@@ -296,6 +351,37 @@ const AdminEnhanced = () => {
       });
 
       loadAllData();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive"
+      });
+    }
+  };
+
+  const sendPushNotification = async () => {
+    try {
+      const { error } = await supabase.functions.invoke('send-push-notification', {
+        body: {
+          title: pushNotification.title,
+          message: pushNotification.message,
+          notificationType: pushNotification.notificationType
+        }
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Notification Sent",
+        description: "Push notification has been sent to all users"
+      });
+
+      setPushNotification({
+        title: '',
+        message: '',
+        notificationType: 'general'
+      });
     } catch (error: any) {
       toast({
         title: "Error",
@@ -391,12 +477,13 @@ const AdminEnhanced = () => {
           </div>
 
           <Tabs defaultValue="events" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-6">
+            <TabsList className="grid w-full grid-cols-7">
               <TabsTrigger value="events">Events</TabsTrigger>
               <TabsTrigger value="bookings">Bookings</TabsTrigger>
               <TabsTrigger value="offers">Offers</TabsTrigger>
               <TabsTrigger value="photos">Photos</TabsTrigger>
               <TabsTrigger value="users">Users</TabsTrigger>
+              <TabsTrigger value="notifications">Notifications</TabsTrigger>
               <TabsTrigger value="analytics">Analytics</TabsTrigger>
             </TabsList>
 
@@ -437,16 +524,38 @@ const AdminEnhanced = () => {
                         />
                       </div>
                       <div>
-                        <Label>Featured Image URL</Label>
-                        <Input
-                          value={newEvent.featured_image_url}
-                          onChange={(e) => setNewEvent(prev => ({ ...prev, featured_image_url: e.target.value }))}
-                          placeholder="Image URL (optional)"
-                        />
+                        <Label>Featured Image</Label>
+                        <div className="space-y-2">
+                          <Input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) uploadEventImage(file);
+                            }}
+                            disabled={uploadingImage}
+                          />
+                          {newEvent.featured_image_url && (
+                            <div className="flex items-center gap-2">
+                              <img src={newEvent.featured_image_url} alt="Preview" className="h-16 w-16 object-cover rounded" />
+                              <Button 
+                                size="sm" 
+                                variant="outline" 
+                                onClick={() => setNewEvent(prev => ({ ...prev, featured_image_url: '' }))}
+                              >
+                                Remove
+                              </Button>
+                            </div>
+                          )}
+                        </div>
                       </div>
                       <div className="flex items-end">
-                        <Button onClick={createEvent} className="luxury-button">
-                          Create Event
+                        <Button 
+                          onClick={createEvent} 
+                          className="luxury-button"
+                          disabled={!newEvent.title || !newEvent.event_date || uploadingImage}
+                        >
+                          {uploadingImage ? "Uploading..." : "Create Event & Notify Users"}
                         </Button>
                       </div>
                     </div>
@@ -740,6 +849,92 @@ const AdminEnhanced = () => {
                     </CardContent>
                   </Card>
                 ))}
+              </div>
+            </TabsContent>
+
+            {/* Push Notifications */}
+            <TabsContent value="notifications">
+              <div className="grid gap-6">
+                <Card className="luxury-card">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Users className="h-5 w-5" />
+                      Send Push Notification to All Users
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid gap-4">
+                      <div>
+                        <Label>Notification Title</Label>
+                        <Input
+                          value={pushNotification.title}
+                          onChange={(e) => setPushNotification(prev => ({ ...prev, title: e.target.value }))}
+                          placeholder="Enter notification title"
+                          maxLength={50}
+                        />
+                      </div>
+                      <div>
+                        <Label>Message</Label>
+                        <Textarea
+                          value={pushNotification.message}
+                          onChange={(e) => setPushNotification(prev => ({ ...prev, message: e.target.value }))}
+                          placeholder="Enter notification message"
+                          maxLength={200}
+                        />
+                      </div>
+                      <div>
+                        <Label>Notification Type</Label>
+                        <select
+                          value={pushNotification.notificationType}
+                          onChange={(e) => setPushNotification(prev => ({ ...prev, notificationType: e.target.value as any }))}
+                          className="w-full p-2 border rounded-md"
+                        >
+                          <option value="general">General</option>
+                          <option value="offer">Special Offer</option>
+                          <option value="event">Event Announcement</option>
+                          <option value="fomo">Limited Time/FOMO</option>
+                        </select>
+                      </div>
+                      <Button 
+                        onClick={sendPushNotification}
+                        className="luxury-button"
+                        disabled={!pushNotification.title || !pushNotification.message}
+                      >
+                        <Users className="h-4 w-4 mr-2" />
+                        Send to All Users
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="luxury-card">
+                  <CardHeader>
+                    <CardTitle>Recent Notifications</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {analytics
+                        .filter(event => event.event_type === 'push_notification_sent')
+                        .slice(0, 10)
+                        .map((event) => (
+                          <div key={event.id} className="p-3 border rounded-lg">
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <p className="font-medium">{event.event_data?.title}</p>
+                                <p className="text-sm text-muted-foreground">{event.event_data?.message || 'No message'}</p>
+                                <Badge variant="outline" className="mt-1">
+                                  {event.event_data?.type || 'general'}
+                                </Badge>
+                              </div>
+                              <span className="text-xs text-muted-foreground">
+                                {new Date(event.created_at).toLocaleString()}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
             </TabsContent>
 
