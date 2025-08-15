@@ -1,12 +1,183 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Navigation } from "@/components/Navigation";
+import { QrCode, Calendar, MessageCircle, Star, Clock, Phone } from "lucide-react";
+import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
+  const [user, setUser] = useState<any>(null);
+  const [greeting, setGreeting] = useState("");
+
+  useEffect(() => {
+    // Set dynamic greeting based on time of day
+    const hour = new Date().getHours();
+    if (hour < 12) setGreeting("Good Morning");
+    else if (hour < 17) setGreeting("Good Afternoon");
+    else setGreeting("Good Evening");
+
+    // Check for user session
+    const checkUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user || null);
+    };
+    checkUser();
+
+    // Set up auth state listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user || null);
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen victory-hero-bg">
+      <Navigation user={user} />
+      
+      {/* Hero Section */}
+      <section className="pt-20 px-4 pb-12">
+        <div className="max-w-4xl mx-auto text-center">
+          {/* Logo */}
+          <div className="victory-text-gradient text-6xl md:text-8xl font-bold tracking-wide mb-4">
+            Victory
+          </div>
+          <div className="text-foreground/60 text-xl md:text-2xl font-light mb-8">
+            Bistro Ultra Lounge
+          </div>
+          
+          {/* Dynamic Greeting */}
+          <div className="text-foreground/80 text-2xl md:text-3xl font-medium mb-12">
+            {greeting} at Victory Bistro Ultra Lounge
+          </div>
+
+          {/* Main Action Buttons */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto mb-16">
+            <Link to="/scanner">
+              <Button className="luxury-button w-full h-16 text-lg">
+                <QrCode className="w-6 h-6 mr-3" />
+                Order Now
+              </Button>
+            </Link>
+            <Link to="/events">
+              <Button variant="outline" className="w-full h-16 text-lg border-primary/20 text-primary hover:bg-primary/10">
+                <Calendar className="w-6 h-6 mr-3" />
+                View Events
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Quick Actions */}
+      <section className="px-4 pb-16">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-12 victory-text-gradient">
+            Experience Victory
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* QR Scanner */}
+            <Card className="luxury-card p-6 text-center group hover:scale-105 victory-transition">
+              <CardContent className="space-y-4">
+                <div className="w-16 h-16 mx-auto victory-gradient rounded-full flex items-center justify-center group-hover:victory-glow victory-transition">
+                  <QrCode className="w-8 h-8 text-primary-foreground" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground">QR Scanner</h3>
+                <p className="text-muted-foreground">
+                  Scan table QR codes for instant ordering through FocusOnline
+                </p>
+                <Link to="/scanner">
+                  <Button className="luxury-button w-full mt-4">
+                    Open Scanner
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+
+            {/* Events */}
+            <Card className="luxury-card p-6 text-center group hover:scale-105 victory-transition">
+              <CardContent className="space-y-4">
+                <div className="w-16 h-16 mx-auto victory-gradient rounded-full flex items-center justify-center group-hover:victory-glow victory-transition">
+                  <Calendar className="w-8 h-8 text-primary-foreground" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground">Special Events</h3>
+                <p className="text-muted-foreground">
+                  Discover upcoming events and book private parties
+                </p>
+                <Link to="/events">
+                  <Button variant="outline" className="w-full mt-4 border-primary/20 text-primary hover:bg-primary/10">
+                    View Events
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+
+            {/* VictoryBot */}
+            <Card className="luxury-card p-6 text-center group hover:scale-105 victory-transition">
+              <CardContent className="space-y-4">
+                <div className="w-16 h-16 mx-auto victory-gradient rounded-full flex items-center justify-center group-hover:victory-glow victory-transition">
+                  <MessageCircle className="w-8 h-8 text-primary-foreground" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground">VictoryBot</h3>
+                <p className="text-muted-foreground">
+                  Get instant answers about menu, events, and reservations
+                </p>
+                <Link to="/chat">
+                  <Button variant="outline" className="w-full mt-4 border-primary/20 text-primary hover:bg-primary/10">
+                    Chat Now
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Special Announcement Bar */}
+      <section className="px-4 pb-16">
+        <div className="max-w-4xl mx-auto">
+          <Card className="luxury-card p-8 text-center">
+            <CardContent className="space-y-4">
+              <Star className="w-12 h-12 mx-auto text-primary" />
+              <h3 className="text-2xl font-bold victory-text-gradient">
+                Special Promotions
+              </h3>
+              <p className="text-lg text-foreground/80">
+                Join our exclusive events and enjoy premium dining experiences
+              </p>
+              <p className="text-muted-foreground">
+                Download our app for exclusive offers and VIP access
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* Footer Info */}
+      <footer className="px-4 pb-8">
+        <div className="max-w-4xl mx-auto text-center space-y-6">
+          <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8 text-muted-foreground">
+            <div className="flex items-center space-x-2">
+              <Clock className="w-5 h-5" />
+              <span>Open Daily 5PM - 2AM</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Phone className="w-5 h-5" />
+              <span>(216) 938-7778</span>
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            19800 S Waterloo Rd, Cleveland, OH 44119
+          </p>
+          <div className="victory-text-gradient text-sm font-medium">
+            © 2024 Victory Bistro Ultra Lounge. All rights reserved.
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
