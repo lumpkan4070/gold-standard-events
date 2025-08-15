@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Navigation } from "@/components/Navigation";
 import { Calendar, Clock, Users, MapPin, Phone, Mail, MessageCircle, Upload, Image as ImageIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const Events = () => {
   const [user, setUser] = useState<any>(null);

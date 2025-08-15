@@ -8,7 +8,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Navigation } from "@/components/Navigation";
 import { User, Mail, Phone, Calendar, Save, Shield, FileText, Download, AlertTriangle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const Profile = () => {
   const [user, setUser] = useState<any>(null);
