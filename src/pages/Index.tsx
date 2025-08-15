@@ -5,6 +5,7 @@ import { Navigation } from "@/components/Navigation";
 import { QrCode, Calendar, MessageCircle, Star, Clock, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import heroImage from "@/assets/hero-home.jpg";
 
 const Index = () => {
   const [user, setUser] = useState<any>(null);
@@ -35,22 +36,27 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen victory-hero-bg">
+    <div className="min-h-screen">
       <Navigation user={user} />
       
       {/* Hero Section */}
-      <section className="pt-20 px-4 pb-12">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url(${heroImage})` }}
+        />
+        <div className="absolute inset-0 bg-black/60" />
+        <div className="relative z-10 max-w-4xl mx-auto text-center px-4">
           {/* Logo */}
           <div className="victory-text-gradient text-6xl md:text-8xl font-bold tracking-wide mb-4">
             Victory
           </div>
-          <div className="text-foreground/60 text-xl md:text-2xl font-light mb-8">
+          <div className="text-white/80 text-xl md:text-2xl font-light mb-8">
             Bistro Ultra Lounge
           </div>
           
           {/* Dynamic Greeting */}
-          <div className="text-foreground/80 text-2xl md:text-3xl font-medium mb-12">
+          <div className="text-white text-2xl md:text-3xl font-medium mb-12">
             {greeting} at Victory Bistro Ultra Lounge
           </div>
 
@@ -63,7 +69,7 @@ const Index = () => {
               </Button>
             </Link>
             <Link to="/events">
-              <Button variant="outline" className="w-full h-16 text-lg border-primary/20 text-primary hover:bg-primary/10">
+              <Button variant="outline" className="w-full h-16 text-lg bg-white/10 border-white/30 hover:bg-white/20 text-white backdrop-blur-sm">
                 <Calendar className="w-6 h-6 mr-3" />
                 View Events
               </Button>
@@ -73,7 +79,7 @@ const Index = () => {
       </section>
 
       {/* Quick Actions */}
-      <section className="px-4 pb-16">
+      <section className="px-4 pb-16 victory-hero-bg">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12 victory-text-gradient">
             Experience Victory
@@ -138,7 +144,7 @@ const Index = () => {
       </section>
 
       {/* Special Announcement Bar */}
-      <section className="px-4 pb-16">
+      <section className="px-4 pb-16 victory-hero-bg">
         <div className="max-w-4xl mx-auto">
           <Card className="luxury-card p-8 text-center">
             <CardContent className="space-y-4">
@@ -158,7 +164,7 @@ const Index = () => {
       </section>
 
       {/* Footer Info */}
-      <footer className="px-4 pb-8">
+      <footer className="px-4 pb-8 victory-hero-bg">
         <div className="max-w-4xl mx-auto text-center space-y-6">
           <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8 text-muted-foreground">
             <div className="flex items-center space-x-2">

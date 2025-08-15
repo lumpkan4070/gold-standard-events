@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, QrCode, Calendar, MessageCircle, User, LogOut } from "lucide-react";
+import { Menu, QrCode, Calendar, MessageCircle, User, LogOut, Shield } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
@@ -10,10 +10,34 @@ interface NavigationProps {
   user?: any;
 }
 
-export const Navigation = ({ user }: NavigationProps) => {
+export const Navigation = ({ user: userProp }: NavigationProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  useEffect(() => {
+    setUser(userProp);
+    
+    // Check if user is admin
+    const checkAdminRole = async () => {
+      if (userProp) {
+        const { data } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", userProp.id)
+          .eq("role", "admin")
+          .single();
+        
+        setIsAdmin(!!data);
+      } else {
+        setIsAdmin(false);
+      }
+    };
+    
+    checkAdminRole();
+  }, [userProp]);
 
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
@@ -41,6 +65,11 @@ export const Navigation = ({ user }: NavigationProps) => {
 
   if (user) {
     menuItems.push({ label: "Profile", href: "/profile", icon: User });
+  }
+
+  // Add Admin link if user is admin
+  if (isAdmin) {
+    menuItems.push({ label: "Admin", href: "/admin", icon: Shield });
   }
 
   return (
