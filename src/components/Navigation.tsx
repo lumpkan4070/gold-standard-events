@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, QrCode, Calendar, MessageCircle, User, LogOut, Shield } from "lucide-react";
+import { Menu, QrCode, Calendar, MessageCircle, User, LogOut, Shield, Phone } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
@@ -58,9 +58,10 @@ export const Navigation = ({ user: userProp }: NavigationProps) => {
 
   const menuItems = [
     { label: "Home", href: "/", icon: null },
-    { label: "QR Scanner", href: "/scanner", icon: QrCode },
+    { label: "Order", href: "/order", icon: QrCode },
     { label: "Events", href: "/events", icon: Calendar },
-    { label: "VictoryBot", href: "/chat", icon: MessageCircle },
+    { label: "Book an Event", href: "/events", icon: Calendar },
+    { label: "Contact", href: "/contact", icon: Phone },
   ];
 
   if (user) {

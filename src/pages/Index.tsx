@@ -10,6 +10,7 @@ import heroImage from "@/assets/hero-home.jpg";
 const Index = () => {
   const [user, setUser] = useState<any>(null);
   const [greeting, setGreeting] = useState("");
+  const [upcomingEvents, setUpcomingEvents] = useState<any[]>([]);
 
   useEffect(() => {
     // Set dynamic greeting based on time of day
@@ -24,6 +25,20 @@ const Index = () => {
       setUser(session?.user || null);
     };
     checkUser();
+
+    // Load upcoming events (top 3)
+    const loadUpcomingEvents = async () => {
+      const { data: eventsData } = await supabase
+        .from("events")
+        .select("*")
+        .eq("is_approved", true)
+        .gte("event_date", new Date().toISOString())
+        .order("event_date", { ascending: true })
+        .limit(3);
+      
+      setUpcomingEvents(eventsData || []);
+    };
+    loadUpcomingEvents();
 
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -62,7 +77,7 @@ const Index = () => {
 
           {/* Main Action Buttons */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto mb-16">
-            <Link to="/scanner">
+            <Link to="/order">
               <Button className="luxury-button w-full h-16 text-lg">
                 <QrCode className="w-6 h-6 mr-3" />
                 Order Now
@@ -86,19 +101,19 @@ const Index = () => {
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* QR Scanner */}
+            {/* Order */}
             <Card className="luxury-card p-6 text-center group hover:scale-105 victory-transition">
               <CardContent className="space-y-4">
                 <div className="w-16 h-16 mx-auto victory-gradient rounded-full flex items-center justify-center group-hover:victory-glow victory-transition">
                   <QrCode className="w-8 h-8 text-primary-foreground" />
                 </div>
-                <h3 className="text-xl font-semibold text-foreground">QR Scanner</h3>
+                <h3 className="text-xl font-semibold text-foreground">Order & Dine</h3>
                 <p className="text-muted-foreground">
                   Scan table QR codes for instant ordering through FocusOnline
                 </p>
-                <Link to="/scanner">
+                <Link to="/order">
                   <Button className="luxury-button w-full mt-4">
-                    Open Scanner
+                    Start Ordering
                   </Button>
                 </Link>
               </CardContent>
@@ -142,6 +157,50 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Upcoming Events Preview */}
+      {upcomingEvents.length > 0 && (
+        <section className="px-4 pb-16 victory-hero-bg">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl font-bold text-center mb-12 victory-text-gradient">
+              Upcoming Events
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+              {upcomingEvents.map((event) => (
+                <Card key={event.id} className="luxury-card group hover:scale-105 victory-transition overflow-hidden">
+                  {event.featured_image_url && (
+                    <div className="h-32 bg-cover bg-center" style={{ backgroundImage: `url(${event.featured_image_url})` }} />
+                  )}
+                  <CardContent className="p-4">
+                    <h3 className="font-semibold text-foreground mb-2">{event.title}</h3>
+                    <p className="text-muted-foreground text-sm mb-3">
+                      {new Date(event.event_date).toLocaleDateString("en-US", {
+                        weekday: "short",
+                        month: "short",
+                        day: "numeric"
+                      })}
+                    </p>
+                    {event.description && (
+                      <p className="text-muted-foreground text-xs line-clamp-2">
+                        {event.description}
+                      </p>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+            
+            <div className="text-center">
+              <Link to="/events">
+                <Button variant="outline" className="border-primary/20 text-primary hover:bg-primary/10">
+                  View All Events
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Special Announcement Bar */}
       <section className="px-4 pb-16 victory-hero-bg">
