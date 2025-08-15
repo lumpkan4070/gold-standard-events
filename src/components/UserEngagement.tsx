@@ -142,6 +142,68 @@ const UserEngagement = ({ user }: UserEngagementProps) => {
     return offers.filter(offer => offer.offer_type === 'vip');
   };
 
+  const handlePhotoUpload = async (file: File) => {
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}_${Date.now()}.${fileExt}`;
+      
+      // Upload to photo-wall bucket (create if doesn't exist)
+      const { error: uploadError } = await supabase.storage
+        .from('photo-wall')
+        .upload(fileName, file);
+
+      if (uploadError) {
+        // Try to create bucket if it doesn't exist
+        if (uploadError.message.includes('Bucket not found')) {
+          await supabase.storage.createBucket('photo-wall', { public: true });
+          // Retry upload
+          const { error: retryError } = await supabase.storage
+            .from('photo-wall')
+            .upload(fileName, file);
+          if (retryError) throw retryError;
+        } else {
+          throw uploadError;
+        }
+      }
+
+      const { data } = supabase.storage
+        .from('photo-wall')
+        .getPublicUrl(fileName);
+
+      // Insert into photo_wall table
+      const { error: insertError } = await supabase
+        .from('photo_wall')
+        .insert({
+          user_id: user.id,
+          image_url: data.publicUrl,
+          caption: 'Victory moment!'
+        });
+
+      if (insertError) throw insertError;
+
+      // Track analytics
+      await supabase.from('analytics').insert({
+        user_id: user.id,
+        event_type: 'photo_uploaded',
+        event_data: { fileName }
+      });
+
+      toast({
+        title: "Photo Uploaded!",
+        description: "Your photo has been submitted for approval and will appear on the Victory Wall once reviewed."
+      });
+
+      // Refresh photo wall data
+      loadUserEngagementData();
+    } catch (error: any) {
+      toast({
+        title: "Upload Failed",
+        description: error.message || "Failed to upload photo",
+        variant: "destructive"
+      });
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* VIP Status Card */}
@@ -319,7 +381,22 @@ const UserEngagement = ({ user }: UserEngagementProps) => {
             <p className="text-xs text-muted-foreground mb-3">
               Upload your photos and they might be featured here!
             </p>
-            <Button variant="outline" size="sm">
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'image/*';
+                input.onchange = async (e) => {
+                  const file = (e.target as HTMLInputElement).files?.[0];
+                  if (file) {
+                    await handlePhotoUpload(file);
+                  }
+                };
+                input.click();
+              }}
+            >
               <ImageIcon className="h-4 w-4 mr-2" />
               Upload Photo
             </Button>

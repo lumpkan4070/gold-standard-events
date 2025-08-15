@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import heroImage from "@/assets/hero-home.jpg";
 import CameraScanner from "@/components/CameraScanner";
+import UserEngagement from "@/components/UserEngagement";
 
 const Index = () => {
   const [user, setUser] = useState<any>(null);
@@ -265,6 +266,18 @@ const Index = () => {
                 </Button>
               </Link>
             </div>
+          </div>
+        </section>
+      )}
+
+      {/* User Engagement Section */}
+      {user && (
+        <section className="px-4 pb-16 victory-hero-bg">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl font-bold text-center mb-12 victory-text-gradient">
+              Your Victory Experience
+            </h2>
+            <UserEngagement user={user} />
           </div>
         </section>
       )}
