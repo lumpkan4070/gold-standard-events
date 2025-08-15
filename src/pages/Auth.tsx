@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -260,6 +260,20 @@ const Auth = () => {
               </form>
             </TabsContent>
           </Tabs>
+          
+          {/* Privacy Policy Footer */}
+          <div className="mt-6 pt-4 border-t border-primary/20 text-center">
+            <p className="text-xs text-muted-foreground">
+              By creating an account, you agree to our{" "}
+              <Link 
+                to="/privacy" 
+                className="text-primary hover:text-primary/80 victory-transition underline"
+              >
+                Privacy Policy
+              </Link>
+              . We protect your data with industry-standard security measures.
+            </p>
+          </div>
         </CardContent>
       </Card>
     </div>

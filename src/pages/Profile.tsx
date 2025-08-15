@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Navigation } from "@/components/Navigation";
-import { User, Mail, Phone, Calendar, Save } from "lucide-react";
+import { User, Mail, Phone, Calendar, Save, Shield, FileText, Download, AlertTriangle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -261,6 +262,50 @@ const Profile = () => {
                     ))}
                   </div>
                 )}
+              </CardContent>
+            </Card>
+
+            {/* Privacy Controls */}
+            <Card className="luxury-card">
+              <CardHeader>
+                <CardTitle className="flex items-center text-primary">
+                  <Shield className="w-5 h-5 mr-2" />
+                  Privacy & Data
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Link 
+                    to="/privacy" 
+                    className="flex-1"
+                  >
+                    <Button 
+                      variant="outline" 
+                      className="w-full border-primary/20 hover:bg-primary/10"
+                    >
+                      <FileText className="w-4 h-4 mr-2" />
+                      View Privacy Policy
+                    </Button>
+                  </Link>
+                  <Link 
+                    to="/privacy" 
+                    className="flex-1"
+                  >
+                    <Button 
+                      variant="outline" 
+                      className="w-full border-primary/20 hover:bg-primary/10"
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      Export My Data
+                    </Button>
+                  </Link>
+                </div>
+                <Alert>
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertDescription>
+                    You have full control over your data. Visit our Privacy Policy page to export or delete your account data.
+                  </AlertDescription>
+                </Alert>
               </CardContent>
             </Card>
           </div>

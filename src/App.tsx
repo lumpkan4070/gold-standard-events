@@ -11,6 +11,7 @@ import Order from "./pages/Order";
 import Contact from "./pages/Contact";
 import Chat from "./pages/Chat";
 import Profile from "./pages/Profile";
+import Privacy from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/contact" element={<Contact />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/privacy" element={<Privacy />} />
           {/* Legacy routes for backward compatibility */}
           <Route path="/scanner" element={<Order />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
