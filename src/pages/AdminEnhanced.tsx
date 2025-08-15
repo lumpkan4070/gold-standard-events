@@ -182,8 +182,24 @@ const AdminEnhanced = () => {
     }
   };
 
+  const deleteEvent = async (eventId: string) => {
+    try {
+      const { error } = await supabase
+        .from('events')
+        .delete()
+        .eq('id', eventId);
+      if (error) throw error;
+      toast({ title: 'Event Deleted', description: 'The event has been removed.' });
+      loadAllData();
+    } catch (error: any) {
+      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+    }
+  };
+
   const handleBookingApproval = async (bookingId: string, status: 'approved' | 'rejected', adminNotes?: string) => {
     try {
+      const booking = bookings.find(b => b.id === bookingId);
+
       const { error } = await supabase
         .from("event_bookings")
         .update({ 
@@ -195,6 +211,22 @@ const AdminEnhanced = () => {
         .eq("id", bookingId);
 
       if (error) throw error;
+
+      // Send customer notification email via Edge Function
+      if (booking) {
+        const { error: fnError } = await supabase.functions.invoke('send-booking-notification', {
+          body: {
+            bookingId,
+            status,
+            customerEmail: booking.email,
+            customerName: booking.name,
+            eventTitle: booking.event_title,
+            eventDate: booking.event_date,
+            adminNotes
+          }
+        });
+        if (fnError) console.error('Email notification failed:', fnError);
+      }
 
       toast({
         title: `Booking ${status.charAt(0).toUpperCase() + status.slice(1)}`,
@@ -456,6 +488,9 @@ const AdminEnhanced = () => {
                                 </Button>
                               </div>
                             )}
+                            <Button size="sm" variant="destructive" onClick={() => deleteEvent(event.id)}>
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
                           </div>
                         </div>
                       </CardContent>
