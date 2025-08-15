@@ -2,15 +2,18 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Navigation } from "@/components/Navigation";
-import { QrCode, Calendar, MessageCircle, Star, Clock, Phone } from "lucide-react";
+import { QrCode, Calendar, MessageCircle, Star, Clock, Phone, Camera, Scan } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import heroImage from "@/assets/hero-home.jpg";
+import CameraScanner from "@/components/CameraScanner";
 
 const Index = () => {
   const [user, setUser] = useState<any>(null);
   const [greeting, setGreeting] = useState("");
   const [upcomingEvents, setUpcomingEvents] = useState<any[]>([]);
+  const [showCamera, setShowCamera] = useState(false);
+  const [cameraMode, setCameraMode] = useState<'photo' | 'scan'>('photo');
 
   useEffect(() => {
     // Set dynamic greeting based on time of day
@@ -158,6 +161,70 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Camera Section */}
+      <section className="px-4 pb-16 victory-hero-bg">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-12 victory-text-gradient">
+            Victory Camera
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            {/* Photo Capture */}
+            <Card className="luxury-card p-6 text-center group hover:scale-105 victory-transition">
+              <CardContent className="space-y-4">
+                <div className="w-16 h-16 mx-auto victory-gradient rounded-full flex items-center justify-center group-hover:victory-glow victory-transition">
+                  <Camera className="w-8 h-8 text-primary-foreground" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground">Capture Victory Moments</h3>
+                <p className="text-muted-foreground">
+                  Share your dining experience and get featured on our Victory Wall
+                </p>
+                <Button 
+                  onClick={() => {
+                    setCameraMode('photo');
+                    setShowCamera(true);
+                  }}
+                  className="luxury-button w-full mt-4"
+                >
+                  <Camera className="w-4 h-4 mr-2" />
+                  Take Photo
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* QR Scanner */}
+            <Card className="luxury-card p-6 text-center group hover:scale-105 victory-transition">
+              <CardContent className="space-y-4">
+                <div className="w-16 h-16 mx-auto victory-gradient rounded-full flex items-center justify-center group-hover:victory-glow victory-transition">
+                  <Scan className="w-8 h-8 text-primary-foreground" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground">QR Code Scanner</h3>
+                <p className="text-muted-foreground">
+                  Scan table codes, promotional offers, and special menu items
+                </p>
+                <Button 
+                  onClick={() => {
+                    setCameraMode('scan');
+                    setShowCamera(true);
+                  }}
+                  variant="outline" 
+                  className="w-full mt-4 border-primary/20 text-primary hover:bg-primary/10"
+                >
+                  <Scan className="w-4 h-4 mr-2" />
+                  Start Scanner
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="text-center">
+            <p className="text-sm text-muted-foreground">
+              No app download required • Works directly in your browser
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Upcoming Events Preview */}
       {upcomingEvents.length > 0 && (
         <section className="px-4 pb-16 victory-hero-bg">
@@ -243,6 +310,15 @@ const Index = () => {
           </div>
         </div>
       </footer>
+
+      {/* Camera Scanner Modal */}
+      {showCamera && (
+        <CameraScanner 
+          mode={cameraMode}
+          user={user}
+          onClose={() => setShowCamera(false)}
+        />
+      )}
     </div>
   );
 };
