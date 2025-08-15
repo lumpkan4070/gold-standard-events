@@ -6,82 +6,87 @@
 
 @layer base {
   :root {
-    /* Victory Bistro Ultra Lounge Brand Colors */
-    --background: 0 0% 3%;
-    --foreground: 45 100% 85%;
-    --card: 0 0% 5%;
-    --card-foreground: 45 100% 85%;
-    --popover: 0 0% 5%;
-    --popover-foreground: 45 100% 85%;
-    --primary: 45 100% 54%;  /* Victory Gold #D4AF37 */
-    --primary-foreground: 0 0% 3%;
-    --primary-glow: 45 100% 64%;
+    /* Victory Bistro Ultra Lounge Official Brand Colors */
+    --background: 0 0% 0%;           /* Black #000000 */
+    --foreground: 0 0% 95%;          /* White text */
+    --card: 0 0% 4%;                 /* Subtle black variation */
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 4%;
+    --popover-foreground: 0 0% 95%;
+    
+    /* Official Victory Gold Palette */
+    --primary: 43 40% 44%;           /* Gold 1: #9d8343 - Primary gold */
+    --primary-foreground: 0 0% 0%;   /* Black text on gold */
+    --primary-hover: 43 40% 45%;     /* Gold 2: #9f8544 - Hover states */
+    --primary-accent: 43 40% 47%;    /* Gold 3: #a98d49 - Gradient mid-tone */
+    --primary-border: 43 40% 45%;    /* Gold 4: #a18645 - Border accents */
+    --primary-subtle: 43 41% 45%;    /* Gold 5: #a28745 - Subtle accents */
+    
     --secondary: 0 0% 8%;
-    --secondary-foreground: 45 100% 85%;
+    --secondary-foreground: 43 40% 44%;
     --muted: 0 0% 12%;
-    --muted-foreground: 45 15% 65%;
-    --accent: 45 100% 54%;
-    --accent-foreground: 0 0% 3%;
+    --muted-foreground: 43 20% 65%;
+    --accent: 43 40% 44%;
+    --accent-foreground: 0 0% 0%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 45 100% 85%;
+    --destructive-foreground: 0 0% 95%;
     --border: 0 0% 15%;
     --input: 0 0% 8%;
-    --ring: 45 100% 54%;
-    --chart-1: 45 100% 54%;
-    --chart-2: 45 80% 45%;
-    --chart-3: 45 60% 35%;
-    --chart-4: 45 40% 25%;
-    --chart-5: 45 20% 15%;
+    --ring: 43 40% 44%;
     --radius: 0.75rem;
     
-    /* Victory-specific design tokens */
-    --gradient-primary: linear-gradient(135deg, hsl(45 100% 54%), hsl(45 100% 64%));
-    --gradient-accent: linear-gradient(135deg, hsl(0 0% 3%), hsl(0 0% 8%));
-    --gradient-hero: linear-gradient(135deg, hsl(0 0% 3%), hsl(0 0% 8%), hsl(45 100% 8%));
-    --shadow-luxury: 0 25px 50px -12px hsl(45 100% 54% / 0.4);
-    --shadow-elegant: 0 10px 40px -10px hsl(45 100% 54% / 0.3);
-    --shadow-glow: 0 0 50px hsl(45 100% 64% / 0.6);
+    /* Victory Official Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(43 40% 47%), hsl(43 40% 44%), hsl(43 40% 45%));
+    --gradient-accent: linear-gradient(135deg, hsl(0 0% 0%), hsl(0 0% 4%));
+    --gradient-hero: linear-gradient(135deg, hsl(0 0% 0%), hsl(0 0% 4%), hsl(43 40% 8%));
+    --gradient-button: linear-gradient(135deg, hsl(43 40% 47%), hsl(43 40% 44%));
+    
+    /* Victory Luxury Effects */
+    --shadow-luxury: 0 25px 50px -12px hsl(43 40% 44% / 0.4);
+    --shadow-elegant: 0 10px 40px -10px hsl(43 40% 44% / 0.3);
+    --shadow-glow: 0 0 50px hsl(43 40% 47% / 0.6);
     --transition-luxury: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     --font-luxury: 'Montserrat', sans-serif;
 
-    --sidebar-background: 0 0% 5%;
-    --sidebar-foreground: 45 100% 85%;
-    --sidebar-primary: 45 100% 54%;
-    --sidebar-primary-foreground: 0 0% 3%;
-    --sidebar-accent: 0 0% 8%;
-    --sidebar-accent-foreground: 45 100% 85%;
-    --sidebar-border: 0 0% 15%;
-    --sidebar-ring: 45 100% 54%;
+    --sidebar-background: 0 0% 2%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 43 40% 44%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 0 0% 6%;
+    --sidebar-accent-foreground: 43 40% 44%;
+    --sidebar-border: 0 0% 12%;
+    --sidebar-ring: 43 40% 44%;
   }
 
   .dark {
-    --background: 0 0% 3%;
-    --foreground: 45 100% 85%;
-    --card: 0 0% 5%;
-    --card-foreground: 45 100% 85%;
-    --popover: 0 0% 5%;
-    --popover-foreground: 45 100% 85%;
-    --primary: 45 100% 54%;
-    --primary-foreground: 0 0% 3%;
+    /* Same colors for dark mode - Victory brand is inherently dark */
+    --background: 0 0% 0%;
+    --foreground: 0 0% 95%;
+    --card: 0 0% 4%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 4%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 43 40% 44%;
+    --primary-foreground: 0 0% 0%;
     --secondary: 0 0% 8%;
-    --secondary-foreground: 45 100% 85%;
+    --secondary-foreground: 43 40% 44%;
     --muted: 0 0% 12%;
-    --muted-foreground: 45 15% 65%;
-    --accent: 45 100% 54%;
-    --accent-foreground: 0 0% 3%;
+    --muted-foreground: 43 20% 65%;
+    --accent: 43 40% 44%;
+    --accent-foreground: 0 0% 0%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 45 100% 85%;
+    --destructive-foreground: 0 0% 95%;
     --border: 0 0% 15%;
     --input: 0 0% 8%;
-    --ring: 45 100% 54%;
-    --sidebar-background: 0 0% 5%;
-    --sidebar-foreground: 45 100% 85%;
-    --sidebar-primary: 45 100% 54%;
-    --sidebar-primary-foreground: 0 0% 3%;
-    --sidebar-accent: 0 0% 8%;
-    --sidebar-accent-foreground: 45 100% 85%;
-    --sidebar-border: 0 0% 15%;
-    --sidebar-ring: 45 100% 54%;
+    --ring: 43 40% 44%;
+    --sidebar-background: 0 0% 2%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 43 40% 44%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 0 0% 6%;
+    --sidebar-accent-foreground: 43 40% 44%;
+    --sidebar-border: 0 0% 12%;
+    --sidebar-ring: 43 40% 44%;
   }
 }
 
@@ -101,8 +106,13 @@
 }
 
 @layer components {
+  /* Official Victory Brand Components */
   .victory-gradient {
     background: var(--gradient-primary);
+  }
+  
+  .victory-button-gradient {
+    background: var(--gradient-button);
   }
   
   .victory-text-gradient {
@@ -131,15 +141,30 @@
   .glass-effect {
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    background: hsl(0 0% 3% / 0.8);
-    border: 1px solid hsl(45 100% 54% / 0.2);
+    background: hsl(0 0% 0% / 0.8);
+    border: 1px solid hsl(43 40% 44% / 0.2);
   }
   
   .luxury-card {
     @apply bg-card/50 backdrop-blur-sm border border-primary/20 rounded-xl victory-shadow victory-transition;
   }
   
+  /* Primary Button - Official Victory Brand */
   .luxury-button {
-    @apply victory-gradient text-primary-foreground font-semibold px-8 py-4 rounded-lg victory-shadow victory-transition hover:scale-105 hover:victory-glow;
+    @apply victory-button-gradient text-primary-foreground font-semibold px-8 py-4 rounded-lg victory-shadow victory-transition hover:scale-105 hover:victory-glow;
+  }
+  
+  /* Secondary Button - Black with Gold Text */
+  .luxury-button-secondary {
+    @apply bg-background border-2 border-primary text-primary font-semibold px-8 py-4 rounded-lg victory-shadow victory-transition hover:bg-primary hover:text-primary-foreground hover:scale-105;
+  }
+  
+  /* Hover Effects with Official Colors */
+  .victory-hover-gold {
+    @apply victory-transition hover:text-primary;
+  }
+  
+  .victory-hover-glow {
+    @apply victory-transition hover:shadow-[0_0_30px_hsl(43_40%_44%_/_0.5)];
   }
 }
