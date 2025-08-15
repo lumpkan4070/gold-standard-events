@@ -83,7 +83,7 @@ const UserEngagement = ({ user }: UserEngagementProps) => {
       }
 
       // Update offer usage count
-      await supabase.rpc('increment_offer_usage', { offer_id: offerId });
+      await (supabase.rpc as any)('increment_offer_usage', { offer_id: offerId });
 
       // Track analytics
       await supabase.from('analytics').insert({
