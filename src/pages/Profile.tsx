@@ -36,7 +36,7 @@ const Profile = () => {
       // Load user profile
       const { data: profileData } = await supabase
         .from("profiles")
-        .select("*")
+        .select("first_name, last_name, email, phone")
         .eq("user_id", session.user.id)
         .single();
       
