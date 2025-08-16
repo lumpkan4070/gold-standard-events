@@ -131,13 +131,17 @@ const AdminEnhanced = () => {
       setOffers(offersData || []);
 
       // Load photos
-      const { data: photosData } = await supabase
+      const { data: photosData, error: photosError } = await supabase
         .from("photo_wall")
         .select(`
           *,
-          profiles:user_id (first_name, last_name)
+          profiles!photo_wall_user_id_fkey (first_name, last_name)
         `)
         .order("created_at", { ascending: false });
+      
+      if (photosError) {
+        console.error('Error loading photos:', photosError);
+      }
       setPhotos(photosData || []);
 
       // Load analytics
@@ -766,51 +770,63 @@ const AdminEnhanced = () => {
             {/* Photos Management */}
             <TabsContent value="photos">
               <div className="grid gap-4">
-                {photos.map((photo) => (
-                  <Card key={photo.id} className="luxury-card">
-                    <CardContent className="p-6">
-                      <div className="flex gap-4">
-                        <img
-                          src={photo.image_url}
-                          alt={photo.caption || "User photo"}
-                          className="w-24 h-24 object-cover rounded"
-                        />
-                        <div className="flex-1">
-                          <p className="font-medium">
-                            {photo.profiles?.first_name} {photo.profiles?.last_name}
-                          </p>
-                          <p className="text-muted-foreground">{photo.caption}</p>
-                          <p className="text-sm text-muted-foreground">
-                            {new Date(photo.created_at).toLocaleDateString()}
-                          </p>
-                        </div>
-                        <div className="flex flex-col items-end gap-2">
-                          <Badge variant={photo.is_approved ? "default" : "secondary"}>
-                            {photo.is_approved ? "Approved" : "Pending"}
-                          </Badge>
-                          {!photo.is_approved && (
-                            <div className="flex gap-2">
-                              <Button
-                                size="sm"
-                                onClick={() => handlePhotoApproval(photo.id, true)}
-                                className="bg-green-600 hover:bg-green-700"
-                              >
-                                <CheckCircle className="h-4 w-4" />
-                              </Button>
-                              <Button
-                                size="sm"
-                                variant="destructive"
-                                onClick={() => handlePhotoApproval(photo.id, false)}
-                              >
-                                <XCircle className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          )}
-                        </div>
-                      </div>
+                {photos.length === 0 ? (
+                  <Card className="luxury-card">
+                    <CardContent className="p-8 text-center">
+                      <ImageIcon className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                      <h3 className="text-lg font-medium mb-2">No Photos Found</h3>
+                      <p className="text-muted-foreground">
+                        No photos have been uploaded by users yet.
+                      </p>
                     </CardContent>
                   </Card>
-                ))}
+                ) : (
+                  photos.map((photo) => (
+                    <Card key={photo.id} className="luxury-card">
+                      <CardContent className="p-6">
+                        <div className="flex gap-4">
+                          <img
+                            src={photo.image_url}
+                            alt={photo.caption || "User photo"}
+                            className="w-24 h-24 object-cover rounded"
+                          />
+                          <div className="flex-1">
+                            <p className="font-medium">
+                              {photo.profiles?.first_name} {photo.profiles?.last_name}
+                            </p>
+                            <p className="text-muted-foreground">{photo.caption}</p>
+                            <p className="text-sm text-muted-foreground">
+                              {new Date(photo.created_at).toLocaleDateString()}
+                            </p>
+                          </div>
+                          <div className="flex flex-col items-end gap-2">
+                            <Badge variant={photo.is_approved ? "default" : "secondary"}>
+                              {photo.is_approved ? "Approved" : "Pending"}
+                            </Badge>
+                            {!photo.is_approved && (
+                              <div className="flex gap-2">
+                                <Button
+                                  size="sm"
+                                  onClick={() => handlePhotoApproval(photo.id, true)}
+                                  className="bg-green-600 hover:bg-green-700"
+                                >
+                                  <CheckCircle className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="destructive"
+                                  onClick={() => handlePhotoApproval(photo.id, false)}
+                                >
+                                  <XCircle className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))
+                )}
               </div>
             </TabsContent>
 
