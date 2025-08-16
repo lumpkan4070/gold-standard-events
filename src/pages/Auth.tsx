@@ -215,12 +215,7 @@ const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
   };
 
   return (
-    <div className="min-h-screen relative flex items-center justify-center p-4 overflow-hidden">
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${authImage})` }}
-      />
-      <div className="absolute inset-0 bg-black/70" />
+    <div className="min-h-screen relative flex items-center justify-center p-4 bg-black">
       <Card className="relative z-10 w-full max-w-md luxury-card backdrop-blur-sm bg-card/95">
         <CardHeader className="text-center">
           <div className="victory-text-gradient text-3xl font-bold mb-2">
