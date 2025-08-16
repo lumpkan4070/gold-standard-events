@@ -135,7 +135,7 @@ const AdminEnhanced = () => {
         .from("photo_wall")
         .select(`
           *,
-          profiles!photo_wall_user_id_fkey (first_name, last_name)
+          profiles:user_id (first_name, last_name)
         `)
         .order("created_at", { ascending: false });
       
