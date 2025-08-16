@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
-import authImage from "@/assets/auth-welcome.jpg";
+import authImage from "@/assets/ladies-at-bar.jpg";
 
 const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
