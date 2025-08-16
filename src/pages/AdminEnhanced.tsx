@@ -130,19 +130,33 @@ const AdminEnhanced = () => {
         .order("created_at", { ascending: false });
       setOffers(offersData || []);
 
-      // Load photos
+      // Load photos - simplified query first, then get user names separately
       const { data: photosData, error: photosError } = await supabase
         .from("photo_wall")
-        .select(`
-          *,
-          profiles:user_id (first_name, last_name)
-        `)
+        .select("*")
         .order("created_at", { ascending: false });
       
       if (photosError) {
         console.error('Error loading photos:', photosError);
+        setPhotos([]);
+      } else {
+        // Get user names for each photo
+        const photosWithUsers = await Promise.all(
+          (photosData || []).map(async (photo) => {
+            const { data: profileData } = await supabase
+              .from("profiles")
+              .select("first_name, last_name")
+              .eq("user_id", photo.user_id)
+              .single();
+            
+            return {
+              ...photo,
+              profiles: profileData
+            };
+          })
+        );
+        setPhotos(photosWithUsers);
       }
-      setPhotos(photosData || []);
 
       // Load analytics
       const { data: analyticsData } = await supabase
