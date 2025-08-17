@@ -165,17 +165,31 @@ const AdminEnhanced = () => {
       setAnalytics(analyticsData || []);
 
       // Load all user profiles 
-      const { data: profilesData } = await supabase
+      console.log('Loading profiles...');
+      const { data: profilesData, error: profilesError } = await supabase
         .from("profiles")
         .select("*")
         .order("created_at", { ascending: false });
+      
+      if (profilesError) {
+        console.error('Error loading profiles:', profilesError);
+      } else {
+        console.log('Loaded profiles:', profilesData);
+      }
       setProfiles(profilesData || []);
 
       // Load all user roles for admin management
-      const { data: userRolesData } = await supabase
+      console.log('Loading user roles...');
+      const { data: userRolesData, error: userRolesError } = await supabase
         .from("user_roles")
         .select("*")
         .order("created_at", { ascending: false });
+      
+      if (userRolesError) {
+        console.error('Error loading user roles:', userRolesError);
+      } else {
+        console.log('Loaded user roles:', userRolesData);
+      }
       setUserRoles(userRolesData || []);
 
     } catch (error) {
