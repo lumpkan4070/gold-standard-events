@@ -28,7 +28,7 @@ const App = () => (
           <Route path="/admin" element={<AdminEnhanced />} />
           <Route path="/admin-enhanced" element={<AdminEnhanced />} />
           <Route path="/events" element={<Events />} />
-          <Route path="/order" element={<Events />} />
+          <Route path="/order" element={<Order />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/profile" element={<Profile />} />
