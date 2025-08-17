@@ -121,7 +121,7 @@ const handler = async (req: Request): Promise<Response> => {
     const emailTemplate = getEmailTemplate(data);
 
     const emailResponse = await resend.emails.send({
-      from: "Victory Bistro Ultra Lounge <noreply@victorybistro.com>",
+      from: "Victory Bistro Ultra Lounge <support@victorybistro.com>",
       to: [data.customerEmail],
       subject: emailTemplate.subject,
       html: emailTemplate.html,
