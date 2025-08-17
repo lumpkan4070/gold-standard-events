@@ -114,13 +114,10 @@ const AdminEnhanced = () => {
         .order("created_at", { ascending: false });
       setEvents(eventsData || []);
 
-      // Load bookings with user info
+      // Load bookings - get basic data first, then enrich with user info
       const { data: bookingsData } = await supabase
         .from("event_bookings")
-        .select(`
-          *,
-          profiles:user_id (first_name, last_name, email)
-        `)
+        .select("*")
         .order("created_at", { ascending: false });
       setBookings(bookingsData || []);
 
@@ -167,23 +164,17 @@ const AdminEnhanced = () => {
         .limit(50);
       setAnalytics(analyticsData || []);
 
-      // Load user profiles with roles
+      // Load all user profiles 
       const { data: profilesData } = await supabase
         .from("profiles")
-        .select(`
-          *,
-          user_roles!inner(role)
-        `)
+        .select("*")
         .order("created_at", { ascending: false });
       setProfiles(profilesData || []);
 
       // Load all user roles for admin management
       const { data: userRolesData } = await supabase
         .from("user_roles")
-        .select(`
-          *,
-          profiles!inner(first_name, last_name, email)
-        `)
+        .select("*")
         .order("created_at", { ascending: false });
       setUserRoles(userRolesData || []);
 
@@ -970,41 +961,87 @@ const AdminEnhanced = () => {
 
             {/* Users Management */}
             <TabsContent value="users">
-              <div className="grid gap-4">
-                {profiles.map((profile) => (
-                  <Card key={profile.id} className="luxury-card">
-                    <CardContent className="p-6">
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                          <h3 className="text-xl font-semibold mb-2">
-                            {profile.first_name} {profile.last_name}
-                          </h3>
-                          <div className="space-y-1 text-sm text-muted-foreground">
-                            <p>Email: {profile.email}</p>
-                            <p>Phone: {profile.phone || 'Not provided'}</p>
-                            <p>Total Bookings: {profile.total_bookings}</p>
-                            <p>Member since: {new Date(profile.created_at).toLocaleDateString()}</p>
-                            {profile.birthday && <p>Birthday: {new Date(profile.birthday).toLocaleDateString()}</p>}
-                          </div>
-                        </div>
-                        <div className="flex flex-col items-end gap-2">
-                          <Badge variant={profile.vip_status ? "default" : "secondary"}>
-                            {profile.vip_status ? "VIP" : "Regular"}
-                          </Badge>
-                          <Button
-                            size="sm"
-                            onClick={() => toggleVipStatus(profile.user_id, profile.vip_status)}
-                            variant={profile.vip_status ? "destructive" : "default"}
-                          >
-                            <Star className="h-4 w-4 mr-1" />
-                            {profile.vip_status ? "Remove VIP" : "Make VIP"}
-                          </Button>
-                        </div>
+              <Card className="luxury-card">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Users className="h-5 w-5" />
+                    User Management ({profiles.length} users)
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b">
+                          <th className="text-left p-3 font-medium">Name</th>
+                          <th className="text-left p-3 font-medium">Email</th>
+                          <th className="text-left p-3 font-medium">Phone</th>
+                          <th className="text-left p-3 font-medium">Birthday</th>
+                          <th className="text-left p-3 font-medium">Bookings</th>
+                          <th className="text-left p-3 font-medium">Status</th>
+                          <th className="text-left p-3 font-medium">Member Since</th>
+                          <th className="text-left p-3 font-medium">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {profiles.map((profile) => (
+                          <tr key={profile.id} className="border-b hover:bg-muted/50">
+                            <td className="p-3">
+                              <div className="font-medium">
+                                {profile.first_name} {profile.last_name}
+                              </div>
+                            </td>
+                            <td className="p-3 text-muted-foreground">
+                              {profile.email}
+                            </td>
+                            <td className="p-3 text-muted-foreground">
+                              {profile.phone || 'Not provided'}
+                            </td>
+                            <td className="p-3 text-muted-foreground">
+                              {profile.birthday 
+                                ? new Date(profile.birthday).toLocaleDateString()
+                                : 'Not provided'
+                              }
+                            </td>
+                            <td className="p-3">
+                              <Badge variant="outline">
+                                {profile.total_bookings}
+                              </Badge>
+                            </td>
+                            <td className="p-3">
+                              <Badge variant={profile.vip_status ? "default" : "secondary"}>
+                                {profile.vip_status ? "VIP" : "Regular"}
+                              </Badge>
+                            </td>
+                            <td className="p-3 text-muted-foreground">
+                              {new Date(profile.created_at).toLocaleDateString()}
+                            </td>
+                            <td className="p-3">
+                              <Button
+                                size="sm"
+                                onClick={() => toggleVipStatus(profile.user_id, profile.vip_status)}
+                                variant={profile.vip_status ? "destructive" : "default"}
+                              >
+                                <Star className="h-4 w-4 mr-1" />
+                                {profile.vip_status ? "Remove VIP" : "Make VIP"}
+                              </Button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    {profiles.length === 0 && (
+                      <div className="text-center py-8">
+                        <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                        <h3 className="text-lg font-medium mb-2">No Users Found</h3>
+                        <p className="text-muted-foreground">
+                          No users have signed up yet.
+                        </p>
                       </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
             </TabsContent>
 
             {/* Admin Rights Management */}
