@@ -77,6 +77,35 @@ const Events = () => {
     return () => subscription.unsubscribe();
   }, []);
 
+  // Send test booking email when query param is present
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const run = params.get('sendTestEmail');
+    if (run && !localStorage.getItem('vb_test_email_sent')) {
+      (async () => {
+        const { error } = await supabase.functions.invoke('send-booking-notification', {
+          body: {
+            bookingId: `test-${Date.now()}`,
+            status: 'approved',
+            customerEmail: 'anthony@aclpublishing.com',
+            customerName: 'Anthony',
+            eventTitle: 'Test Booking Confirmation',
+            eventDate: new Date().toISOString(),
+            adminNotes: 'This is a test email from Victory Bistro setup.',
+            replyTo: 'support@victorybistro.com'
+          }
+        });
+        if (error) {
+          toast({ title: 'Test Email Failed', description: error.message, variant: 'destructive' });
+        } else {
+          toast({ title: 'Test Email Sent', description: 'Check your inbox (and spam) for the test booking email.' });
+          localStorage.setItem('vb_test_email_sent', String(Date.now()));
+        }
+        navigate('/events', { replace: true });
+      })();
+    }
+  }, []);
+
   const handleBookEvent = (eventId: string) => {
     if (!user) {
       toast({
