@@ -58,9 +58,7 @@ export const Navigation = ({ user: userProp }: NavigationProps) => {
 
   const menuItems = [
     { label: "Home", href: "/", icon: null },
-    { label: "Order", href: "/order", icon: QrCode },
     { label: "Events", href: "/events", icon: Calendar },
-    { label: "Book an Event", href: "/events", icon: Calendar },
     { label: "Contact", href: "/contact", icon: Phone },
     { label: "Privacy Policy", href: "/privacy", icon: FileText },
   ];
