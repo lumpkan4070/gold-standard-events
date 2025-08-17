@@ -16,6 +16,8 @@ interface BookingNotificationRequest {
   eventTitle: string;
   eventDate: string;
   adminNotes?: string;
+  replyTo?: string;
+  bcc?: string | string[];
 }
 
 const getEmailTemplate = (data: BookingNotificationRequest) => {
@@ -125,6 +127,8 @@ const handler = async (req: Request): Promise<Response> => {
       to: [data.customerEmail],
       subject: emailTemplate.subject,
       html: emailTemplate.html,
+      reply_to: data.replyTo ?? "support@victorybistro.com",
+      ...(data.bcc ? { bcc: Array.isArray(data.bcc) ? data.bcc : [data.bcc] } : {}),
     });
 
     console.log("Email sent successfully:", emailResponse);
