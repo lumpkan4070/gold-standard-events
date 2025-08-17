@@ -170,6 +170,41 @@ export type Database = {
         }
         Relationships: []
       }
+      notification_recipients: {
+        Row: {
+          created_at: string
+          delivered_at: string | null
+          id: string
+          notification_id: string
+          read_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          delivered_at?: string | null
+          id?: string
+          notification_id: string
+          read_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          delivered_at?: string | null
+          id?: string
+          notification_id?: string
+          read_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_recipients_notification_id_fkey"
+            columns: ["notification_id"]
+            isOneToOne: false
+            referencedRelation: "notifications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notifications: {
         Row: {
           delivered_count: number | null

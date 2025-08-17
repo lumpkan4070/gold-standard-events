@@ -179,16 +179,31 @@ const Admin = () => {
     }
 
     try {
-      const { error } = await supabase
+      // Create the notification first
+      const { data: notificationData, error: notificationError } = await supabase
         .from("notifications")
         .insert({
           title: "Message from Victory Bistro",
           message: message,
           sent_by: user.id,
           recipient_count: selectedUsers.length
-        });
+        })
+        .select()
+        .single();
 
-      if (error) throw error;
+      if (notificationError) throw notificationError;
+
+      // Create recipient records for each selected user
+      const recipientRecords = selectedUsers.map(userId => ({
+        notification_id: notificationData.id,
+        user_id: userId
+      }));
+
+      const { error: recipientError } = await supabase
+        .from("notification_recipients")
+        .insert(recipientRecords);
+
+      if (recipientError) throw recipientError;
 
       toast({
         title: "Message Sent",

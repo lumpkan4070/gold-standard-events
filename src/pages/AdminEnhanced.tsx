@@ -492,11 +492,27 @@ const AdminEnhanced = () => {
 
   const sendPushNotification = async () => {
     try {
+      // Create the notification record first
+      const { data: notificationData, error: notificationError } = await supabase
+        .from("notifications")
+        .insert({
+          title: pushNotification.title,
+          message: pushNotification.message,
+          sent_by: user?.id,
+          recipient_count: 0 // Will be updated after sending
+        })
+        .select()
+        .single();
+
+      if (notificationError) throw notificationError;
+
+      // Send the push notification via edge function
       const { error } = await supabase.functions.invoke('send-push-notification', {
         body: {
           title: pushNotification.title,
           message: pushNotification.message,
-          notificationType: pushNotification.notificationType
+          notificationType: pushNotification.notificationType,
+          notificationId: notificationData.id
         }
       });
 
