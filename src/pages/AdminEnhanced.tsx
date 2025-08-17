@@ -33,6 +33,7 @@ const AdminEnhanced = () => {
   const [photos, setPhotos] = useState<any[]>([]);
   const [analytics, setAnalytics] = useState<any[]>([]);
   const [profiles, setProfiles] = useState<any[]>([]);
+  const [userRoles, setUserRoles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   
   // Form states
@@ -166,12 +167,25 @@ const AdminEnhanced = () => {
         .limit(50);
       setAnalytics(analyticsData || []);
 
-      // Load user profiles
+      // Load user profiles with roles
       const { data: profilesData } = await supabase
         .from("profiles")
-        .select("*")
+        .select(`
+          *,
+          user_roles!inner(role)
+        `)
         .order("created_at", { ascending: false });
       setProfiles(profilesData || []);
+
+      // Load all user roles for admin management
+      const { data: userRolesData } = await supabase
+        .from("user_roles")
+        .select(`
+          *,
+          profiles!inner(first_name, last_name, email)
+        `)
+        .order("created_at", { ascending: false });
+      setUserRoles(userRolesData || []);
 
     } catch (error) {
       console.error('Error loading data:', error);
@@ -286,6 +300,98 @@ const AdminEnhanced = () => {
       toast({
         title: approved ? "Photo Approved" : "Photo Rejected",
         description: `Photo has been ${approved ? 'approved' : 'rejected'} successfully`
+      });
+
+      loadAllData();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive"
+      });
+    }
+  };
+
+  const togglePhotoHomepage = async (photoId: string, currentFeatured: boolean) => {
+    try {
+      const { error } = await supabase
+        .from("photo_wall")
+        .update({ is_featured: !currentFeatured })
+        .eq("id", photoId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Photo Updated",
+        description: `Photo ${!currentFeatured ? 'added to' : 'removed from'} home page`
+      });
+
+      loadAllData();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive"
+      });
+    }
+  };
+
+  const grantAdminRights = async (userId: string) => {
+    try {
+      // Check if user already has admin role
+      const { data: existingRole } = await supabase
+        .from("user_roles")
+        .select("*")
+        .eq("user_id", userId)
+        .eq("role", "admin")
+        .single();
+
+      if (existingRole) {
+        toast({
+          title: "Already Admin",
+          description: "This user already has admin rights",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      const { error } = await supabase
+        .from("user_roles")
+        .insert({
+          user_id: userId,
+          role: "admin"
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: "Admin Rights Granted",
+        description: "User has been granted admin privileges"
+      });
+
+      loadAllData();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive"
+      });
+    }
+  };
+
+  const revokeAdminRights = async (userId: string) => {
+    try {
+      const { error } = await supabase
+        .from("user_roles")
+        .delete()
+        .eq("user_id", userId)
+        .eq("role", "admin");
+
+      if (error) throw error;
+
+      toast({
+        title: "Admin Rights Revoked",
+        description: "User admin privileges have been removed"
       });
 
       loadAllData();
@@ -496,12 +602,13 @@ const AdminEnhanced = () => {
           </div>
 
           <Tabs defaultValue="events" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-7">
+            <TabsList className="grid w-full grid-cols-8">
               <TabsTrigger value="events">Events</TabsTrigger>
               <TabsTrigger value="bookings">Bookings</TabsTrigger>
               <TabsTrigger value="offers">Offers</TabsTrigger>
               <TabsTrigger value="photos">Photos</TabsTrigger>
               <TabsTrigger value="users">Users</TabsTrigger>
+              <TabsTrigger value="admin-rights">Admin Rights</TabsTrigger>
               <TabsTrigger value="notifications">Notifications</TabsTrigger>
               <TabsTrigger value="analytics">Analytics</TabsTrigger>
             </TabsList>
@@ -817,24 +924,41 @@ const AdminEnhanced = () => {
                             <Badge variant={photo.is_approved ? "default" : "secondary"}>
                               {photo.is_approved ? "Approved" : "Pending"}
                             </Badge>
-                            {!photo.is_approved && (
-                              <div className="flex gap-2">
-                                <Button
-                                  size="sm"
-                                  onClick={() => handlePhotoApproval(photo.id, true)}
-                                  className="bg-green-600 hover:bg-green-700"
-                                >
-                                  <CheckCircle className="h-4 w-4" />
-                                </Button>
-                                <Button
-                                  size="sm"
-                                  variant="destructive"
-                                  onClick={() => handlePhotoApproval(photo.id, false)}
-                                >
-                                  <XCircle className="h-4 w-4" />
-                                </Button>
-                              </div>
+                            {photo.is_approved && (
+                              <Badge variant={photo.is_featured ? "default" : "outline"}>
+                                {photo.is_featured ? "On Home Page" : "Hidden from Home"}
+                              </Badge>
                             )}
+                            <div className="flex gap-2">
+                              {!photo.is_approved && (
+                                <>
+                                  <Button
+                                    size="sm"
+                                    onClick={() => handlePhotoApproval(photo.id, true)}
+                                    className="bg-green-600 hover:bg-green-700"
+                                  >
+                                    <CheckCircle className="h-4 w-4" />
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="destructive"
+                                    onClick={() => handlePhotoApproval(photo.id, false)}
+                                  >
+                                    <XCircle className="h-4 w-4" />
+                                  </Button>
+                                </>
+                              )}
+                              {photo.is_approved && (
+                                <Button
+                                  size="sm"
+                                  variant={photo.is_featured ? "destructive" : "default"}
+                                  onClick={() => togglePhotoHomepage(photo.id, photo.is_featured)}
+                                >
+                                  <Eye className="h-4 w-4 mr-1" />
+                                  {photo.is_featured ? "Hide from Home" : "Show on Home"}
+                                </Button>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </CardContent>
@@ -880,6 +1004,70 @@ const AdminEnhanced = () => {
                     </CardContent>
                   </Card>
                 ))}
+              </div>
+            </TabsContent>
+
+            {/* Admin Rights Management */}
+            <TabsContent value="admin-rights">
+              <div className="grid gap-4">
+                <Card className="luxury-card">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Settings className="h-5 w-5" />
+                      Grant Admin Rights
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground mb-4">
+                      Select users to grant or revoke admin privileges. Use this feature carefully as admin users have full system access.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                {profiles.map((profile) => {
+                  const isCurrentAdmin = userRoles.some(role => 
+                    role.user_id === profile.user_id && role.role === 'admin'
+                  );
+                  
+                  return (
+                    <Card key={profile.id} className="luxury-card">
+                      <CardContent className="p-6">
+                        <div className="flex justify-between items-start">
+                          <div className="flex-1">
+                            <h3 className="text-xl font-semibold mb-2">
+                              {profile.first_name} {profile.last_name}
+                            </h3>
+                            <div className="space-y-1 text-sm text-muted-foreground">
+                              <p>Email: {profile.email}</p>
+                              <p>Member since: {new Date(profile.created_at).toLocaleDateString()}</p>
+                            </div>
+                          </div>
+                          <div className="flex flex-col items-end gap-2">
+                            <Badge variant={isCurrentAdmin ? "destructive" : "secondary"}>
+                              {isCurrentAdmin ? "ADMIN" : "USER"}
+                            </Badge>
+                            {profile.user_id !== user?.id && (
+                              <Button
+                                size="sm"
+                                onClick={() => isCurrentAdmin 
+                                  ? revokeAdminRights(profile.user_id)
+                                  : grantAdminRights(profile.user_id)
+                                }
+                                variant={isCurrentAdmin ? "destructive" : "default"}
+                              >
+                                <Settings className="h-4 w-4 mr-1" />
+                                {isCurrentAdmin ? "Revoke Admin" : "Grant Admin"}
+                              </Button>
+                            )}
+                            {profile.user_id === user?.id && (
+                              <p className="text-xs text-muted-foreground">Current User</p>
+                            )}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
             </TabsContent>
 
