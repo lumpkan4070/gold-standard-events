@@ -16,6 +16,29 @@
     <meta name="twitter:site" content="@lovable_dev" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
     <link rel="icon" href="/lovable-uploads/b06bed82-21fe-4ecb-9777-d9ab59391ff6.png" type="image/png">
+    
+    <!-- OneSignal SDK -->
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      OneSignalDeferred.push(async function(OneSignal) {
+        await OneSignal.init({
+          appId: "67ee2082-8942-4205-9177-87682cc0682b",
+          safari_web_id: "web.onesignal.auto.18b6c2e3-5b13-4b3e-a8a6-2b4b69ef8bf7",
+          notifyButton: {
+            enable: false,
+          },
+          allowLocalhostAsSecureOrigin: true,
+        });
+        
+        console.log("OneSignal initialized");
+        
+        // Optional: Auto-prompt for notifications on home page
+        setTimeout(() => {
+          OneSignal.showSlidedownPrompt();
+        }, 5000);
+      });
+    </script>
   </head>
 
   <body>

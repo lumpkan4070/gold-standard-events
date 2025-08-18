@@ -43,11 +43,52 @@ const handler = async (req: Request): Promise<Response> => {
       throw insertError;
     }
 
-    // In a real implementation, you would integrate with a push notification service
-    // like Firebase Cloud Messaging, Apple Push Notification service, or OneSignal
     console.log("Push notification stored successfully:", notificationData);
+    
+    // Send notification via OneSignal
+    const oneSignalAppId = Deno.env.get('ONESIGNAL_APP_ID');
+    const oneSignalRestApiKey = Deno.env.get('ONESIGNAL_REST_API_KEY');
 
-    // For now, we'll just track analytics
+    if (oneSignalAppId && oneSignalRestApiKey) {
+      try {
+        const oneSignalPayload = {
+          app_id: oneSignalAppId,
+          included_segments: data.targetUsers ? [] : ["All"],
+          include_external_user_ids: data.targetUsers || undefined,
+          headings: { "en": data.title },
+          contents: { "en": data.message },
+          data: { 
+            notification_type: data.notificationType,
+            timestamp: new Date().toISOString()
+          }
+        };
+
+        console.log("Sending OneSignal notification:", oneSignalPayload);
+
+        const oneSignalResponse = await fetch('https://onesignal.com/api/v1/notifications', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Basic ${oneSignalRestApiKey}`
+          },
+          body: JSON.stringify(oneSignalPayload)
+        });
+
+        const oneSignalResult = await oneSignalResponse.json();
+        
+        if (oneSignalResponse.ok) {
+          console.log("OneSignal notification sent successfully:", oneSignalResult);
+        } else {
+          console.error("OneSignal error:", oneSignalResult);
+        }
+      } catch (oneSignalError) {
+        console.error("Error sending OneSignal notification:", oneSignalError);
+      }
+    } else {
+      console.warn("OneSignal credentials not found - notification not sent to devices");
+    }
+
+    // Track analytics
     await supabaseClient
       .from('analytics')
       .insert({
@@ -63,7 +104,7 @@ const handler = async (req: Request): Promise<Response> => {
     return new Response(JSON.stringify({ 
       success: true, 
       notificationId: notificationData.id,
-      message: "Push notification queued successfully" 
+      message: "Push notification sent successfully" 
     }), {
       status: 200,
       headers: {
