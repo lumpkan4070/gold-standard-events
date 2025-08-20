@@ -17,56 +17,32 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const App = () => {
-  console.log("App component rendering...");
-  
-  try {
-    return (
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/admin" element={<AdminEnhanced />} />
-              <Route path="/admin-enhanced" element={<AdminEnhanced />} />
-              <Route path="/events" element={<Events />} />
-              <Route path="/order" element={<Order />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/chat" element={<Chat />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/privacy" element={<Privacy />} />
-              <Route path="/games" element={<Games />} />
-              {/* Legacy routes for backward compatibility */}
-              <Route path="/scanner" element={<Order />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </QueryClientProvider>
-    );
-  } catch (error) {
-    console.error("Error in App component:", error);
-    return (
-      <div style={{ 
-        padding: '20px', 
-        color: 'white', 
-        backgroundColor: 'black',
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'column'
-      }}>
-        <h1>Victory Bistro - Loading Error</h1>
-        <p>Something went wrong: {error?.toString()}</p>
-        <p>Please refresh the page</p>
-      </div>
-    );
-  }
-};
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/admin" element={<AdminEnhanced />} />
+          <Route path="/admin-enhanced" element={<AdminEnhanced />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/order" element={<Order />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/games" element={<Games />} />
+          {/* Legacy routes for backward compatibility */}
+          <Route path="/scanner" element={<Order />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
+);
 
 export default App;
