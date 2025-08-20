@@ -1,11 +1,123 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MessageCircle, Bot, Clock } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { MessageCircle, Bot, Send, User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+
+interface Message {
+  id: string;
+  text: string;
+  sender: 'user' | 'bot';
+  timestamp: Date;
+}
+
+const VICTORY_BOT_QA = [
+  {
+    keywords: ['hours', 'open', 'close', 'time'],
+    answer: "We're open Monday-Thursday 4pm-10pm, Friday-Saturday 4pm-11pm, and Sunday 3pm-9pm. We're closed on major holidays."
+  },
+  {
+    keywords: ['location', 'address', 'where'],
+    answer: "Victory Bistro is located in Cleveland, Ohio. For directions and exact address, please call us at (216) 938-7778."
+  },
+  {
+    keywords: ['reservation', 'book', 'table'],
+    answer: "You can make reservations by calling (216) 938-7778 or emailing events@victorybistro.com. We recommend booking in advance, especially for weekends."
+  },
+  {
+    keywords: ['menu', 'food', 'dishes', 'eat'],
+    answer: "We offer contemporary American cuisine with seasonal ingredients. Our menu features steaks, seafood, pasta, and vegetarian options. Check our Order page for current menu items."
+  },
+  {
+    keywords: ['parking', 'park'],
+    answer: "We offer valet parking and there's street parking available. Valet service is complimentary for dinner guests."
+  },
+  {
+    keywords: ['dress code', 'attire', 'wear'],
+    answer: "We have a smart casual dress code. Business casual or dressy attire is recommended, especially for dinner service."
+  },
+  {
+    keywords: ['private', 'event', 'party', 'group'],
+    answer: "Yes! We host private events and parties. Contact us at events@victorybistro.com or (216) 938-7778 to discuss your event needs."
+  },
+  {
+    keywords: ['wine', 'drinks', 'cocktails', 'bar'],
+    answer: "We have an extensive wine list and craft cocktail menu. Our bartenders can create classic and signature cocktails to complement your meal."
+  },
+  {
+    keywords: ['vegetarian', 'vegan', 'dietary'],
+    answer: "We offer vegetarian options and can accommodate most dietary restrictions. Please inform us of any allergies or dietary needs when making your reservation."
+  },
+  {
+    keywords: ['specials', 'deals', 'offers'],
+    answer: "We feature daily specials and seasonal menu items. Follow us on social media or check our Events page for current promotions and special dinner events."
+  },
+  {
+    keywords: ['credit card', 'payment', 'cash'],
+    answer: "We accept all major credit cards, cash, and contactless payments. We do not currently accept checks."
+  },
+  {
+    keywords: ['takeout', 'delivery', 'order'],
+    answer: "Yes, we offer takeout orders. You can place orders by calling (216) 938-7778. Currently, we don't offer delivery service."
+  },
+  {
+    keywords: ['chef', 'kitchen', 'cook'],
+    answer: "Our culinary team is led by experienced chefs who focus on fresh, locally-sourced ingredients and innovative cooking techniques."
+  },
+  {
+    keywords: ['birthday', 'celebration', 'anniversary'],
+    answer: "We love celebrating special occasions! Let us know about birthdays, anniversaries, or special celebrations when making your reservation."
+  },
+  {
+    keywords: ['gluten', 'allergy', 'free'],
+    answer: "We can accommodate gluten-free and allergy-friendly requests. Please inform us of any allergies when making your reservation so we can prepare accordingly."
+  },
+  {
+    keywords: ['live music', 'entertainment'],
+    answer: "We occasionally host live music and entertainment events. Check our Events page or social media for upcoming entertainment schedules."
+  },
+  {
+    keywords: ['happy hour', 'discount'],
+    answer: "We offer special pricing on select appetizers and drinks during certain hours. Call us at (216) 938-7778 for current happy hour details."
+  },
+  {
+    keywords: ['outdoor', 'patio', 'seating'],
+    answer: "Weather permitting, we offer outdoor seating options. Availability depends on the season and weather conditions."
+  },
+  {
+    keywords: ['gift card', 'gift'],
+    answer: "Yes, we offer gift cards! They make perfect gifts for food lovers. Contact us at (216) 938-7778 to purchase gift cards."
+  },
+  {
+    keywords: ['contact', 'phone', 'email'],
+    answer: "You can reach us at (216) 938-7778 or email events@victorybistro.com. We're happy to answer any questions you have!"
+  }
+];
 
 const Chat = () => {
   const [user, setUser] = useState<any>(null);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: '1',
+      text: "Hello! I'm VictoryBot, your personal dining assistant. I can help you with questions about our menu, hours, reservations, and more. What would you like to know?",
+      sender: 'bot',
+      timestamp: new Date()
+    }
+  ]);
+  const [inputText, setInputText] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   useEffect(() => {
     // Check for user session
@@ -25,84 +137,160 @@ const Chat = () => {
     return () => subscription.unsubscribe();
   }, []);
 
+  const findBestAnswer = (userInput: string): string => {
+    const input = userInput.toLowerCase();
+    
+    // Find the Q&A with the most keyword matches
+    let bestMatch = null;
+    let maxMatches = 0;
+    
+    for (const qa of VICTORY_BOT_QA) {
+      const matches = qa.keywords.filter(keyword => input.includes(keyword)).length;
+      if (matches > maxMatches) {
+        maxMatches = matches;
+        bestMatch = qa;
+      }
+    }
+    
+    if (bestMatch && maxMatches > 0) {
+      return bestMatch.answer;
+    }
+    
+    // Default response if no matches found
+    return "I'm here to help with questions about Victory Bistro! You can ask me about our hours, menu, reservations, location, parking, events, and more. For specific questions I can't answer, please call us at (216) 938-7778.";
+  };
+
+  const handleSendMessage = async () => {
+    if (!inputText.trim()) return;
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      text: inputText,
+      sender: 'user',
+      timestamp: new Date()
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    setInputText('');
+    setIsTyping(true);
+
+    // Simulate bot thinking time
+    setTimeout(() => {
+      const botResponse: Message = {
+        id: (Date.now() + 1).toString(),
+        text: findBestAnswer(inputText),
+        sender: 'bot',
+        timestamp: new Date()
+      };
+
+      setMessages(prev => [...prev, botResponse]);
+      setIsTyping(false);
+    }, 1000);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSendMessage();
+    }
+  };
+
   return (
     <div className="min-h-screen victory-hero-bg">
       <Navigation user={user} />
       
       <div className="container mx-auto px-4 pt-24 pb-12">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-8">
             <div className="victory-text-gradient text-4xl font-bold mb-4 flex items-center justify-center gap-3">
               <MessageCircle className="h-10 w-10" />
               VictoryBot
             </div>
             <p className="text-muted-foreground text-lg">
-              Your personal dining assistant - coming soon
+              Your personal dining assistant
             </p>
           </div>
 
-          <Card className="luxury-card">
-            <CardHeader>
+          <Card className="luxury-card h-[600px] flex flex-col">
+            <CardHeader className="flex-shrink-0">
               <CardTitle className="text-foreground flex items-center gap-2">
                 <Bot className="h-5 w-5 text-primary" />
-                VictoryBot Chat Assistant
+                Chat with VictoryBot
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="text-center py-12">
-                <div className="w-24 h-24 mx-auto victory-gradient rounded-full flex items-center justify-center mb-6">
-                  <Bot className="w-12 h-12 text-primary-foreground" />
+            
+            <CardContent className="flex-1 flex flex-col p-0">
+              <ScrollArea className="flex-1 px-6">
+                <div className="space-y-4 py-4">
+                  {messages.map((message) => (
+                    <div
+                      key={message.id}
+                      className={`flex items-start gap-3 ${
+                        message.sender === 'user' ? 'flex-row-reverse' : 'flex-row'
+                      }`}
+                    >
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                        message.sender === 'bot' 
+                          ? 'victory-gradient' 
+                          : 'bg-primary'
+                      }`}>
+                        {message.sender === 'bot' ? (
+                          <Bot className="w-4 h-4 text-primary-foreground" />
+                        ) : (
+                          <User className="w-4 h-4 text-primary-foreground" />
+                        )}
+                      </div>
+                      
+                      <div className={`max-w-[80%] p-3 rounded-lg ${
+                        message.sender === 'user'
+                          ? 'bg-primary text-primary-foreground'
+                          : 'bg-muted text-muted-foreground'
+                      }`}>
+                        <p className="text-sm">{message.text}</p>
+                        <span className="text-xs opacity-70">
+                          {message.timestamp.toLocaleTimeString([], { 
+                            hour: '2-digit', 
+                            minute: '2-digit' 
+                          })}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                  
+                  {isTyping && (
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-full victory-gradient flex items-center justify-center flex-shrink-0">
+                        <Bot className="w-4 h-4 text-primary-foreground" />
+                      </div>
+                      <div className="bg-muted text-muted-foreground p-3 rounded-lg">
+                        <div className="flex gap-1">
+                          <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                          <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                          <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <h3 className="text-2xl font-semibold text-foreground mb-4">
-                  VictoryBot is Coming Soon!
-                </h3>
-                <p className="text-muted-foreground text-lg mb-6">
-                  Our AI-powered chat assistant will help you with:
-                </p>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-                  <div className="text-left">
-                    <h4 className="font-medium text-foreground mb-2">Menu Questions</h4>
-                    <p className="text-muted-foreground text-sm">
-                      Get detailed information about our dishes, ingredients, and recommendations
-                    </p>
-                  </div>
-                  <div className="text-left">
-                    <h4 className="font-medium text-foreground mb-2">Event Information</h4>
-                    <p className="text-muted-foreground text-sm">
-                      Learn about upcoming events, private party options, and special offers
-                    </p>
-                  </div>
-                  <div className="text-left">
-                    <h4 className="font-medium text-foreground mb-2">Reservations</h4>
-                    <p className="text-muted-foreground text-sm">
-                      Help with booking tables, private rooms, and special arrangements
-                    </p>
-                  </div>
-                  <div className="text-left">
-                    <h4 className="font-medium text-foreground mb-2">General Inquiries</h4>
-                    <p className="text-muted-foreground text-sm">
-                      Hours, location, parking, dress code, and other common questions
-                    </p>
-                  </div>
-                </div>
-              </div>
+                <div ref={messagesEndRef} />
+              </ScrollArea>
               
-              <div className="bg-primary/5 border border-primary/20 rounded-lg p-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <Clock className="h-5 w-5 text-primary" />
-                  <h4 className="font-medium text-foreground">In the Meantime</h4>
+              <div className="border-t p-4">
+                <div className="flex gap-2">
+                  <Input
+                    value={inputText}
+                    onChange={(e) => setInputText(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    placeholder="Ask me about our menu, hours, reservations..."
+                    className="flex-1"
+                  />
+                  <Button 
+                    onClick={handleSendMessage}
+                    disabled={!inputText.trim() || isTyping}
+                    size="icon"
+                  >
+                    <Send className="h-4 w-4" />
+                  </Button>
                 </div>
-                <p className="text-muted-foreground">
-                  For immediate assistance, please call us at{' '}
-                  <a href="tel:+12169387778" className="text-primary hover:underline font-medium">
-                    (216) 938-7778
-                  </a>{' '}
-                  or email us at{' '}
-                  <a href="mailto:events@victorybistro.com" className="text-primary hover:underline font-medium">
-                    events@victorybistro.com
-                  </a>
-                </p>
               </div>
             </CardContent>
           </Card>
