@@ -12,6 +12,7 @@ import Contact from "./pages/Contact";
 import Chat from "./pages/Chat";
 import Profile from "./pages/Profile";
 import Privacy from "./pages/Privacy";
+import Games from "./pages/Games";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ const App = () => (
           <Route path="/chat" element={<Chat />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="/games" element={<Games />} />
           {/* Legacy routes for backward compatibility */}
           <Route path="/scanner" element={<Order />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

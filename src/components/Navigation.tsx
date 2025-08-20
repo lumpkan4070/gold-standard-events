@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, QrCode, Calendar, MessageCircle, User, LogOut, Shield, Phone, FileText } from "lucide-react";
+import { Menu, QrCode, Calendar, MessageCircle, User, LogOut, Shield, Phone, FileText, Dice1 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
@@ -95,6 +95,11 @@ export const Navigation = ({ user: userProp }: NavigationProps) => {
     { label: "Contact", href: "/contact", icon: Phone },
     { label: "Privacy Policy", href: "/privacy", icon: FileText },
   ];
+
+  // Add Games & Fun link for authenticated users
+  if (user) {
+    menuItems.splice(3, 0, { label: "Games & Fun", href: "/games", icon: Dice1 });
+  }
 
   if (user) {
     menuItems.push({ label: "Profile", href: "/profile", icon: User });

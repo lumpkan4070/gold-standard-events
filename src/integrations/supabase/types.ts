@@ -74,6 +74,50 @@ export type Database = {
         }
         Relationships: []
       }
+      dare_prompts: {
+        Row: {
+          category: Database["public"]["Enums"]["prompt_category"]
+          created_at: string
+          created_by: string | null
+          id: string
+          is_active: boolean
+          offer_id: string | null
+          points_reward: number
+          text: string
+          updated_at: string
+        }
+        Insert: {
+          category?: Database["public"]["Enums"]["prompt_category"]
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          offer_id?: string | null
+          points_reward?: number
+          text: string
+          updated_at?: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["prompt_category"]
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          offer_id?: string | null
+          points_reward?: number
+          text?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dare_prompts_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "offers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       event_bookings: {
         Row: {
           admin_notes: string | null
@@ -343,6 +387,7 @@ export type Database = {
           total_bookings: number
           updated_at: string
           user_id: string
+          victory_points: number
           vip_status: boolean
         }
         Insert: {
@@ -359,6 +404,7 @@ export type Database = {
           total_bookings?: number
           updated_at?: string
           user_id: string
+          victory_points?: number
           vip_status?: boolean
         }
         Update: {
@@ -375,7 +421,80 @@ export type Database = {
           total_bookings?: number
           updated_at?: string
           user_id?: string
+          victory_points?: number
           vip_status?: boolean
+        }
+        Relationships: []
+      }
+      truth_prompts: {
+        Row: {
+          category: Database["public"]["Enums"]["prompt_category"]
+          created_at: string
+          created_by: string | null
+          id: string
+          is_active: boolean
+          text: string
+          updated_at: string
+        }
+        Insert: {
+          category?: Database["public"]["Enums"]["prompt_category"]
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          text: string
+          updated_at?: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["prompt_category"]
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          text?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_game_activity: {
+        Row: {
+          completed: boolean
+          completion_data: Json | null
+          created_at: string
+          game_session_id: string
+          id: string
+          points_awarded: number
+          posted_to_photo_wall: boolean
+          prompt_id: string
+          prompt_type: Database["public"]["Enums"]["game_prompt_type"]
+          shared_to_social: boolean
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean
+          completion_data?: Json | null
+          created_at?: string
+          game_session_id?: string
+          id?: string
+          points_awarded?: number
+          posted_to_photo_wall?: boolean
+          prompt_id: string
+          prompt_type: Database["public"]["Enums"]["game_prompt_type"]
+          shared_to_social?: boolean
+          user_id: string
+        }
+        Update: {
+          completed?: boolean
+          completion_data?: Json | null
+          created_at?: string
+          game_session_id?: string
+          id?: string
+          points_awarded?: number
+          posted_to_photo_wall?: boolean
+          prompt_id?: string
+          prompt_type?: Database["public"]["Enums"]["game_prompt_type"]
+          shared_to_social?: boolean
+          user_id?: string
         }
         Relationships: []
       }
@@ -434,6 +553,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      award_victory_points: {
+        Args: { points: number; user_uuid: string }
+        Returns: undefined
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -449,6 +572,12 @@ export type Database = {
     Enums: {
       app_role: "admin" | "user"
       booking_status: "pending" | "approved" | "rejected"
+      game_prompt_type: "truth" | "dare"
+      prompt_category:
+        | "icebreakers"
+        | "party_fun"
+        | "memory_lane"
+        | "victory_specials"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -578,6 +707,13 @@ export const Constants = {
     Enums: {
       app_role: ["admin", "user"],
       booking_status: ["pending", "approved", "rejected"],
+      game_prompt_type: ["truth", "dare"],
+      prompt_category: [
+        "icebreakers",
+        "party_fun",
+        "memory_lane",
+        "victory_specials",
+      ],
     },
   },
 } as const

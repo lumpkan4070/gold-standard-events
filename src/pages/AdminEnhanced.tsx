@@ -21,8 +21,10 @@ import {
   Star,
   Settings,
   Plus,
-  Trash2
+  Trash2,
+  Dice1
 } from "lucide-react";
+import GamePromptManager from "@/components/GamePromptManager";
 
 const AdminEnhanced = () => {
   const [user, setUser] = useState<any>(null);
@@ -622,17 +624,15 @@ const AdminEnhanced = () => {
             </p>
           </div>
 
-          <Tabs defaultValue="events" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-8">
-              <TabsTrigger value="events">Events</TabsTrigger>
-              <TabsTrigger value="bookings">Bookings</TabsTrigger>
-              <TabsTrigger value="offers">Offers</TabsTrigger>
-              <TabsTrigger value="photos">Photos</TabsTrigger>
-              <TabsTrigger value="users">Users</TabsTrigger>
-              <TabsTrigger value="admin-rights">Admin Rights</TabsTrigger>
-              <TabsTrigger value="notifications">Notifications</TabsTrigger>
-              <TabsTrigger value="analytics">Analytics</TabsTrigger>
-            </TabsList>
+        <Tabs defaultValue="overview" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-6">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="events">Events</TabsTrigger>
+          <TabsTrigger value="bookings">Bookings</TabsTrigger>
+          <TabsTrigger value="offers">Offers</TabsTrigger>
+          <TabsTrigger value="photo-wall">Photo Wall</TabsTrigger>
+          <TabsTrigger value="games">Truth or Dare</TabsTrigger>
+        </TabsList>
 
             {/* Events Management */}
             <TabsContent value="events">
