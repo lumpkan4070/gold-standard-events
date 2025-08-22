@@ -393,6 +393,14 @@ const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
                       {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                       Create Account
                     </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => navigate("/")}
+                      className="w-full border-primary/20 text-primary hover:bg-primary/10"
+                    >
+                      Back to Home
+                    </Button>
                   </form>
                 </TabsContent>
               </Tabs>
