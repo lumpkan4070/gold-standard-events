@@ -54,12 +54,7 @@ const AdminEnhanced = () => {
     featured_image_url: ''
   });
 
-  const [pushNotification, setPushNotification] = useState({
-    title: '',
-    message: '',
-    notificationType: 'general' as 'general' | 'offer' | 'event' | 'fomo',
-    channels: ['push'] as ('push' | 'email' | 'sms')[]
-  });
+  // Push notifications removed - coming soon
 
   const [uploadingImage, setUploadingImage] = useState(false);
 
@@ -468,18 +463,7 @@ const AdminEnhanced = () => {
 
       if (error) throw error;
 
-      // Send push notification about new event
-      try {
-        await supabase.functions.invoke('send-push-notification', {
-          body: {
-            title: "New Event Available!",
-            message: `${newEvent.title} - ${new Date(newEvent.event_date).toLocaleDateString()}`,
-            notificationType: 'event'
-          }
-        });
-      } catch (notifError) {
-        console.error('Push notification failed:', notifError);
-      }
+        // Push notifications coming soon
 
       toast({
         title: "Event Created",
@@ -503,58 +487,7 @@ const AdminEnhanced = () => {
     }
   };
 
-  const sendPushNotification = async () => {
-    try {
-      // Create the notification record first
-      const { data: notificationData, error: notificationError } = await supabase
-        .from("notifications")
-        .insert({
-          title: pushNotification.title,
-          message: pushNotification.message,
-          sent_by: user?.id,
-          recipient_count: 0 // Will be updated after sending
-        })
-        .select()
-        .single();
-
-      if (notificationError) throw notificationError;
-
-      // Send the multi-channel notification via edge function
-      const { error } = await supabase.functions.invoke('send-multi-channel-notification', {
-        body: {
-          title: pushNotification.title,
-          message: pushNotification.message,
-          channels: pushNotification.channels,
-          notificationType: pushNotification.notificationType,
-          notificationId: notificationData.id
-        }
-      });
-
-      if (error) throw error;
-
-      const channelNames = pushNotification.channels.map(c => 
-        c === 'push' ? 'Mobile App' : c === 'email' ? 'Email' : 'SMS'
-      ).join(', ');
-
-      toast({
-        title: "Notification Sent",
-        description: `Notification sent via: ${channelNames}`
-      });
-
-      setPushNotification({
-        title: '',
-        message: '',
-        notificationType: 'general',
-        channels: ['push']
-      });
-    } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive"
-      });
-    }
-  };
+  // Push notifications coming soon - removed function
 
 
   const toggleVipStatus = async (userId: string, currentStatus: boolean) => {
@@ -1105,154 +1038,21 @@ const AdminEnhanced = () => {
               </div>
             </TabsContent>
 
-            {/* Push Notifications */}
+            {/* Push Notifications - Coming Soon */}
             <TabsContent value="notifications">
-              <div className="grid gap-6">
+              <div className="space-y-6">
                 <Card className="luxury-card">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Users className="h-5 w-5" />
-                      Send Push Notification to All Users
+                    <CardTitle className="text-2xl text-victory-gold">
+                      Push Notifications
                     </CardTitle>
                   </CardHeader>
-                  <CardContent>
-                    <div className="grid gap-4">
-                      <div>
-                        <Label>Notification Title</Label>
-                        <Input
-                          value={pushNotification.title}
-                          onChange={(e) => setPushNotification(prev => ({ ...prev, title: e.target.value }))}
-                          placeholder="Enter notification title"
-                          maxLength={50}
-                        />
-                      </div>
-                      <div>
-                        <Label>Message</Label>
-                        <Textarea
-                          value={pushNotification.message}
-                          onChange={(e) => setPushNotification(prev => ({ ...prev, message: e.target.value }))}
-                          placeholder="Enter notification message"
-                          maxLength={200}
-                        />
-                      </div>
-                      <div>
-                        <Label>Notification Type</Label>
-                        <Select
-                          value={pushNotification.notificationType}
-                          onValueChange={(value) => setPushNotification(prev => ({ ...prev, notificationType: value as any }))}
-                        >
-                          <SelectTrigger className="w-full bg-yellow-100 border-yellow-300 text-black">
-                            <SelectValue placeholder="Select notification type" />
-                          </SelectTrigger>
-                          <SelectContent className="bg-yellow-50">
-                            <SelectItem value="general">General</SelectItem>
-                            <SelectItem value="offer">Special Offer</SelectItem>
-                            <SelectItem value="event">Event Announcement</SelectItem>
-                            <SelectItem value="fomo">Limited Time/FOMO</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div>
-                        <Label>Delivery Channels</Label>
-                        <div className="flex gap-2 mt-2">
-                          {(['push', 'email', 'sms'] as const).map((channel) => (
-                            <label key={channel} className="flex items-center gap-2 cursor-pointer">
-                              <input
-                                type="checkbox"
-                                checked={pushNotification.channels.includes(channel)}
-                                onChange={(e) => {
-                                  if (e.target.checked) {
-                                    setPushNotification(prev => ({
-                                      ...prev,
-                                      channels: [...prev.channels, channel]
-                                    }));
-                                  } else {
-                                    setPushNotification(prev => ({
-                                      ...prev,
-                                      channels: prev.channels.filter(c => c !== channel)
-                                    }));
-                                  }
-                                }}
-                                className="rounded"
-                              />
-                              <span className="capitalize font-medium">
-                                {channel === 'push' ? 'Push (Mobile App)' : 
-                                 channel === 'email' ? 'Email' : 'SMS Text'}
-                              </span>
-                            </label>
-                          ))}
-                        </div>
-                      </div>
-                      <Button 
-                        onClick={sendPushNotification}
-                        className="luxury-button"
-                        disabled={!pushNotification.title || !pushNotification.message}
-                      >
-                        <Users className="h-4 w-4 mr-2" />
-                        Send to All Users
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="luxury-card">
-                  <CardHeader>
-                    <CardTitle>Push Notification Status</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between p-3 border rounded-lg bg-green-50 border-green-200">
-                        <div>
-                          <p className="font-medium text-green-800">✅ OneSignal Integration Active</p>
-                          <p className="text-sm text-green-700">Push notifications are properly configured and working</p>
-                        </div>
-                        <CheckCircle className="h-6 w-6 text-green-600" />
-                      </div>
-                      <div className="flex items-center justify-between p-3 border rounded-lg bg-blue-50 border-blue-200">
-                        <div>
-                          <p className="font-medium text-blue-800">📱 Notifications Confirmed</p>
-                          <p className="text-sm text-blue-700">All users will receive notifications when sent</p>
-                        </div>
-                        <Users className="h-6 w-6 text-blue-600" />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="luxury-card">
-                  <CardHeader>
-                    <CardTitle>Recent Notifications</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      {analytics
-                        .filter(event => event.event_type === 'push_notification_sent')
-                        .slice(0, 10)
-                        .map((event) => (
-                          <div key={event.id} className="p-3 border rounded-lg">
-                            <div className="flex justify-between items-start">
-                              <div>
-                                <p className="font-medium">{event.event_data?.title}</p>
-                                <p className="text-sm text-muted-foreground">{event.event_data?.message || 'No message'}</p>
-                                <Badge variant="outline" className="mt-1">
-                                  {event.event_data?.type || 'general'}
-                                </Badge>
-                              </div>
-                              <span className="text-xs text-muted-foreground">
-                                {new Date(event.created_at).toLocaleString()}
-                              </span>
-                            </div>
-                          </div>
-                        ))}
-                      {analytics.filter(event => event.event_type === 'push_notification_sent').length === 0 && (
-                        <div className="text-center py-8">
-                          <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                          <h3 className="text-lg font-medium mb-2">No Notifications Sent Yet</h3>
-                          <p className="text-muted-foreground">
-                            Send your first notification using the form above.
-                          </p>
-                        </div>
-                      )}
+                  <CardContent className="text-center py-12">
+                    <div className="text-muted-foreground">
+                      <h3 className="text-xl font-medium mb-2">Coming Soon</h3>
+                      <p>
+                        Push notification functionality will be available in a future update.
+                      </p>
                     </div>
                   </CardContent>
                 </Card>
