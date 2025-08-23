@@ -148,19 +148,19 @@ const Games = () => {
                         {game.difficulty}
                       </Badge>
                     </div>
-                    <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary transition-colors">
                       {game.title}
                     </h3>
                   </div>
                 </div>
                 
                 <CardContent className="p-6 pt-4">
-                  <p className="text-muted-foreground mb-4 leading-relaxed">
+                  <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">
                     {game.description}
                   </p>
                   
                   <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center text-sm text-muted-foreground">
+                    <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
                       <Target className="w-4 h-4 mr-1" />
                       {game.players}
                     </div>
