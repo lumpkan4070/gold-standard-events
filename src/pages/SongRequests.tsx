@@ -74,6 +74,40 @@ const SongRequests = () => {
       fetchSongRequests();
       fetchDJs();
       fetchUserVotes();
+      
+      // Set up real-time subscription for song requests
+      const channel = supabase
+        .channel('song-requests-changes')
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'song_requests'
+          },
+          (payload) => {
+            console.log('Real-time song request change:', payload);
+            fetchSongRequests(); // Refresh the list when any changes occur
+          }
+        )
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'song_votes'
+          },
+          (payload) => {
+            console.log('Real-time vote change:', payload);
+            fetchSongRequests(); // Refresh when votes change
+            fetchUserVotes(); // Refresh user votes
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
     }
   }, [user]);
 
