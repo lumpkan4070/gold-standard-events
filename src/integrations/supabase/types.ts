@@ -709,6 +709,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_delete_user: {
+        Args: { _admin_id: string; _user_id: string }
+        Returns: undefined
+      }
       award_victory_points: {
         Args: { points: number; user_uuid: string }
         Returns: undefined

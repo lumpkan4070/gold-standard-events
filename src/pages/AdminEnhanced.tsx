@@ -10,12 +10,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Navigation } from "@/components/Navigation";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { 
-  Calendar, 
-  Users, 
-  Image as ImageIcon, 
-  CheckCircle, 
-  XCircle, 
+import {
+  Calendar,
+  Users,
+  Image as ImageIcon,
+  CheckCircle,
+  XCircle,
   Eye,
   BarChart3,
   Star,
@@ -23,6 +23,17 @@ import {
   Plus,
   Trash2
 } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const AdminEnhanced = () => {
   const [user, setUser] = useState<any>(null);
@@ -391,6 +402,23 @@ const AdminEnhanced = () => {
         description: error.message,
         variant: "destructive"
       });
+    }
+  };
+
+  // Securely delete a user (and their auth account) via RPC
+  const handleDeleteUser = async (targetUserId: string) => {
+    if (!user) return;
+    if (targetUserId === user.id) {
+      toast({ title: "Action blocked", description: "You cannot delete your own admin account.", variant: "destructive" });
+      return;
+    }
+    try {
+      const { error } = await supabase.rpc('admin_delete_user', { _user_id: targetUserId, _admin_id: user.id });
+      if (error) throw error;
+      toast({ title: 'User Deleted', description: 'The user and associated account have been removed.' });
+      await loadAllData();
+    } catch (err: any) {
+      toast({ title: 'Deletion Failed', description: err.message || 'Unable to delete user', variant: 'destructive' });
     }
   };
 
@@ -960,14 +988,40 @@ const AdminEnhanced = () => {
                               {new Date(profile.created_at).toLocaleDateString()}
                             </td>
                             <td className="p-3">
-                              <Button
-                                size="sm"
-                                onClick={() => toggleVipStatus(profile.user_id, profile.vip_status)}
-                                variant={profile.vip_status ? "destructive" : "default"}
-                              >
-                                <Star className="h-4 w-4 mr-1" />
-                                {profile.vip_status ? "Remove VIP" : "Make VIP"}
-                              </Button>
+                              <div className="flex items-center gap-2">
+                                <Button
+                                  size="sm"
+                                  onClick={() => toggleVipStatus(profile.user_id, profile.vip_status)}
+                                  variant={profile.vip_status ? "destructive" : "default"}
+                                >
+                                  <Star className="h-4 w-4 mr-1" />
+                                  {profile.vip_status ? "Remove VIP" : "Make VIP"}
+                                </Button>
+                                {profile.user_id !== user?.id && (
+                                  <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                      <Button size="sm" variant="destructive">
+                                        <Trash2 className="h-4 w-4 mr-1" />
+                                        Delete
+                                      </Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                      <AlertDialogHeader>
+                                        <AlertDialogTitle>Delete user account?</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                          This will permanently remove the user's account and sign-in access. This action cannot be undone.
+                                        </AlertDialogDescription>
+                                      </AlertDialogHeader>
+                                      <AlertDialogFooter>
+                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                        <AlertDialogAction onClick={() => handleDeleteUser(profile.user_id)}>
+                                          Confirm Delete
+                                        </AlertDialogAction>
+                                      </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                  </AlertDialog>
+                                )}
+                              </div>
                             </td>
                           </tr>
                         ))}
