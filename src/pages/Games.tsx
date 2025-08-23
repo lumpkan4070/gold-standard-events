@@ -48,20 +48,20 @@ const Games = () => {
 
   const gameCards = [
     {
-      id: 'beat-the-clock',
-      title: 'Beat the Clock',
-      description: 'Quick-fire timed challenges.',
+      id: 'trivia-blast',
+      title: 'Trivia Blast',
+      description: 'Quick trivia questions for your table.',
       icon: Clock,
       gradient: 'from-red-500 to-orange-500',
       bgColor: 'bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/20 dark:to-orange-950/20',
       iconColor: 'text-red-600 dark:text-red-400',
       difficulty: 'Medium',
-      players: '1-4 Players'
+      players: '1-8 Players'
     },
     {
-      id: 'rap-it-or-scrap-it',
-      title: 'Rap It or Scrap It',
-      description: 'Spit one bar with a random word.',
+      id: 'word-chain',
+      title: 'Word Chain',
+      description: 'Connect words around your table.',
       icon: Mic,
       gradient: 'from-purple-500 to-pink-500',
       bgColor: 'bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20',
@@ -70,9 +70,9 @@ const Games = () => {
       players: '2+ Players'
     },
     {
-      id: 'guess-the-throwback',
-      title: 'Guess the Throwback',
-      description: 'Guess the artist and year of old-school tracks.',
+      id: 'memory-match',
+      title: 'Memory Match',
+      description: 'Test your memory with quick challenges.',
       icon: Music,
       gradient: 'from-blue-500 to-cyan-500',
       bgColor: 'bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20',
@@ -115,7 +115,7 @@ const Games = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground mb-1">Your Victory Points</p>
-                  <p className="text-3xl font-bold victory-text-gradient">2,847</p>
+                  <p className="text-3xl font-bold text-primary">0</p>
                 </div>
                 <div className="relative">
                   <Trophy className="w-10 h-10 text-primary" />
