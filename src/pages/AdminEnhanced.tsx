@@ -46,7 +46,8 @@ const AdminEnhanced = () => {
   const [pushNotification, setPushNotification] = useState({
     title: '',
     message: '',
-    notificationType: 'general' as 'general' | 'offer' | 'event' | 'fomo'
+    notificationType: 'general' as 'general' | 'offer' | 'event' | 'fomo',
+    channels: ['push'] as ('push' | 'email' | 'sms')[]
   });
 
   const [uploadingImage, setUploadingImage] = useState(false);
@@ -490,11 +491,12 @@ const AdminEnhanced = () => {
 
       if (notificationError) throw notificationError;
 
-      // Send the push notification via edge function
-      const { error } = await supabase.functions.invoke('send-push-notification', {
+      // Send the multi-channel notification via edge function
+      const { error } = await supabase.functions.invoke('send-multi-channel-notification', {
         body: {
           title: pushNotification.title,
           message: pushNotification.message,
+          channels: pushNotification.channels,
           notificationType: pushNotification.notificationType,
           notificationId: notificationData.id
         }
@@ -502,15 +504,20 @@ const AdminEnhanced = () => {
 
       if (error) throw error;
 
+      const channelNames = pushNotification.channels.map(c => 
+        c === 'push' ? 'Mobile App' : c === 'email' ? 'Email' : 'SMS'
+      ).join(', ');
+
       toast({
         title: "Notification Sent",
-        description: "Push notification has been sent to all users"
+        description: `Notification sent via: ${channelNames}`
       });
 
       setPushNotification({
         title: '',
         message: '',
-        notificationType: 'general'
+        notificationType: 'general',
+        channels: ['push']
       });
     } catch (error: any) {
       toast({
@@ -1090,6 +1097,37 @@ const AdminEnhanced = () => {
                             <SelectItem value="fomo">Limited Time/FOMO</SelectItem>
                           </SelectContent>
                         </Select>
+                      </div>
+                      <div>
+                        <Label>Delivery Channels</Label>
+                        <div className="flex gap-2 mt-2">
+                          {(['push', 'email', 'sms'] as const).map((channel) => (
+                            <label key={channel} className="flex items-center gap-2 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={pushNotification.channels.includes(channel)}
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setPushNotification(prev => ({
+                                      ...prev,
+                                      channels: [...prev.channels, channel]
+                                    }));
+                                  } else {
+                                    setPushNotification(prev => ({
+                                      ...prev,
+                                      channels: prev.channels.filter(c => c !== channel)
+                                    }));
+                                  }
+                                }}
+                                className="rounded"
+                              />
+                              <span className="capitalize font-medium">
+                                {channel === 'push' ? 'Push (Mobile App)' : 
+                                 channel === 'email' ? 'Email' : 'SMS Text'}
+                              </span>
+                            </label>
+                          ))}
+                        </div>
                       </div>
                       <Button 
                         onClick={sendPushNotification}
