@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Navigation } from "@/components/Navigation";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -1075,16 +1076,20 @@ const AdminEnhanced = () => {
                       </div>
                       <div>
                         <Label>Notification Type</Label>
-                        <select
+                        <Select
                           value={pushNotification.notificationType}
-                          onChange={(e) => setPushNotification(prev => ({ ...prev, notificationType: e.target.value as any }))}
-                          className="w-full p-2 border rounded-md"
+                          onValueChange={(value) => setPushNotification(prev => ({ ...prev, notificationType: value as any }))}
                         >
-                          <option value="general">General</option>
-                          <option value="offer">Special Offer</option>
-                          <option value="event">Event Announcement</option>
-                          <option value="fomo">Limited Time/FOMO</option>
-                        </select>
+                          <SelectTrigger className="w-full bg-yellow-100 border-yellow-300 text-black">
+                            <SelectValue placeholder="Select notification type" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-yellow-50">
+                            <SelectItem value="general">General</SelectItem>
+                            <SelectItem value="offer">Special Offer</SelectItem>
+                            <SelectItem value="event">Event Announcement</SelectItem>
+                            <SelectItem value="fomo">Limited Time/FOMO</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
                       <Button 
                         onClick={sendPushNotification}
