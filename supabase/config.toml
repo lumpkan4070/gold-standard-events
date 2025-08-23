@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.reset-daily-content]
 verify_jwt = false
+
+[functions.seed-test-users]
+verify_jwt = false

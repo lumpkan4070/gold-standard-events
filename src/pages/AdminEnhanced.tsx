@@ -400,6 +400,19 @@ const AdminEnhanced = () => {
     }
   };
 
+  const handleSeedTestUsers = async () => {
+    try {
+      const { data, error } = await supabase.functions.invoke('seed-test-users', {
+        body: {}
+      });
+      if (error) throw error;
+      toast({ title: 'Test Users Ready', description: 'Created/updated test and admin accounts.' });
+      await loadAllData();
+    } catch (err: any) {
+      toast({ title: 'Seeding Failed', description: err?.message || 'Unable to seed users', variant: 'destructive' });
+    }
+  };
+
   // Securely delete a user (and their auth account) via RPC
   const handleDeleteUser = async (targetUserId: string) => {
     if (!user) return;
@@ -988,6 +1001,19 @@ const AdminEnhanced = () => {
                     <p className="text-muted-foreground mb-4">
                       Select users to grant or revoke admin privileges. Use this feature carefully as admin users have full system access.
                     </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="luxury-card">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Settings className="h-5 w-5" />
+                      Seed Test Users
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground mb-4">Create/update two test accounts with preset passwords, and grant admin to test2.</p>
+                    <Button onClick={handleSeedTestUsers} className="luxury-button">Create Test Users</Button>
                   </CardContent>
                 </Card>
 
