@@ -99,8 +99,7 @@ export const Navigation = ({ user: userProp }: NavigationProps) => {
   // Add Games & Fun link for authenticated users
   if (user) {
     menuItems.splice(3, 0, { label: "Games & Fun", href: "/games", icon: Dice1 });
-    menuItems.splice(4, 0, { label: "DJs", href: "/djs", icon: Music });
-    menuItems.splice(5, 0, { label: "Song Requests", href: "/song-requests", icon: Heart });
+    menuItems.splice(4, 0, { label: "Song Requests", href: "/song-requests", icon: Heart });
   }
 
   if (user) {
