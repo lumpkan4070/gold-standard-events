@@ -53,8 +53,8 @@ const Games = () => {
       description: 'Quick trivia questions for your table.',
       icon: Clock,
       gradient: 'from-red-500 to-orange-500',
-      bgColor: 'bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/20 dark:to-orange-950/20',
-      iconColor: 'text-red-600 dark:text-red-400',
+      bgColor: 'bg-gradient-to-br from-red-400 to-orange-400',
+      iconColor: 'text-white',
       difficulty: 'Medium',
       players: '1-8 Players'
     },
@@ -64,8 +64,8 @@ const Games = () => {
       description: 'Connect words around your table.',
       icon: Mic,
       gradient: 'from-purple-500 to-pink-500',
-      bgColor: 'bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20',
-      iconColor: 'text-purple-600 dark:text-purple-400',
+      bgColor: 'bg-gradient-to-br from-purple-400 to-pink-400',
+      iconColor: 'text-white',
       difficulty: 'Hard',
       players: '2+ Players'
     },
@@ -75,8 +75,8 @@ const Games = () => {
       description: 'Test your memory with quick challenges.',
       icon: Music,
       gradient: 'from-blue-500 to-cyan-500',
-      bgColor: 'bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20',
-      iconColor: 'text-blue-600 dark:text-blue-400',
+      bgColor: 'bg-gradient-to-br from-blue-400 to-cyan-400',
+      iconColor: 'text-white',
       difficulty: 'Easy',
       players: '1+ Players'
     }
@@ -138,29 +138,29 @@ const Games = () => {
                 onClick={() => handleGameClick(game.id)}
               >
                 <div className={`p-6 rounded-t-lg ${game.bgColor} relative overflow-hidden`}>
-                  <div className={`absolute inset-0 ${game.iconColor.replace('text-', 'bg-').replace('dark:', '')} opacity-10 group-hover:opacity-20 transition-opacity duration-300`}></div>
+                  <div className={`absolute inset-0 bg-gradient-to-br ${game.gradient} opacity-20 group-hover:opacity-30 transition-opacity duration-300`}></div>
                   <div className="relative z-10">
                     <div className="flex items-center justify-between mb-4">
-                      <div className={`w-12 h-12 rounded-xl bg-white/80 dark:bg-black/20 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                      <div className={`w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                         <game.icon className={`w-6 h-6 ${game.iconColor}`} />
                       </div>
-                      <Badge variant="secondary" className="text-xs font-medium">
+                      <Badge variant="secondary" className="text-xs font-medium bg-white/20 backdrop-blur-sm text-white border-white/20">
                         {game.difficulty}
                       </Badge>
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary transition-colors">
+                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-white/90 transition-colors drop-shadow-md">
                       {game.title}
                     </h3>
                   </div>
                 </div>
                 
-                <CardContent className="p-6 pt-4">
-                  <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">
+                <CardContent className="p-6 pt-4 bg-gradient-to-b from-white/95 to-white">
+                  <p className="text-gray-700 mb-4 leading-relaxed">
                     {game.description}
                   </p>
                   
                   <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                    <div className="flex items-center text-sm text-gray-600">
                       <Target className="w-4 h-4 mr-1" />
                       {game.players}
                     </div>
