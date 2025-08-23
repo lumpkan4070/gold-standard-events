@@ -138,7 +138,7 @@ const Games = () => {
                 onClick={() => handleGameClick(game.id)}
               >
                 <div className={`p-6 rounded-t-lg ${game.bgColor} relative overflow-hidden`}>
-                  <div className="absolute inset-0 bg-gradient-to-br opacity-10 group-hover:opacity-20 transition-opacity duration-300"></div>
+                  <div className={`absolute inset-0 bg-gradient-to-br ${game.gradient} opacity-10 group-hover:opacity-20 transition-opacity duration-300`}></div>
                   <div className="relative z-10">
                     <div className="flex items-center justify-between mb-4">
                       <div className={`w-12 h-12 rounded-xl bg-white/80 dark:bg-black/20 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
