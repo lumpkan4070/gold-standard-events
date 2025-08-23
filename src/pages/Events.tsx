@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Navigation } from "@/components/Navigation";
-import { Calendar, Clock, Users, MapPin, Phone, Mail, MessageCircle, Upload, Image as ImageIcon } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Calendar, Clock, Users, MapPin, Phone, Mail, MessageCircle, Upload, Image as ImageIcon, Star, Sparkles, PartyPopper, Crown, Zap } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -206,67 +207,172 @@ const Events = () => {
   };
 
   return (
-    <div className="min-h-screen victory-hero-bg">
+    <div className="min-h-screen relative overflow-hidden">
       <Navigation user={user} />
       
-      <div className="container mx-auto px-4 pt-24 pb-12">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="victory-text-gradient text-4xl font-bold mb-4 flex items-center justify-center gap-3">
-              <Calendar className="h-10 w-10" />
-              Special Events
+      {/* Epic Hero Section */}
+      <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
+        {/* Animated Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-primary-foreground/10" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,hsl(var(--primary))_0%,transparent_50%)] opacity-20" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_60%,hsl(var(--primary-foreground))_0%,transparent_50%)] opacity-15" />
+        
+        {/* Floating Elements */}
+        <div className="absolute top-20 left-10 animate-float">
+          <Sparkles className="h-8 w-8 text-primary/30" />
+        </div>
+        <div className="absolute top-32 right-20 animate-float" style={{ animationDelay: '1s' }}>
+          <Crown className="h-6 w-6 text-primary-foreground/40" />
+        </div>
+        <div className="absolute bottom-32 left-20 animate-float" style={{ animationDelay: '2s' }}>
+          <Star className="h-10 w-10 text-primary/25" />
+        </div>
+        <div className="absolute bottom-20 right-10 animate-float" style={{ animationDelay: '0.5s' }}>
+          <Zap className="h-7 w-7 text-primary-foreground/35" />
+        </div>
+        
+        <div className="relative z-10 max-w-5xl mx-auto text-center px-4">
+          <div className="space-y-6">
+            <Badge className="bg-primary/20 text-primary border-primary/30 px-4 py-2 text-sm font-medium animate-pulse">
+              🎉 EXCLUSIVE EXPERIENCES
+            </Badge>
+            
+            <div className="space-y-4">
+              <h1 className="text-6xl md:text-8xl font-bold victory-text-gradient animate-fade-in">
+                Epic Events
+              </h1>
+              <div className="text-2xl md:text-4xl font-light text-foreground/80 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+                Where Luxury Meets <span className="victory-text-gradient font-semibold">Celebration</span>
+              </div>
             </div>
-            <p className="text-muted-foreground text-lg">
-              Discover and book exclusive events at Victory Bistro Ultra Lounge
+            
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed animate-fade-in" style={{ animationDelay: '0.4s' }}>
+              Immerse yourself in Cleveland's most exclusive ultra lounge experience. Private parties, VIP celebrations, and unforgettable moments await.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6 animate-fade-in" style={{ animationDelay: '0.6s' }}>
+              <Button size="lg" className="luxury-button text-lg px-8 py-4 victory-glow">
+                <PartyPopper className="h-5 w-5 mr-2" />
+                Explore Events
+              </Button>
+              <Button size="lg" variant="outline" className="text-lg px-8 py-4 bg-white/5 border-white/20 text-white hover:bg-white/10 backdrop-blur-sm">
+                <Phone className="h-5 w-5 mr-2" />
+                Call (216) 938-7778
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="container mx-auto px-4 pb-12 victory-hero-bg">
+        <div className="max-w-6xl mx-auto">
+          {/* Section Header */}
+          <div className="text-center mb-16 pt-16">
+            <Badge className="bg-gradient-to-r from-primary to-primary-foreground text-primary-foreground mb-6">
+              ✨ UPCOMING EXPERIENCES
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-bold victory-text-gradient mb-4">
+              Exclusive Events Calendar
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              From intimate gatherings to grand celebrations - discover events that redefine luxury entertainment
             </p>
           </div>
 
           {isLoading ? (
-            <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+            <div className="text-center py-20">
+              <div className="relative">
+                <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary/30 border-t-primary mx-auto"></div>
+                <Sparkles className="absolute inset-0 h-8 w-8 m-auto text-primary animate-pulse" />
+              </div>
+              <p className="text-muted-foreground mt-4 text-lg">Loading epic events...</p>
             </div>
           ) : events.length === 0 ? (
-            <Card className="luxury-card text-center py-12">
-              <CardContent>
-                <Calendar className="h-16 w-16 mx-auto mb-4 text-muted-foreground/50" />
-                <h3 className="text-xl font-semibold mb-2">No Events Available</h3>
-                <p className="text-muted-foreground">
-                  Check back soon for upcoming special events and experiences.
+            <Card className="luxury-card text-center py-20 relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary-foreground/5" />
+              <CardContent className="relative z-10">
+                <div className="mb-6">
+                  <Calendar className="h-20 w-20 mx-auto mb-4 text-primary/50" />
+                  <Sparkles className="h-8 w-8 mx-auto text-primary-foreground/40" />
+                </div>
+                <h3 className="text-2xl font-bold victory-text-gradient mb-4">Amazing Events Coming Soon</h3>
+                <p className="text-muted-foreground text-lg max-w-md mx-auto">
+                  We're crafting extraordinary experiences that will redefine your expectations. Stay tuned for our upcoming luxury events.
                 </p>
+                <Button className="luxury-button mt-6" onClick={() => window.location.href = 'tel:(216)938-7778'}>
+                  <Phone className="h-4 w-4 mr-2" />
+                  Call for Private Events
+                </Button>
               </CardContent>
             </Card>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {events.map((event) => (
-                <Card key={event.id} className="luxury-card group hover:scale-105 victory-transition overflow-hidden">
-                  {event.featured_image_url && (
-                    <div className="h-48 bg-cover bg-center" style={{ backgroundImage: `url(${event.featured_image_url})` }} />
-                  )}
-                  <CardHeader>
-                    <CardTitle className="text-foreground flex items-center gap-2">
-                      <Calendar className="h-5 w-5 text-primary" />
+              {events.map((event, index) => (
+                <Card 
+                  key={event.id} 
+                  className="luxury-card group hover:scale-105 victory-transition overflow-hidden relative border-2 border-transparent hover:border-primary/20 animate-fade-in"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  {/* Premium Badge */}
+                  <div className="absolute top-4 right-4 z-10">
+                    <Badge className="bg-gradient-to-r from-primary to-primary-foreground text-primary-foreground shadow-lg">
+                      <Crown className="h-3 w-3 mr-1" />
+                      VIP
+                    </Badge>
+                  </div>
+                  
+                  {/* Event Image */}
+                  <div className="relative h-56 overflow-hidden">
+                    {event.featured_image_url ? (
+                      <div 
+                        className="h-full bg-cover bg-center group-hover:scale-110 transition-transform duration-700" 
+                        style={{ backgroundImage: `url(${event.featured_image_url})` }} 
+                      />
+                    ) : (
+                      <div className="h-full bg-gradient-to-br from-primary/20 to-primary-foreground/20 flex items-center justify-center">
+                        <PartyPopper className="h-16 w-16 text-primary/40" />
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    
+                    {/* Floating Event Type */}
+                    <div className="absolute bottom-4 left-4">
+                      <Badge className="bg-black/60 text-white border-white/20 backdrop-blur-sm">
+                        <Sparkles className="h-3 w-3 mr-1" />
+                        Exclusive Event
+                      </Badge>
+                    </div>
+                  </div>
+
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-foreground flex items-center gap-2 text-xl group-hover:text-primary victory-transition">
+                      <Calendar className="h-5 w-5 text-primary victory-glow" />
                       {event.title}
                     </CardTitle>
                   </CardHeader>
+                  
                   <CardContent className="space-y-4">
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <Clock className="h-4 w-4" />
-                      <span>{formatDate(event.event_date)}</span>
+                    <div className="flex items-center gap-2 text-muted-foreground bg-primary/5 rounded-lg p-3">
+                      <Clock className="h-4 w-4 text-primary" />
+                      <span className="font-medium">{formatDate(event.event_date)}</span>
                     </div>
                     
                     {event.description && (
-                      <p className="text-muted-foreground text-sm">
+                      <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3">
                         {event.description}
                       </p>
                     )}
 
-                    <Button 
-                      onClick={() => handleBookEvent(event.id)}
-                      className="luxury-button w-full"
-                    >
-                      <Users className="h-4 w-4 mr-2" />
-                      Book Event
-                    </Button>
+                    <div className="pt-2">
+                      <Button 
+                        onClick={() => handleBookEvent(event.id)}
+                        className="luxury-button w-full text-base py-3 victory-glow group-hover:shadow-xl"
+                      >
+                        <Users className="h-4 w-4 mr-2" />
+                        Reserve Your Spot
+                        <Zap className="h-4 w-4 ml-2 opacity-0 group-hover:opacity-100 victory-transition" />
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
               ))}
@@ -398,49 +504,91 @@ const Events = () => {
             </div>
           )}
 
-          {/* Info Section */}
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="luxury-card">
-              <CardHeader>
-                <CardTitle className="text-foreground flex items-center gap-2">
-                  <MapPin className="h-5 w-5 text-primary" />
-                  Location & Hours
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <p className="font-medium">Victory Bistro Ultra Lounge</p>
-                  <p className="text-muted-foreground">19800 S Waterloo Rd</p>
-                  <p className="text-muted-foreground">Cleveland, OH 44119</p>
-                </div>
-                <div>
-                  <p className="font-medium">Hours</p>
-                  <p className="text-muted-foreground">Open Daily 5PM - 2AM</p>
+          {/* Premium Info Section */}
+          <div className="mt-24 space-y-12">
+            {/* VIP Services Banner */}
+            <Card className="luxury-card relative overflow-hidden border-2 border-primary/20">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-primary-foreground/10" />
+              <CardContent className="relative z-10 p-8 text-center">
+                <Crown className="h-12 w-12 mx-auto text-primary mb-4 victory-glow" />
+                <h3 className="text-2xl font-bold victory-text-gradient mb-3">VIP Event Planning Services</h3>
+                <p className="text-muted-foreground text-lg mb-6 max-w-2xl mx-auto">
+                  Let our expert team create a personalized luxury experience tailored to your vision. From intimate gatherings to grand celebrations.
+                </p>
+                <div className="flex flex-wrap justify-center gap-4">
+                  <Badge className="bg-primary/20 text-primary px-4 py-2">Private Dining</Badge>
+                  <Badge className="bg-primary/20 text-primary px-4 py-2">Custom Cocktails</Badge>
+                  <Badge className="bg-primary/20 text-primary px-4 py-2">Live Entertainment</Badge>
+                  <Badge className="bg-primary/20 text-primary px-4 py-2">Photography</Badge>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="luxury-card">
-              <CardHeader>
-                <CardTitle className="text-foreground flex items-center gap-2">
-                  <Phone className="h-5 w-5 text-primary" />
-                  Contact Information
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <Phone className="h-4 w-4 text-primary" />
-                  <span>(216) 938-7778</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Mail className="h-4 w-4 text-primary" />
-                  <span>events@victorybistro.com</span>
-                </div>
-                <p className="text-muted-foreground text-sm">
-                  Call us for private party bookings and custom event planning.
-                </p>
-              </CardContent>
-            </Card>
+            {/* Contact Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <Card className="luxury-card group hover:scale-105 victory-transition border-l-4 border-l-primary">
+                <CardHeader>
+                  <CardTitle className="text-foreground flex items-center gap-3 text-xl">
+                    <div className="p-2 bg-primary/20 rounded-full">
+                      <MapPin className="h-6 w-6 text-primary victory-glow" />
+                    </div>
+                    Location & Hours
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-2">
+                    <p className="font-semibold text-lg victory-text-gradient">Victory Bistro Ultra Lounge</p>
+                    <div className="text-muted-foreground space-y-1">
+                      <p>19800 S Waterloo Rd</p>
+                      <p>Cleveland, OH 44119</p>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <p className="font-semibold flex items-center gap-2">
+                      <Clock className="h-4 w-4 text-primary" />
+                      Operating Hours
+                    </p>
+                    <p className="text-muted-foreground">Open Daily 5PM - 2AM</p>
+                  </div>
+                  <Badge className="bg-gradient-to-r from-primary/20 to-primary-foreground/20 text-primary">
+                    <Star className="h-3 w-3 mr-1" />
+                    Cleveland's Premier Ultra Lounge
+                  </Badge>
+                </CardContent>
+              </Card>
+
+              <Card className="luxury-card group hover:scale-105 victory-transition border-l-4 border-l-primary-foreground">
+                <CardHeader>
+                  <CardTitle className="text-foreground flex items-center gap-3 text-xl">
+                    <div className="p-2 bg-primary-foreground/20 rounded-full">
+                      <Phone className="h-6 w-6 text-primary-foreground victory-glow" />
+                    </div>
+                    Event Concierge
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3 p-3 bg-primary/5 rounded-lg hover:bg-primary/10 victory-transition cursor-pointer" onClick={() => window.location.href = 'tel:(216)938-7778'}>
+                      <Phone className="h-5 w-5 text-primary" />
+                      <span className="font-medium">(216) 938-7778</span>
+                    </div>
+                    <div className="flex items-center gap-3 p-3 bg-primary/5 rounded-lg hover:bg-primary/10 victory-transition cursor-pointer">
+                      <Mail className="h-5 w-5 text-primary" />
+                      <span className="font-medium">events@victorybistro.com</span>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <p className="text-muted-foreground">
+                      Our dedicated event specialists are standing by to create your perfect luxury experience.
+                    </p>
+                    <Badge className="bg-gradient-to-r from-primary-foreground/20 to-primary/20 text-primary-foreground">
+                      <MessageCircle className="h-3 w-3 mr-1" />
+                      24/7 Event Support
+                    </Badge>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </div>
