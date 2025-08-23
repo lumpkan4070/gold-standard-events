@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Camera, X, Upload, Scan } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { Camera as CapacitorCamera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Capacitor } from '@capacitor/core';
 
 interface CameraScannerProps {
   onClose: () => void;
@@ -27,27 +29,51 @@ const CameraScanner = ({ onClose, mode, user }: CameraScannerProps) => {
   }, []);
 
   const startCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: 'environment', // Use back camera on mobile
-          width: { ideal: 1280 },
-          height: { ideal: 720 }
+    // Use Capacitor Camera on native platforms, fallback to web camera
+    if (Capacitor.isNativePlatform()) {
+      try {
+        const image = await CapacitorCamera.getPhoto({
+          quality: 90,
+          allowEditing: false,
+          resultType: CameraResultType.DataUrl,
+          source: CameraSource.Camera
+        });
+        
+        if (image.dataUrl) {
+          setCapturedImage(image.dataUrl);
         }
-      });
-
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        streamRef.current = stream;
-        setIsStreaming(true);
+      } catch (error) {
+        console.error('Capacitor camera error:', error);
+        toast({
+          title: "Camera Error",
+          description: "Unable to access camera. Please check permissions in Settings.",
+          variant: "destructive"
+        });
       }
-    } catch (error) {
-      console.error('Error accessing camera:', error);
-      toast({
-        title: "Camera Access Error",
-        description: "Unable to access camera. Please check permissions.",
-        variant: "destructive"
-      });
+    } else {
+      // Web fallback
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: 'environment', // Use back camera on mobile
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          }
+        });
+
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          streamRef.current = stream;
+          setIsStreaming(true);
+        }
+      } catch (error) {
+        console.error('Error accessing camera:', error);
+        toast({
+          title: "Camera Access Error",
+          description: "Unable to access camera. Please check permissions.",
+          variant: "destructive"
+        });
+      }
     }
   };
 

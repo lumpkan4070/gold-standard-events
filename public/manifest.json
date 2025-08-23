@@ -1,0 +1,62 @@
+{
+  "name": "Victory Bistro Ultra Lounge",
+  "short_name": "Victory Bistro",
+  "description": "Cleveland's Premier Ultra Lounge Experience - Events, Dining, and Entertainment",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#9d8343",
+  "background_color": "#000000",
+  "orientation": "portrait-primary",
+  "categories": ["food", "lifestyle", "entertainment"],
+  "lang": "en-US",
+  "dir": "ltr",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/lovable-uploads/b06bed82-21fe-4ecb-9777-d9ab59391ff6.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/lovable-uploads/b06bed82-21fe-4ecb-9777-d9ab59391ff6.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/lovable-uploads/2b658b58-32c3-42fc-affd-626f37e6666c.png",
+      "sizes": "1170x2532",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Order Food",
+      "short_name": "Order",
+      "description": "Quick access to food ordering",
+      "url": "/order",
+      "icons": [
+        {
+          "src": "/lovable-uploads/b06bed82-21fe-4ecb-9777-d9ab59391ff6.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Events",
+      "short_name": "Events",
+      "description": "View upcoming events",
+      "url": "/events",
+      "icons": [
+        {
+          "src": "/lovable-uploads/b06bed82-21fe-4ecb-9777-d9ab59391ff6.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}
