@@ -6,7 +6,7 @@ import { QrCode, Calendar, MessageCircle, Star, Clock, Phone, Camera, Scan, Dice
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
-import heroImage from "@/assets/hero-home.jpg";
+import heroImage from "@/assets/hero-chef.jpg";
 import CameraScanner from "@/components/CameraScanner";
 import UserEngagement from "@/components/UserEngagement";
 
