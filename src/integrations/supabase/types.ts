@@ -118,6 +118,83 @@ export type Database = {
           },
         ]
       }
+      dj_ratings: {
+        Row: {
+          comment: string | null
+          created_at: string
+          dj_id: string
+          id: string
+          performance_date: string | null
+          rating: number
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          dj_id: string
+          id?: string
+          performance_date?: string | null
+          rating: number
+          user_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          dj_id?: string
+          id?: string
+          performance_date?: string | null
+          rating?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dj_ratings_dj_id_fkey"
+            columns: ["dj_id"]
+            isOneToOne: false
+            referencedRelation: "djs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      djs: {
+        Row: {
+          average_rating: number | null
+          bio: string | null
+          created_at: string
+          genre_specialties: string[] | null
+          id: string
+          is_active: boolean
+          name: string
+          profile_image_url: string | null
+          total_ratings: number | null
+          updated_at: string
+        }
+        Insert: {
+          average_rating?: number | null
+          bio?: string | null
+          created_at?: string
+          genre_specialties?: string[] | null
+          id?: string
+          is_active?: boolean
+          name: string
+          profile_image_url?: string | null
+          total_ratings?: number | null
+          updated_at?: string
+        }
+        Update: {
+          average_rating?: number | null
+          bio?: string | null
+          created_at?: string
+          genre_specialties?: string[] | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          profile_image_url?: string | null
+          total_ratings?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       event_bookings: {
         Row: {
           admin_notes: string | null
@@ -425,6 +502,85 @@ export type Database = {
           vip_status?: boolean
         }
         Relationships: []
+      }
+      song_requests: {
+        Row: {
+          artist: string
+          created_at: string
+          dj_id: string | null
+          event_date: string | null
+          id: string
+          requested_by_name: string | null
+          song_title: string
+          status: string | null
+          updated_at: string
+          user_id: string
+          vote_count: number | null
+        }
+        Insert: {
+          artist: string
+          created_at?: string
+          dj_id?: string | null
+          event_date?: string | null
+          id?: string
+          requested_by_name?: string | null
+          song_title: string
+          status?: string | null
+          updated_at?: string
+          user_id: string
+          vote_count?: number | null
+        }
+        Update: {
+          artist?: string
+          created_at?: string
+          dj_id?: string | null
+          event_date?: string | null
+          id?: string
+          requested_by_name?: string | null
+          song_title?: string
+          status?: string | null
+          updated_at?: string
+          user_id?: string
+          vote_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "song_requests_dj_id_fkey"
+            columns: ["dj_id"]
+            isOneToOne: false
+            referencedRelation: "djs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      song_votes: {
+        Row: {
+          created_at: string
+          id: string
+          song_request_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          song_request_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          song_request_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "song_votes_song_request_id_fkey"
+            columns: ["song_request_id"]
+            isOneToOne: false
+            referencedRelation: "song_requests"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       truth_prompts: {
         Row: {
