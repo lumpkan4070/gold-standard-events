@@ -13,6 +13,8 @@ import Chat from "./pages/Chat";
 import Profile from "./pages/Profile";
 import Privacy from "./pages/Privacy";
 import Games from "./pages/Games";
+import DJs from "./pages/DJs";
+import SongRequests from "./pages/SongRequests";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,6 +37,8 @@ const App = () => (
           <Route path="/profile" element={<Profile />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/games" element={<Games />} />
+          <Route path="/djs" element={<DJs />} />
+          <Route path="/song-requests" element={<SongRequests />} />
           {/* Legacy routes for backward compatibility */}
           <Route path="/scanner" element={<Order />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
