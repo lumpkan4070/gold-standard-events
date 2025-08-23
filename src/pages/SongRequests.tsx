@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { Navigation } from "@/components/Navigation";
 import { useNavigate } from "react-router-dom";
+import Filter from "bad-words";
 
 interface SongRequest {
   id: string;
@@ -39,6 +40,7 @@ const SongRequests = () => {
   const [user, setUser] = useState<any>(null);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const filter = new Filter();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -107,10 +109,12 @@ const SongRequests = () => {
   }, [user]);
 
   const fetchSongRequests = async () => {
+    const cutoff = new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString();
     const { data, error } = await supabase
       .from('song_requests')
       .select('*')
       .eq('event_date', new Date().toISOString().split('T')[0])
+      .gte('created_at', cutoff)
       .order('vote_count', { ascending: false })
       .order('created_at', { ascending: true });
 
@@ -142,6 +146,14 @@ const SongRequests = () => {
 
   const submitSongRequest = async () => {
     if (!songTitle.trim() || !artist.trim() || !user) return;
+    if (filter.isProfane(songTitle) || filter.isProfane(artist)) {
+      toast({
+        title: "Profanity blocked",
+        description: "Please keep requests clean.",
+        variant: "destructive",
+      });
+      return;
+    }
 
     const { error } = await supabase
       .from('song_requests')
