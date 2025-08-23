@@ -13,6 +13,9 @@ import Chat from "./pages/Chat";
 import Profile from "./pages/Profile";
 import Privacy from "./pages/Privacy";
 import Games from "./pages/Games";
+import BeatTheClock from "./pages/BeatTheClock";
+import RapItOrScrapIt from "./pages/RapItOrScrapIt";
+import GuessTheThrowback from "./pages/GuessTheThrowback";
 import DJs from "./pages/DJs";
 import SongRequests from "./pages/SongRequests";
 import NotFound from "./pages/NotFound";
@@ -37,6 +40,9 @@ const App = () => (
           <Route path="/profile" element={<Profile />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/games" element={<Games />} />
+          <Route path="/games/beat-the-clock" element={<BeatTheClock />} />
+          <Route path="/games/rap-it-or-scrap-it" element={<RapItOrScrapIt />} />
+          <Route path="/games/guess-the-throwback" element={<GuessTheThrowback />} />
           <Route path="/djs" element={<DJs />} />
           <Route path="/song-requests" element={<SongRequests />} />
           {/* Legacy routes for backward compatibility */}
