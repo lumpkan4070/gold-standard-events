@@ -6,87 +6,87 @@
 
 @layer base {
   :root {
-    /* Victory Bistro Ultra Lounge Official Brand Colors */
-    --background: 0 0% 0%;           /* Black #000000 */
-    --foreground: 0 0% 95%;          /* White text */
-    --card: 0 0% 4%;                 /* Subtle black variation */
-    --card-foreground: 0 0% 95%;
-    --popover: 0 0% 4%;
-    --popover-foreground: 0 0% 95%;
+    /* Victory Bistro Ultra Lounge Official Brand Colors - Brightened */
+    --background: 0 0% 5%;           /* Slightly lighter black #0d0d0d */
+    --foreground: 0 0% 98%;          /* Brighter white text */
+    --card: 0 0% 8%;                 /* Brighter card backgrounds */
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 98%;
     
-    /* Official Victory Gold Palette */
-    --primary: 43 40% 44%;           /* Gold 1: #9d8343 - Primary gold */
+    /* Brighter Victory Gold Palette */
+    --primary: 43 50% 55%;           /* Brighter gold: #b8a658 */
     --primary-foreground: 0 0% 0%;   /* Black text on gold */
-    --primary-hover: 43 40% 45%;     /* Gold 2: #9f8544 - Hover states */
-    --primary-accent: 43 40% 47%;    /* Gold 3: #a98d49 - Gradient mid-tone */
-    --primary-border: 43 40% 45%;    /* Gold 4: #a18645 - Border accents */
-    --primary-subtle: 43 41% 45%;    /* Gold 5: #a28745 - Subtle accents */
+    --primary-hover: 43 52% 58%;     /* Brighter hover: #bca85e */
+    --primary-accent: 43 54% 60%;    /* Brighter accent: #c0ac64 */
+    --primary-border: 43 50% 57%;    /* Brighter border: #baa85c */
+    --primary-subtle: 43 48% 56%;    /* Brighter subtle: #b6a45a */
     
-    --secondary: 0 0% 8%;
-    --secondary-foreground: 43 40% 44%;
-    --muted: 0 0% 12%;
-    --muted-foreground: 43 20% 65%;
-    --accent: 43 40% 44%;
+    --secondary: 0 0% 15%;           /* Brighter secondary */
+    --secondary-foreground: 43 50% 55%;
+    --muted: 0 0% 20%;               /* Much brighter muted */
+    --muted-foreground: 43 30% 75%;  /* Brighter muted text */
+    --accent: 43 50% 55%;
     --accent-foreground: 0 0% 0%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 95%;
-    --border: 0 0% 15%;
-    --input: 0 0% 8%;
-    --ring: 43 40% 44%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 25%;              /* Brighter borders */
+    --input: 0 0% 12%;               /* Brighter input backgrounds */
+    --ring: 43 50% 55%;
     --radius: 0.75rem;
     
-    /* Victory Official Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(43 40% 47%), hsl(43 40% 44%), hsl(43 40% 45%));
-    --gradient-accent: linear-gradient(135deg, hsl(0 0% 0%), hsl(0 0% 4%));
-    --gradient-hero: linear-gradient(135deg, hsl(0 0% 0%), hsl(0 0% 4%), hsl(43 40% 8%));
-    --gradient-button: linear-gradient(135deg, hsl(43 40% 47%), hsl(43 40% 44%));
+    /* Brighter Victory Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(43 54% 60%), hsl(43 50% 55%), hsl(43 52% 58%));
+    --gradient-accent: linear-gradient(135deg, hsl(0 0% 5%), hsl(0 0% 8%));
+    --gradient-hero: linear-gradient(135deg, hsl(0 0% 5%), hsl(0 0% 8%), hsl(43 50% 15%));
+    --gradient-button: linear-gradient(135deg, hsl(43 54% 60%), hsl(43 50% 55%));
     
-    /* Victory Luxury Effects */
-    --shadow-luxury: 0 25px 50px -12px hsl(43 40% 44% / 0.4);
-    --shadow-elegant: 0 10px 40px -10px hsl(43 40% 44% / 0.3);
-    --shadow-glow: 0 0 50px hsl(43 40% 47% / 0.6);
+    /* Brighter Victory Luxury Effects */
+    --shadow-luxury: 0 25px 50px -12px hsl(43 50% 55% / 0.5);
+    --shadow-elegant: 0 10px 40px -10px hsl(43 50% 55% / 0.4);
+    --shadow-glow: 0 0 50px hsl(43 54% 60% / 0.7);
     --transition-luxury: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     --font-luxury: 'Montserrat', sans-serif;
 
-    --sidebar-background: 0 0% 2%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 43 40% 44%;
+    --sidebar-background: 0 0% 6%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 43 50% 55%;
     --sidebar-primary-foreground: 0 0% 0%;
-    --sidebar-accent: 0 0% 6%;
-    --sidebar-accent-foreground: 43 40% 44%;
-    --sidebar-border: 0 0% 12%;
-    --sidebar-ring: 43 40% 44%;
+    --sidebar-accent: 0 0% 12%;
+    --sidebar-accent-foreground: 43 50% 55%;
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 43 50% 55%;
   }
 
   .dark {
-    /* Same colors for dark mode - Victory brand is inherently dark */
-    --background: 0 0% 0%;
-    --foreground: 0 0% 95%;
-    --card: 0 0% 4%;
-    --card-foreground: 0 0% 95%;
-    --popover: 0 0% 4%;
-    --popover-foreground: 0 0% 95%;
-    --primary: 43 40% 44%;
+    /* Brighter colors for dark mode - Enhanced Victory brand */
+    --background: 0 0% 5%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 43 50% 55%;
     --primary-foreground: 0 0% 0%;
-    --secondary: 0 0% 8%;
-    --secondary-foreground: 43 40% 44%;
-    --muted: 0 0% 12%;
-    --muted-foreground: 43 20% 65%;
-    --accent: 43 40% 44%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 43 50% 55%;
+    --muted: 0 0% 20%;
+    --muted-foreground: 43 30% 75%;
+    --accent: 43 50% 55%;
     --accent-foreground: 0 0% 0%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 95%;
-    --border: 0 0% 15%;
-    --input: 0 0% 8%;
-    --ring: 43 40% 44%;
-    --sidebar-background: 0 0% 2%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 43 40% 44%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 25%;
+    --input: 0 0% 12%;
+    --ring: 43 50% 55%;
+    --sidebar-background: 0 0% 6%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 43 50% 55%;
     --sidebar-primary-foreground: 0 0% 0%;
-    --sidebar-accent: 0 0% 6%;
-    --sidebar-accent-foreground: 43 40% 44%;
-    --sidebar-border: 0 0% 12%;
-    --sidebar-ring: 43 40% 44%;
+    --sidebar-accent: 0 0% 12%;
+    --sidebar-accent-foreground: 43 50% 55%;
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 43 50% 55%;
   }
 }
 
@@ -148,8 +148,8 @@
   .glass-effect {
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    background: hsl(0 0% 0% / 0.8);
-    border: 1px solid hsl(43 40% 44% / 0.2);
+    background: hsl(0 0% 5% / 0.85);
+    border: 1px solid hsl(43 50% 55% / 0.3);
   }
   
   .luxury-card {
@@ -172,6 +172,6 @@
   }
   
   .victory-hover-glow {
-    @apply victory-transition hover:shadow-[0_0_30px_hsl(43_40%_44%_/_0.5)];
+    @apply victory-transition hover:shadow-[0_0_30px_hsl(43_50%_55%_/_0.6)];
   }
 }
