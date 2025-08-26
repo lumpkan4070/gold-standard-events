@@ -552,21 +552,43 @@ const AdminEnhanced = () => {
           </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-8">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="events">Events</TabsTrigger>
-          <TabsTrigger value="bookings">Bookings</TabsTrigger>
-          <TabsTrigger value="photo-wall">Photo Wall</TabsTrigger>
-          <TabsTrigger value="users">Users</TabsTrigger>
-          <TabsTrigger value="admin-rights">Admin Rights</TabsTrigger>
-          <TabsTrigger value="notifications">Notifications</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
-        </TabsList>
+        <div className="mb-6">
+          {/* Mobile: Dropdown selector */}
+          <div className="md:hidden">
+            <Select defaultValue="overview">
+              <SelectTrigger className="w-full luxury-card">
+                <SelectValue placeholder="Select section" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="overview">📊 Overview</SelectItem>
+                <SelectItem value="events">📅 Events</SelectItem>
+                <SelectItem value="bookings">📋 Bookings</SelectItem>
+                <SelectItem value="photo-wall">📸 Photos</SelectItem>
+                <SelectItem value="users">👥 Users</SelectItem>
+                <SelectItem value="admin-rights">🔑 Admin</SelectItem>
+                <SelectItem value="notifications">📢 Notifications</SelectItem>
+                <SelectItem value="analytics">📈 Analytics</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          {/* Desktop: Full tab list */}
+          <TabsList className="hidden md:grid w-full grid-cols-8">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="events">Events</TabsTrigger>
+            <TabsTrigger value="bookings">Bookings</TabsTrigger>
+            <TabsTrigger value="photo-wall">Photo Wall</TabsTrigger>
+            <TabsTrigger value="users">Users</TabsTrigger>
+            <TabsTrigger value="admin-rights">Admin Rights</TabsTrigger>
+            <TabsTrigger value="notifications">Notifications</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          </TabsList>
+        </div>
 
             {/* Overview */}
             <TabsContent value="overview">
               <div className="grid gap-6">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   <Card className="luxury-card">
                     <CardContent className="p-4 text-center">
                       <Calendar className="h-8 w-8 mx-auto mb-2 text-primary" />
@@ -633,7 +655,7 @@ const AdminEnhanced = () => {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                       <div>
                         <Label>Event Title</Label>
                         <Input
@@ -650,7 +672,7 @@ const AdminEnhanced = () => {
                           onChange={(e) => setNewEvent(prev => ({ ...prev, event_date: e.target.value }))}
                         />
                       </div>
-                      <div className="md:col-span-2">
+                      <div className="lg:col-span-2">
                         <Label>Description</Label>
                         <Textarea
                           value={newEvent.description}
@@ -684,7 +706,7 @@ const AdminEnhanced = () => {
                           )}
                         </div>
                       </div>
-                      <div className="flex items-end">
+                      <div className="flex flex-col space-y-2 sm:flex-row sm:items-end sm:space-y-0 sm:space-x-2">
                         <Button 
                           onClick={createEvent} 
                           className="luxury-button"
@@ -700,41 +722,49 @@ const AdminEnhanced = () => {
                 <div className="grid gap-4">
                   {events.map((event) => (
                     <Card key={event.id} className="luxury-card">
-                      <CardContent className="p-6">
-                        <div className="flex justify-between items-start">
-                          <div className="flex-1">
-                            <h3 className="text-xl font-semibold mb-2">{event.title}</h3>
-                            <p className="text-muted-foreground mb-2">{event.description}</p>
-                            <p className="text-sm">
-                              <Calendar className="h-4 w-4 inline mr-1" />
+                      <CardContent className="p-4 sm:p-6">
+                        <div className="flex flex-col space-y-4 sm:flex-row sm:justify-between sm:items-start sm:space-y-0">
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-lg sm:text-xl font-semibold mb-2 truncate">{event.title}</h3>
+                            <p className="text-muted-foreground mb-2 text-sm sm:text-base">{event.description}</p>
+                            <p className="text-xs sm:text-sm">
+                              <Calendar className="h-3 w-3 sm:h-4 sm:w-4 inline mr-1" />
                               {new Date(event.event_date).toLocaleString()}
                             </p>
                           </div>
-                          <div className="flex items-center gap-2">
-                            <Badge variant={event.is_approved ? "default" : "secondary"}>
+                          <div className="flex flex-row sm:flex-col items-center sm:items-end gap-2">
+                            <Badge variant={event.is_approved ? "default" : "secondary"} className="text-xs">
                               {event.is_approved ? "Approved" : "Pending"}
                             </Badge>
-                            {!event.is_approved && (
-                              <div className="flex gap-2">
-                                <Button
-                                  size="sm"
-                                  onClick={() => handleEventApproval(event.id, true)}
-                                  className="bg-green-600 hover:bg-green-700"
-                                >
-                                  <CheckCircle className="h-4 w-4" />
-                                </Button>
-                                <Button
-                                  size="sm"
-                                  variant="destructive"
-                                  onClick={() => handleEventApproval(event.id, false)}
-                                >
-                                  <XCircle className="h-4 w-4" />
-                                </Button>
-                              </div>
-                            )}
-                            <Button size="sm" variant="destructive" onClick={() => deleteEvent(event.id)}>
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
+                            <div className="flex gap-1 sm:gap-2">
+                              {!event.is_approved && (
+                                <>
+                                  <Button
+                                    size="sm"
+                                    onClick={() => handleEventApproval(event.id, true)}
+                                    className="bg-green-600 hover:bg-green-700 px-2 sm:px-3"
+                                  >
+                                    <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4" />
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="destructive"
+                                    onClick={() => handleEventApproval(event.id, false)}
+                                    className="px-2 sm:px-3"
+                                  >
+                                    <XCircle className="h-3 w-3 sm:h-4 sm:w-4" />
+                                  </Button>
+                                </>
+                              )}
+                              <Button 
+                                size="sm" 
+                                variant="destructive" 
+                                onClick={() => deleteEvent(event.id)}
+                                className="px-2 sm:px-3"
+                              >
+                                <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
+                              </Button>
+                            </div>
                           </div>
                         </div>
                       </CardContent>
@@ -749,32 +779,32 @@ const AdminEnhanced = () => {
               <div className="grid gap-4">
                 {bookings.map((booking) => (
                   <Card key={booking.id} className="luxury-card">
-                    <CardContent className="p-6">
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                          <h3 className="text-xl font-semibold mb-2">{booking.event_title}</h3>
-                          <div className="space-y-1 text-sm text-muted-foreground">
-                            <p><Users className="h-4 w-4 inline mr-1" />Customer: {booking.name}</p>
-                            <p>Email: {booking.email}</p>
+                    <CardContent className="p-4 sm:p-6">
+                      <div className="flex flex-col space-y-4 sm:flex-row sm:justify-between sm:items-start sm:space-y-0">
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-lg sm:text-xl font-semibold mb-2 truncate">{booking.event_title}</h3>
+                          <div className="space-y-1 text-xs sm:text-sm text-muted-foreground">
+                            <p><Users className="h-3 w-3 sm:h-4 sm:w-4 inline mr-1" />Customer: {booking.name}</p>
+                            <p className="truncate">Email: {booking.email}</p>
                             <p>Phone: {booking.phone}</p>
                             <p>Guests: {booking.number_of_guests}</p>
                             <p>Date: {new Date(booking.event_date).toLocaleString()}</p>
-                            {booking.special_requests && <p>Requests: {booking.special_requests}</p>}
+                            {booking.special_requests && <p className="break-words">Requests: {booking.special_requests}</p>}
                           </div>
                         </div>
-                        <div className="flex flex-col items-end gap-2">
+                        <div className="flex flex-row sm:flex-col items-center sm:items-end gap-2">
                           <Badge variant={
                             booking.status === 'approved' ? "default" : 
                             booking.status === 'rejected' ? "destructive" : "secondary"
-                          }>
+                          } className="text-xs">
                             {booking.status}
                           </Badge>
                           {booking.status === 'pending' && (
-                            <div className="flex gap-2">
+                            <div className="flex gap-1 sm:gap-2">
                               <Button
                                 size="sm"
                                 onClick={() => handleBookingApproval(booking.id, 'approved')}
-                                className="bg-green-600 hover:bg-green-700"
+                                className="bg-green-600 hover:bg-green-700 text-xs px-2 sm:px-3"
                               >
                                 Approve
                               </Button>
@@ -782,6 +812,7 @@ const AdminEnhanced = () => {
                                 size="sm"
                                 variant="destructive"
                                 onClick={() => handleBookingApproval(booking.id, 'rejected')}
+                                className="text-xs px-2 sm:px-3"
                               >
                                 Reject
                               </Button>
@@ -812,47 +843,50 @@ const AdminEnhanced = () => {
                 ) : (
                   photos.map((photo) => (
                     <Card key={photo.id} className="luxury-card">
-                      <CardContent className="p-6">
-                        <div className="flex gap-4">
+                      <CardContent className="p-4 sm:p-6">
+                        <div className="flex flex-col sm:flex-row gap-4">
                           <img
                             src={photo.image_url}
                             alt={photo.caption || "User photo"}
-                            className="w-24 h-24 object-cover rounded"
+                            className="w-full sm:w-24 h-48 sm:h-24 object-cover rounded"
                           />
-                          <div className="flex-1">
-                            <p className="font-medium">
+                          <div className="flex-1 min-w-0">
+                            <p className="font-medium truncate">
                               {photo.profiles?.first_name} {photo.profiles?.last_name}
                             </p>
-                            <p className="text-muted-foreground">{photo.caption}</p>
-                            <p className="text-sm text-muted-foreground">
+                            <p className="text-muted-foreground text-sm break-words">{photo.caption}</p>
+                            <p className="text-xs text-muted-foreground">
                               {new Date(photo.created_at).toLocaleDateString()}
                             </p>
                           </div>
-                          <div className="flex flex-col items-end gap-2">
-                            <Badge variant={photo.is_approved ? "default" : "secondary"}>
-                              {photo.is_approved ? "Approved" : "Pending"}
-                            </Badge>
-                            {photo.is_approved && (
-                              <Badge variant={photo.is_featured ? "default" : "outline"}>
-                                {photo.is_featured ? "On Home Page" : "Hidden from Home"}
+                          <div className="flex flex-row sm:flex-col items-center sm:items-end gap-2">
+                            <div className="flex flex-col gap-1">
+                              <Badge variant={photo.is_approved ? "default" : "secondary"} className="text-xs">
+                                {photo.is_approved ? "Approved" : "Pending"}
                               </Badge>
-                            )}
-                            <div className="flex gap-2">
+                              {photo.is_approved && (
+                                <Badge variant={photo.is_featured ? "default" : "outline"} className="text-xs">
+                                  {photo.is_featured ? "On Home Page" : "Hidden from Home"}
+                                </Badge>
+                              )}
+                            </div>
+                            <div className="flex flex-row sm:flex-col gap-1 sm:gap-2">
                               {!photo.is_approved && (
                                 <>
                                   <Button
                                     size="sm"
                                     onClick={() => handlePhotoApproval(photo.id, true)}
-                                    className="bg-green-600 hover:bg-green-700"
+                                    className="bg-green-600 hover:bg-green-700 px-2"
                                   >
-                                    <CheckCircle className="h-4 w-4" />
+                                    <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4" />
                                   </Button>
                                   <Button
                                     size="sm"
                                     variant="destructive"
                                     onClick={() => handlePhotoApproval(photo.id, false)}
+                                    className="px-2"
                                   >
-                                    <XCircle className="h-4 w-4" />
+                                    <XCircle className="h-3 w-3 sm:h-4 sm:w-4" />
                                   </Button>
                                 </>
                               )}
@@ -861,9 +895,10 @@ const AdminEnhanced = () => {
                                   size="sm"
                                   variant={photo.is_featured ? "destructive" : "default"}
                                   onClick={() => togglePhotoHomepage(photo.id, photo.is_featured)}
+                                  className="text-xs px-2"
                                 >
-                                  <Eye className="h-4 w-4 mr-1" />
-                                  {photo.is_featured ? "Hide from Home" : "Show on Home"}
+                                  <Eye className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                                  {photo.is_featured ? "Hide" : "Show"}
                                 </Button>
                               )}
                             </div>
@@ -886,7 +921,81 @@ const AdminEnhanced = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="overflow-x-auto">
+                  {/* Mobile: Card layout */}
+                  <div className="block md:hidden space-y-4">
+                    {profiles.map((profile) => (
+                      <Card key={profile.id} className="border p-4">
+                        <div className="space-y-3">
+                          <div className="flex justify-between items-start">
+                            <div className="min-w-0 flex-1">
+                              <div className="font-medium truncate">
+                                {profile.first_name} {profile.last_name}
+                              </div>
+                              <div className="text-xs text-muted-foreground truncate">
+                                {profile.email}
+                              </div>
+                            </div>
+                            <div className="flex gap-1">
+                              <Badge variant={profile.vip_status ? "default" : "secondary"} className="text-xs">
+                                {profile.vip_status ? "VIP" : "Regular"}
+                              </Badge>
+                              <Badge variant="outline" className="text-xs">
+                                {profile.total_bookings}
+                              </Badge>
+                            </div>
+                          </div>
+                          
+                          <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground">
+                            <div>Phone: {profile.phone || 'Not provided'}</div>
+                            <div>Birthday: {profile.birthday ? new Date(profile.birthday).toLocaleDateString() : 'Not provided'}</div>
+                          </div>
+                          
+                          <div className="text-xs text-muted-foreground">
+                            Member since: {new Date(profile.created_at).toLocaleDateString()}
+                          </div>
+                          
+                          <div className="flex flex-wrap gap-2">
+                            <Button
+                              size="sm"
+                              onClick={() => toggleVipStatus(profile.user_id, profile.vip_status)}
+                              variant={profile.vip_status ? "destructive" : "default"}
+                              className="text-xs px-2 py-1 h-auto"
+                            >
+                              <Star className="h-3 w-3 mr-1" />
+                              {profile.vip_status ? "Remove VIP" : "Make VIP"}
+                            </Button>
+                            {profile.user_id !== user?.id && (
+                              <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                  <Button size="sm" variant="destructive" className="text-xs px-2 py-1 h-auto">
+                                    <Trash2 className="h-3 w-3 mr-1" />
+                                    Delete
+                                  </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>Delete user account?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                      This will permanently remove the user's account and sign-in access. This action cannot be undone.
+                                    </AlertDialogDescription>
+                                  </AlertDialogHeader>
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction onClick={() => handleDeleteUser(profile.user_id)}>
+                                      Confirm Delete
+                                    </AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
+                            )}
+                          </div>
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+
+                  {/* Desktop: Table layout */}
+                  <div className="hidden md:block overflow-x-auto">
                     <table className="w-full">
                       <thead>
                         <tr className="border-b">
@@ -1024,39 +1133,39 @@ const AdminEnhanced = () => {
                   
                   return (
                     <Card key={profile.id} className="luxury-card">
-                      <CardContent className="p-6">
-                        <div className="flex justify-between items-start">
-                          <div className="flex-1">
-                            <h3 className="text-xl font-semibold mb-2">
-                              {profile.first_name} {profile.last_name}
-                            </h3>
-                            <div className="space-y-1 text-sm text-muted-foreground">
-                              <p>Email: {profile.email}</p>
-                              <p>Member since: {new Date(profile.created_at).toLocaleDateString()}</p>
+                        <CardContent className="p-4 sm:p-6">
+                          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start space-y-4 sm:space-y-0">
+                            <div className="flex-1 min-w-0">
+                              <h3 className="text-lg sm:text-xl font-semibold mb-2 truncate">
+                                {profile.first_name} {profile.last_name}
+                              </h3>
+                              <div className="space-y-1 text-xs sm:text-sm text-muted-foreground">
+                                <p className="truncate">Email: {profile.email}</p>
+                                <p>Member since: {new Date(profile.created_at).toLocaleDateString()}</p>
+                              </div>
+                            </div>
+                            <div className="flex flex-row sm:flex-col items-center sm:items-end gap-2">
+                              <Badge variant={isCurrentAdmin ? "destructive" : "secondary"} className="text-xs">
+                                {isCurrentAdmin ? "ADMIN" : "USER"}
+                              </Badge>
+                              {profile.user_id !== user?.id ? (
+                                <Button
+                                  size="sm"
+                                  onClick={() => isCurrentAdmin 
+                                    ? revokeAdminRights(profile.user_id)
+                                    : grantAdminRights(profile.user_id)
+                                  }
+                                  variant={isCurrentAdmin ? "destructive" : "default"}
+                                  className="text-xs px-2 sm:px-3"
+                                >
+                                  <Settings className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                                  {isCurrentAdmin ? "Revoke" : "Grant"}
+                                </Button>
+                              ) : (
+                                <p className="text-xs text-muted-foreground">Current User</p>
+                              )}
                             </div>
                           </div>
-                          <div className="flex flex-col items-end gap-2">
-                            <Badge variant={isCurrentAdmin ? "destructive" : "secondary"}>
-                              {isCurrentAdmin ? "ADMIN" : "USER"}
-                            </Badge>
-                            {profile.user_id !== user?.id && (
-                              <Button
-                                size="sm"
-                                onClick={() => isCurrentAdmin 
-                                  ? revokeAdminRights(profile.user_id)
-                                  : grantAdminRights(profile.user_id)
-                                }
-                                variant={isCurrentAdmin ? "destructive" : "default"}
-                              >
-                                <Settings className="h-4 w-4 mr-1" />
-                                {isCurrentAdmin ? "Revoke Admin" : "Grant Admin"}
-                              </Button>
-                            )}
-                            {profile.user_id === user?.id && (
-                              <p className="text-xs text-muted-foreground">Current User</p>
-                            )}
-                          </div>
-                        </div>
                       </CardContent>
                     </Card>
                   );
@@ -1088,7 +1197,7 @@ const AdminEnhanced = () => {
             {/* Analytics */}
             <TabsContent value="analytics">
               <div className="grid gap-6">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   <Card className="luxury-card">
                     <CardContent className="p-4 text-center">
                       <Calendar className="h-8 w-8 mx-auto mb-2 text-primary" />
