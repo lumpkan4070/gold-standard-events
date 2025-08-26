@@ -45,5 +45,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Victory Bistro uses the camera to scan QR codes for ordering and to capture photos for events.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Victory Bistro needs access to your photo library to save and share event photos.</string>
 </dict>
 </plist>
