@@ -60,37 +60,37 @@ const Index = () => {
       <Navigation user={user} />
       
       {/* Hero Section */}
-      <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[60vh] sm:min-h-[70vh] lg:min-h-[80vh] flex items-center justify-center overflow-hidden">
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          className="absolute inset-0 bg-cover bg-center sm:bg-top md:bg-center bg-no-repeat transition-all duration-300"
           style={{ backgroundImage: `url(${heroImage})` }}
         />
-        <div className="absolute inset-0 bg-black/60" />
-        <div className="relative z-10 max-w-4xl mx-auto text-center px-4">
+        <div className="absolute inset-0 bg-black/50 sm:bg-black/40 md:bg-black/60" />
+        <div className="relative z-10 max-w-4xl mx-auto text-center px-4 py-8">
           {/* Logo */}
-          <div className="victory-text-gradient text-6xl md:text-8xl font-bold tracking-wide mb-4">
+          <div className="victory-text-gradient text-4xl sm:text-6xl md:text-8xl font-bold tracking-wide mb-3 sm:mb-4">
             Victory
           </div>
-          <div className="text-white/80 text-xl md:text-2xl font-light mb-8">
+          <div className="text-white/80 text-lg sm:text-xl md:text-2xl font-light mb-6 sm:mb-8">
             Bistro Ultra Lounge
           </div>
           
           {/* Dynamic Greeting */}
-          <div className="text-white text-2xl md:text-3xl font-medium mb-12">
+          <div className="text-white text-xl sm:text-2xl md:text-3xl font-medium mb-8 sm:mb-12">
             {greeting} at Victory Bistro Ultra Lounge
           </div>
 
           {/* Main Action Buttons */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto mb-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 max-w-2xl mx-auto mb-8 sm:mb-16">
             <Link to="/order">
-              <Button className="luxury-button w-full h-16 text-lg">
-                <QrCode className="w-6 h-6 mr-3" />
+              <Button className="luxury-button w-full h-14 sm:h-16 text-base sm:text-lg">
+                <QrCode className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
                 Order Now
               </Button>
             </Link>
             <Link to="/events">
-              <Button variant="outline" className="w-full h-16 text-lg bg-white/10 border-white/30 hover:bg-white/20 text-white backdrop-blur-sm">
-                <Calendar className="w-6 h-6 mr-3" />
+              <Button variant="outline" className="w-full h-14 sm:h-16 text-base sm:text-lg bg-white/10 border-white/30 hover:bg-white/20 text-white backdrop-blur-sm">
+                <Calendar className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
                 View Events
               </Button>
             </Link>
