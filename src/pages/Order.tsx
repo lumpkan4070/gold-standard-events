@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Navigation } from "@/components/Navigation";
+import CameraScanner from "@/components/CameraScanner";
 import { QrCode, ExternalLink, Camera, Type } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
@@ -13,6 +14,7 @@ const Order = () => {
   const [user, setUser] = useState<any>(null);
   const [orderLink, setOrderLink] = useState("");
   const [showManualInput, setShowManualInput] = useState(false);
+  const [showQRScanner, setShowQRScanner] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -35,30 +37,11 @@ const Order = () => {
   }, []);
 
   const startQRScanner = () => {
-    // Check if device has camera capability
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-        .then((stream) => {
-          // Camera access granted, would implement QR scanner here
-          // For now, show manual input as fallback
-          stream.getTracks().forEach(track => track.stop());
-          toast({
-            title: "QR Scanner",
-            description: "QR Scanner feature coming soon. Please use manual link entry."
-          });
-          setShowManualInput(true);
-        })
-        .catch(() => {
-          toast({
-            title: "Camera Access",
-            description: "Camera not available. Please use manual link entry.",
-            variant: "destructive"
-          });
-          setShowManualInput(true);
-        });
-    } else {
-      setShowManualInput(true);
-    }
+    setShowQRScanner(true);
+  };
+
+  const handleQRScannerClose = () => {
+    setShowQRScanner(false);
   };
 
   const handleOrderLinkSubmit = (e: React.FormEvent) => {
@@ -76,6 +59,14 @@ const Order = () => {
   return (
     <div className="min-h-screen victory-hero-bg">
       <Navigation user={user} />
+      
+      {showQRScanner && (
+        <CameraScanner 
+          mode="scan" 
+          user={user} 
+          onClose={handleQRScannerClose}
+        />
+      )}
       
       <div className="container mx-auto px-4 pt-24 pb-12">
         <div className="max-w-4xl mx-auto">
