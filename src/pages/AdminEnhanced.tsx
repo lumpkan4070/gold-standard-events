@@ -45,6 +45,7 @@ const AdminEnhanced = () => {
   const [profiles, setProfiles] = useState<any[]>([]);
   const [userRoles, setUserRoles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("overview");
   
   // Form states
   const [newEvent, setNewEvent] = useState({
@@ -551,15 +552,15 @@ const AdminEnhanced = () => {
             </p>
           </div>
 
-        <Tabs defaultValue="overview" className="space-y-6">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <div className="mb-6">
           {/* Mobile: Dropdown selector */}
           <div className="md:hidden">
-            <Select defaultValue="overview">
-              <SelectTrigger className="w-full luxury-card">
+            <Select value={activeTab} onValueChange={setActiveTab}>
+              <SelectTrigger className="w-full luxury-card bg-card border-border">
                 <SelectValue placeholder="Select section" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-card border-border shadow-lg z-50">
                 <SelectItem value="overview">📊 Overview</SelectItem>
                 <SelectItem value="events">📅 Events</SelectItem>
                 <SelectItem value="bookings">📋 Bookings</SelectItem>
