@@ -160,7 +160,7 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            {/* Truth or Dare Game - NEW! */}
+            {/* Games - NEW! */}
             {user && (
               <Card className="luxury-card p-6 text-center group hover:scale-105 victory-transition border-2 border-primary/30 relative overflow-hidden">
                 <div className="absolute top-2 right-2">
@@ -172,9 +172,9 @@ const Index = () => {
                   <div className="w-16 h-16 mx-auto victory-gradient rounded-full flex items-center justify-center group-hover:victory-glow victory-transition">
                     <Dice1 className="w-8 h-8 text-primary-foreground" />
                   </div>
-                  <h3 className="text-xl font-semibold text-foreground">Truth or Dare: Adult Edition</h3>
+                  <h3 className="text-xl font-semibold text-foreground">Victory Games</h3>
                   <p className="text-muted-foreground">
-                    Break the ice with fun prompts and earn Victory Points!
+                    Break the ice with fun interactive games and earn Victory Points!
                   </p>
                   <Link to="/games">
                     <Button className="w-full mt-4 bg-gradient-to-r from-primary to-primary-foreground hover:opacity-90 victory-glow">
