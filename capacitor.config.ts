@@ -1,10 +1,9 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.victorybistro.app',
+  appId: 'com.victorybistro.ios',
   appName: 'Victory Bistro Ultra Lounge',
   webDir: 'dist',
-  bundledWebRuntime: false,
   plugins: {
     SplashScreen: {
       launchShowDuration: 3000,

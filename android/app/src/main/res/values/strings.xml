@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Victory Bistro Ultra Lounge</string>
+    <string name="title_activity_main">Victory Bistro Ultra Lounge</string>
+    <string name="package_name">com.victorybistro.app</string>
+    <string name="custom_url_scheme">com.victorybistro.app</string>
+</resources>
