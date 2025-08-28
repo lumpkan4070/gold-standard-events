@@ -72,70 +72,20 @@ const SongRequests = () => {
       fetchSongRequests();
       fetchUserVotes();
       
-      // Set up real-time subscription for song requests with error handling
-      let channel: any = null;
+      // Check if WebSocket is available - for now, always use polling to avoid WebSocket issues
+      console.log('Protocol:', window.location.protocol);
+      console.log('Using polling mode to avoid WebSocket issues');
       
-      try {
-        channel = supabase
-          .channel('song-requests-changes')
-          .on(
-            'postgres_changes',
-            {
-              event: '*',
-              schema: 'public',
-              table: 'song_requests'
-            },
-            (payload) => {
-              console.log('Real-time song request change:', payload);
-              fetchSongRequests(); // Refresh the list when any changes occur
-            }
-          )
-          .on(
-            'postgres_changes',
-            {
-              event: '*',
-              schema: 'public',
-              table: 'song_votes'
-            },
-            (payload) => {
-              console.log('Real-time vote change:', payload);
-              fetchSongRequests(); // Refresh when votes change
-              fetchUserVotes(); // Refresh user votes
-            }
-          )
-          .subscribe((status: string) => {
-            if (status === 'SUBSCRIBED') {
-              console.log('Successfully connected to realtime');
-            } else if (status === 'CHANNEL_ERROR') {
-              console.warn('Realtime connection failed, using polling instead');
-              // Fall back to periodic refresh if realtime fails
-              const interval = setInterval(() => {
-                fetchSongRequests();
-                fetchUserVotes();
-              }, 5000);
-              
-              return () => clearInterval(interval);
-            }
-          });
-      } catch (error) {
-        console.warn('WebSocket not available, using polling instead:', error);
-        // Fall back to periodic refresh if WebSocket is not available
-        const interval = setInterval(() => {
-          fetchSongRequests();
-          fetchUserVotes();
-        }, 5000);
-        
-        return () => clearInterval(interval);
-      }
+      // Set up polling instead of realtime to avoid WebSocket errors
+      const interval = setInterval(() => {
+        console.log('Polling for updates...');
+        fetchSongRequests();
+        fetchUserVotes();
+      }, 5000);
 
       return () => {
-        if (channel) {
-          try {
-            supabase.removeChannel(channel);
-          } catch (error) {
-            console.warn('Error removing channel:', error);
-          }
-        }
+        clearInterval(interval);
+        console.log('Polling stopped');
       };
     }
   }, [user]);
