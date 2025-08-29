@@ -112,7 +112,7 @@ export const Navigation = ({ user: userProp }: NavigationProps) => {
   }
 
   return (
-    <nav className="glass-effect fixed top-0 left-0 right-0 z-50 px-4 py-3">
+    <nav className="glass-effect fixed top-0 left-0 right-0 z-[9999] px-4 py-3 backdrop-blur-md bg-background/80 border-b border-primary/10 supports-[backdrop-filter]:bg-background/60">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2">
