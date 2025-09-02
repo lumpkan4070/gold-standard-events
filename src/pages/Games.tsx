@@ -36,8 +36,8 @@ const Games = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="text-center">
-              <Button asChild className="luxury-button">
-                <a href="/auth">Sign In</a>
+              <Button onClick={() => navigate('/auth')} className="luxury-button">
+                Sign In
               </Button>
             </CardContent>
           </Card>

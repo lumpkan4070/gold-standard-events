@@ -19,6 +19,9 @@ const Games = lazy(() => import("./pages/Games"));
 const TriviaBlast = lazy(() => import("./pages/TriviaBlast"));
 const WordChain = lazy(() => import("./pages/WordChain"));
 const MemoryMatch = lazy(() => import("./pages/MemoryMatch"));
+const GuessTheThrowback = lazy(() => import("./pages/GuessTheThrowback"));
+const BeatTheClock = lazy(() => import("./pages/BeatTheClock"));
+const RapItOrScrapIt = lazy(() => import("./pages/RapItOrScrapIt"));
 const DJs = lazy(() => import("./pages/DJs"));
 const SongRequests = lazy(() => import("./pages/SongRequests"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -54,6 +57,9 @@ const App = () => {
               <Route path="/games/trivia-blast" element={<TriviaBlast />} />
               <Route path="/games/word-chain" element={<WordChain />} />
               <Route path="/games/memory-match" element={<MemoryMatch />} />
+              <Route path="/games/guess-the-throwback" element={<GuessTheThrowback />} />
+              <Route path="/games/beat-the-clock" element={<BeatTheClock />} />
+              <Route path="/games/rap-it-or-scrap-it" element={<RapItOrScrapIt />} />
               <Route path="/djs" element={<DJs />} />
               <Route path="/song-requests" element={<SongRequests />} />
               {/* Legacy routes for backward compatibility */}
