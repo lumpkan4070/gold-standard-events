@@ -27,7 +27,10 @@ const [isSendingReset, setIsSendingReset] = useState(false);
 const [isResetMode, setIsResetMode] = useState(false);
 const [newPassword, setNewPassword] = useState("");
 const [confirmPassword, setConfirmPassword] = useState("");
-const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
+  const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
+  const [showResendEmail, setShowResendEmail] = useState(false);
+  const [isResendingEmail, setIsResendingEmail] = useState(false);
+  const [signupEmail, setSignupEmail] = useState("");
   useEffect(() => {
     // Detect password recovery mode via redirect flag
     const params = new URLSearchParams(window.location.search);
@@ -100,6 +103,7 @@ const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setShowResendEmail(false); // Reset resend state
 
     try {
       const redirectUrl = `${window.location.origin}/`;
@@ -131,6 +135,8 @@ const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
           });
         }
       } else {
+        setSignupEmail(email);
+        setShowResendEmail(true);
         toast({
           title: "Account created!",
           description: "Please check your email to verify your account.",
@@ -177,6 +183,42 @@ const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
       });
     } finally {
       setIsSendingReset(false);
+    }
+  };
+
+  const handleResendVerification = async () => {
+    setIsResendingEmail(true);
+    try {
+      const redirectUrl = `${window.location.origin}/`;
+      
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email: signupEmail,
+        options: {
+          emailRedirectTo: redirectUrl,
+        }
+      });
+
+      if (error) {
+        toast({
+          title: "Resend failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Email sent",
+          description: "Check your inbox for the verification email.",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Could not resend verification email. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsResendingEmail(false);
     }
   };
 
@@ -393,6 +435,25 @@ const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
                       {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                       Create Account
                     </Button>
+                    
+                    {showResendEmail && (
+                      <div className="space-y-2 p-3 bg-muted/50 rounded-md border border-primary/20">
+                        <p className="text-sm text-muted-foreground text-center">
+                          Didn't receive the verification email?
+                        </p>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={handleResendVerification}
+                          disabled={isResendingEmail}
+                          className="w-full border-primary/20 text-primary hover:bg-primary/10"
+                        >
+                          {isResendingEmail && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                          Resend Verification Email
+                        </Button>
+                      </div>
+                    )}
+                    
                     <Button
                       type="button"
                       variant="outline"
