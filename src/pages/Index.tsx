@@ -119,41 +119,7 @@ const Index = () => {
             Experience Victory
           </h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Order */}
-            <Card className="luxury-card p-6 text-center group hover:scale-105 victory-transition">
-              <CardContent className="space-y-4">
-                <div className="w-16 h-16 mx-auto victory-gradient rounded-full flex items-center justify-center group-hover:victory-glow victory-transition">
-                  <Utensils className="w-8 h-8 text-primary-foreground" />
-                </div>
-                <h3 className="text-xl font-semibold text-foreground">Order & Dine</h3>
-                <p className="text-muted-foreground">
-                  Browse our menu and place your order through FocusOnline
-                </p>
-                <Button 
-                  onClick={() => {
-                    const overlay = document.createElement('div');
-                    overlay.className = 'fixed inset-0 bg-black/80 z-[99999] flex flex-col items-center justify-center animate-fade-in';
-                    overlay.innerHTML = `
-                      <div class="flex flex-col items-center space-y-6 animate-scale-in">
-                        <img src="/lovable-uploads/361a8a1f-b2f4-41fc-8c31-26771715440b.png" alt="Victory Logo" class="w-32 h-32 object-contain animate-pulse" />
-                        <div class="text-white text-xl font-semibold">Ordering Victory Bistro</div>
-                        <div class="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-                      </div>
-                    `;
-                    document.body.appendChild(overlay);
-                    setTimeout(() => {
-                      window.open('https://victorybistro.gimmegrub.com', '_blank');
-                      document.body.removeChild(overlay);
-                    }, 1200);
-                  }}
-                  className="luxury-button w-full mt-4"
-                >
-                  Start Ordering
-                </Button>
-              </CardContent>
-            </Card>
-
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Events */}
             <Card className="luxury-card p-6 text-center group hover:scale-105 victory-transition">
               <CardContent className="space-y-4">
