@@ -88,9 +88,20 @@ export const Navigation = ({ user: userProp }: NavigationProps) => {
     }
   };
 
+  const handleOrderClick = () => {
+    const overlay = document.createElement('div');
+    overlay.className = 'fixed inset-0 bg-black/50 z-[99999] flex items-center justify-center animate-fade-in';
+    overlay.innerHTML = '<div class="text-white text-lg">Opening GrubHub...</div>';
+    document.body.appendChild(overlay);
+    setTimeout(() => {
+      window.open('https://victorybistro.gimmegrub.com', '_blank');
+      document.body.removeChild(overlay);
+    }, 800);
+  };
+
   const menuItems = [
     { label: "Home", href: "/", icon: null },
-    { label: "Order", href: "/order", icon: QrCode },
+    { label: "Order", href: "#", icon: QrCode, onClick: handleOrderClick },
     { label: "Events", href: "/events", icon: Calendar },
     { label: "Contact", href: "/contact", icon: Phone },
     { label: "Privacy Policy", href: "/privacy", icon: FileText },
@@ -127,13 +138,23 @@ export const Navigation = ({ user: userProp }: NavigationProps) => {
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-6">
           {menuItems.map((item) => (
-            <Link
-              key={item.label}
-              to={item.href}
-              className="text-foreground/80 hover:text-primary victory-transition font-medium"
-            >
-              {item.label}
-            </Link>
+            item.onClick ? (
+              <button
+                key={item.label}
+                onClick={item.onClick}
+                className="text-foreground/80 hover:text-primary victory-transition font-medium"
+              >
+                {item.label}
+              </button>
+            ) : (
+              <Link
+                key={item.label}
+                to={item.href}
+                className="text-foreground/80 hover:text-primary victory-transition font-medium"
+              >
+                {item.label}
+              </Link>
+            )
           ))}
           
           {user ? (
@@ -165,15 +186,29 @@ export const Navigation = ({ user: userProp }: NavigationProps) => {
           <SheetContent side="right" className="w-[300px] glass-effect border-l border-primary/20 z-[99999]">
             <div className="flex flex-col space-y-6 mt-6">
               {menuItems.map((item) => (
-                <Link
-                  key={item.label}
-                  to={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className="text-foreground hover:text-primary victory-transition font-medium text-lg flex items-center space-x-3"
-                >
-                  {item.icon && <item.icon className="w-5 h-5" />}
-                  <span>{item.label}</span>
-                </Link>
+                item.onClick ? (
+                  <button
+                    key={item.label}
+                    onClick={() => {
+                      setIsOpen(false);
+                      item.onClick();
+                    }}
+                    className="text-foreground hover:text-primary victory-transition font-medium text-lg flex items-center space-x-3"
+                  >
+                    {item.icon && <item.icon className="w-5 h-5" />}
+                    <span>{item.label}</span>
+                  </button>
+                ) : (
+                  <Link
+                    key={item.label}
+                    to={item.href}
+                    onClick={() => setIsOpen(false)}
+                    className="text-foreground hover:text-primary victory-transition font-medium text-lg flex items-center space-x-3"
+                  >
+                    {item.icon && <item.icon className="w-5 h-5" />}
+                    <span>{item.label}</span>
+                  </Link>
+                )
               ))}
               
               <div className="pt-4 border-t border-primary/20">

@@ -80,12 +80,22 @@ const Index = () => {
 
           {/* Main Action Buttons */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 max-w-2xl mx-auto mb-8 sm:mb-16">
-            <Link to="/order">
-              <Button className="luxury-button w-full h-14 sm:h-16 text-base sm:text-lg">
-                <Utensils className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
-                Order Now
-              </Button>
-            </Link>
+            <Button 
+              onClick={() => {
+                const overlay = document.createElement('div');
+                overlay.className = 'fixed inset-0 bg-black/50 z-[99999] flex items-center justify-center animate-fade-in';
+                overlay.innerHTML = '<div class="text-white text-lg">Opening GrubHub...</div>';
+                document.body.appendChild(overlay);
+                setTimeout(() => {
+                  window.open('https://victorybistro.gimmegrub.com', '_blank');
+                  document.body.removeChild(overlay);
+                }, 800);
+              }}
+              className="luxury-button w-full h-14 sm:h-16 text-base sm:text-lg"
+            >
+              <Utensils className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
+              Order Now
+            </Button>
             <Link to="/events">
               <Button variant="outline" className="w-full h-14 sm:h-16 text-base sm:text-lg bg-white/10 border-white/30 hover:bg-white/20 text-white backdrop-blur-sm">
                 <Calendar className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
@@ -114,11 +124,21 @@ const Index = () => {
                 <p className="text-muted-foreground">
                   Browse our menu and place your order through FocusOnline
                 </p>
-                <Link to="/order">
-                  <Button className="luxury-button w-full mt-4">
-                    Start Ordering
-                  </Button>
-                </Link>
+                <Button 
+                  onClick={() => {
+                    const overlay = document.createElement('div');
+                    overlay.className = 'fixed inset-0 bg-black/50 z-[99999] flex items-center justify-center animate-fade-in';
+                    overlay.innerHTML = '<div class="text-white text-lg">Opening GrubHub...</div>';
+                    document.body.appendChild(overlay);
+                    setTimeout(() => {
+                      window.open('https://victorybistro.gimmegrub.com', '_blank');
+                      document.body.removeChild(overlay);
+                    }, 800);
+                  }}
+                  className="luxury-button w-full mt-4"
+                >
+                  Start Ordering
+                </Button>
               </CardContent>
             </Card>
 
