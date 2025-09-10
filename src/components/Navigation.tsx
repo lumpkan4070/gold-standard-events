@@ -132,13 +132,12 @@ export const Navigation = ({ user: userProp }: NavigationProps) => {
     <nav className="glass-effect fixed top-0 left-0 right-0 z-[9999] px-4 py-3 backdrop-blur-md bg-background/80 border-b border-primary/10 supports-[backdrop-filter]:bg-background/60">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center space-x-2">
-          <div className="victory-text-gradient text-2xl font-bold tracking-wide">
-            Victory
-          </div>
-          <div className="text-foreground/60 text-sm font-light">
-            Bistro Ultra Lounge
-          </div>
+        <Link to="/" className="flex items-center space-x-3">
+          <img 
+            src="/lovable-uploads/2930c757-25ee-4b41-9028-6fae31095547.png" 
+            alt="Victory Bistro Ultra Lounge Logo" 
+            className="h-10 w-auto sm:h-12 victory-transition hover:scale-105"
+          />
         </Link>
 
         {/* Desktop Menu */}

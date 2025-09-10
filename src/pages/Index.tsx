@@ -66,11 +66,12 @@ const Index = () => {
         <div className="absolute inset-0 bg-black/50 sm:bg-black/40 md:bg-black/60" />
         <div className="relative z-10 max-w-4xl mx-auto text-center px-4 py-8">
           {/* Logo */}
-          <div className="victory-text-gradient text-4xl sm:text-6xl md:text-8xl font-bold tracking-wide mb-3 sm:mb-4">
-            Victory
-          </div>
-          <div className="text-white/80 text-lg sm:text-xl md:text-2xl font-light mb-6 sm:mb-8">
-            Bistro Ultra Lounge
+          <div className="flex flex-col items-center mb-6 sm:mb-8">
+            <img 
+              src="/lovable-uploads/2930c757-25ee-4b41-9028-6fae31095547.png" 
+              alt="Victory Bistro Ultra Lounge" 
+              className="w-48 sm:w-64 md:w-80 lg:w-96 h-auto mb-4 drop-shadow-2xl animate-fade-in"
+            />
           </div>
           
           {/* Dynamic Greeting */}

@@ -6,87 +6,87 @@
 
 @layer base {
   :root {
-    /* Victory Bistro Ultra Lounge Official Brand Colors - Brightened */
-    --background: 0 0% 5%;           /* Slightly lighter black #0d0d0d */
-    --foreground: 0 0% 98%;          /* Brighter white text */
-    --card: 0 0% 8%;                 /* Brighter card backgrounds */
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 8%;
-    --popover-foreground: 0 0% 98%;
+    /* Victory Bistro Ultra Lounge - High Contrast Gold Theme */
+    --background: 0 0% 3%;           /* Deeper black for better contrast */
+    --foreground: 0 0% 99%;          /* Pure white text for maximum readability */
+    --card: 0 0% 6%;                 /* Card backgrounds with better contrast */
+    --card-foreground: 0 0% 99%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 99%;
     
-    /* Brighter Victory Gold Palette */
-    --primary: 43 50% 55%;           /* Brighter gold: #b8a658 */
+    /* Victory Gold - Optimized for Sunlight Visibility */
+    --primary: 40 70% 50%;           /* Rich gold: #cc9900 - high contrast */
     --primary-foreground: 0 0% 0%;   /* Black text on gold */
-    --primary-hover: 43 52% 58%;     /* Brighter hover: #bca85e */
-    --primary-accent: 43 54% 60%;    /* Brighter accent: #c0ac64 */
-    --primary-border: 43 50% 57%;    /* Brighter border: #baa85c */
-    --primary-subtle: 43 48% 56%;    /* Brighter subtle: #b6a45a */
+    --primary-hover: 40 75% 55%;     /* Brighter hover for visibility */
+    --primary-accent: 40 80% 60%;    /* Bright accent for standout elements */
+    --primary-border: 40 70% 52%;    /* Clear borders */
+    --primary-subtle: 40 65% 48%;    /* Subtle but visible */
     
-    --secondary: 0 0% 15%;           /* Brighter secondary */
-    --secondary-foreground: 43 50% 55%;
-    --muted: 0 0% 20%;               /* Much brighter muted */
-    --muted-foreground: 43 30% 75%;  /* Brighter muted text */
-    --accent: 43 50% 55%;
+    --secondary: 0 0% 18%;           /* High contrast secondary */
+    --secondary-foreground: 40 70% 50%;
+    --muted: 0 0% 25%;               /* Higher contrast muted */
+    --muted-foreground: 40 40% 80%;  /* Gold-tinted muted text, high contrast */
+    --accent: 40 70% 50%;
     --accent-foreground: 0 0% 0%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 25%;              /* Brighter borders */
-    --input: 0 0% 12%;               /* Brighter input backgrounds */
-    --ring: 43 50% 55%;
+    --destructive: 0 90% 65%;        /* Brighter red for visibility */
+    --destructive-foreground: 0 0% 99%;
+    --border: 0 0% 30%;              /* More visible borders */
+    --input: 0 0% 8%;                /* Input backgrounds with better contrast */
+    --ring: 40 70% 50%;
     --radius: 0.75rem;
     
-    /* Brighter Victory Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(43 54% 60%), hsl(43 50% 55%), hsl(43 52% 58%));
-    --gradient-accent: linear-gradient(135deg, hsl(0 0% 5%), hsl(0 0% 8%));
-    --gradient-hero: linear-gradient(135deg, hsl(0 0% 5%), hsl(0 0% 8%), hsl(43 50% 15%));
-    --gradient-button: linear-gradient(135deg, hsl(43 54% 60%), hsl(43 50% 55%));
+    /* Victory Gold Gradients - High Contrast */
+    --gradient-primary: linear-gradient(135deg, hsl(40 80% 60%), hsl(40 70% 50%), hsl(40 75% 55%));
+    --gradient-accent: linear-gradient(135deg, hsl(0 0% 3%), hsl(0 0% 6%));
+    --gradient-hero: linear-gradient(135deg, hsl(0 0% 3%), hsl(0 0% 6%), hsl(40 70% 15%));
+    --gradient-button: linear-gradient(135deg, hsl(40 80% 60%), hsl(40 70% 50%));
     
-    /* Brighter Victory Luxury Effects */
-    --shadow-luxury: 0 25px 50px -12px hsl(43 50% 55% / 0.5);
-    --shadow-elegant: 0 10px 40px -10px hsl(43 50% 55% / 0.4);
-    --shadow-glow: 0 0 50px hsl(43 54% 60% / 0.7);
+    /* Victory Luxury Effects - Enhanced Visibility */
+    --shadow-luxury: 0 25px 50px -12px hsl(40 70% 50% / 0.6);
+    --shadow-elegant: 0 10px 40px -10px hsl(40 70% 50% / 0.5);
+    --shadow-glow: 0 0 60px hsl(40 80% 60% / 0.8);
     --transition-luxury: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     --font-luxury: 'Montserrat', sans-serif;
 
-    --sidebar-background: 0 0% 6%;
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 43 50% 55%;
+    --sidebar-background: 0 0% 4%;
+    --sidebar-foreground: 0 0% 99%;
+    --sidebar-primary: 40 70% 50%;
     --sidebar-primary-foreground: 0 0% 0%;
-    --sidebar-accent: 0 0% 12%;
-    --sidebar-accent-foreground: 43 50% 55%;
-    --sidebar-border: 0 0% 20%;
-    --sidebar-ring: 43 50% 55%;
+    --sidebar-accent: 0 0% 8%;
+    --sidebar-accent-foreground: 40 70% 50%;
+    --sidebar-border: 0 0% 25%;
+    --sidebar-ring: 40 70% 50%;
   }
 
   .dark {
-    /* Brighter colors for dark mode - Enhanced Victory brand */
-    --background: 0 0% 5%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 8%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 8%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 43 50% 55%;
+    /* High contrast dark mode - Victory brand optimized */
+    --background: 0 0% 3%;
+    --foreground: 0 0% 99%;
+    --card: 0 0% 6%;
+    --card-foreground: 0 0% 99%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 99%;
+    --primary: 40 70% 50%;
     --primary-foreground: 0 0% 0%;
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 43 50% 55%;
-    --muted: 0 0% 20%;
-    --muted-foreground: 43 30% 75%;
-    --accent: 43 50% 55%;
+    --secondary: 0 0% 18%;
+    --secondary-foreground: 40 70% 50%;
+    --muted: 0 0% 25%;
+    --muted-foreground: 40 40% 80%;
+    --accent: 40 70% 50%;
     --accent-foreground: 0 0% 0%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 25%;
-    --input: 0 0% 12%;
-    --ring: 43 50% 55%;
-    --sidebar-background: 0 0% 6%;
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 43 50% 55%;
+    --destructive: 0 90% 65%;
+    --destructive-foreground: 0 0% 99%;
+    --border: 0 0% 30%;
+    --input: 0 0% 8%;
+    --ring: 40 70% 50%;
+    --sidebar-background: 0 0% 4%;
+    --sidebar-foreground: 0 0% 99%;
+    --sidebar-primary: 40 70% 50%;
     --sidebar-primary-foreground: 0 0% 0%;
-    --sidebar-accent: 0 0% 12%;
-    --sidebar-accent-foreground: 43 50% 55%;
-    --sidebar-border: 0 0% 20%;
-    --sidebar-ring: 43 50% 55%;
+    --sidebar-accent: 0 0% 8%;
+    --sidebar-accent-foreground: 40 70% 50%;
+    --sidebar-border: 0 0% 25%;
+    --sidebar-ring: 40 70% 50%;
   }
 }
 
@@ -148,8 +148,8 @@
   .glass-effect {
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    background: hsl(0 0% 5% / 0.85);
-    border: 1px solid hsl(43 50% 55% / 0.3);
+    background: hsl(0 0% 3% / 0.9);
+    border: 1px solid hsl(40 70% 50% / 0.4);
   }
   
   .luxury-card {
@@ -166,12 +166,12 @@
     @apply bg-background border-2 border-primary text-primary font-semibold px-8 py-4 rounded-lg victory-shadow victory-transition hover:bg-primary hover:text-primary-foreground hover:scale-105;
   }
   
-  /* Hover Effects with Official Colors */
+  /* Hover Effects with Victory Gold - High Contrast */
   .victory-hover-gold {
     @apply victory-transition hover:text-primary;
   }
   
   .victory-hover-glow {
-    @apply victory-transition hover:shadow-[0_0_30px_hsl(43_50%_55%_/_0.6)];
+    @apply victory-transition hover:shadow-[0_0_40px_hsl(40_70%_50%_/_0.8)];
   }
 }
