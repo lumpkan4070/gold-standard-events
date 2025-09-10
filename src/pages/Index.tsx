@@ -279,7 +279,7 @@ const Index = () => {
             19800 S Waterloo Rd, Cleveland, OH 44119
           </p>
           <div className="victory-text-gradient text-sm font-medium">
-            © 2024 Victory Bistro Ultra Lounge. All rights reserved.
+            © 2026 Victory Bistro Ultra Lounge. All rights reserved.
           </div>
         </div>
       </footer>
