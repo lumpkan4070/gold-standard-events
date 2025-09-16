@@ -388,15 +388,21 @@ const SongRequests = () => {
         <div className="max-w-6xl mx-auto">
           {/* Header Section */}
           <div className="text-center mb-12">
-            <div className="flex items-center justify-center mb-4">
-              <Disc3 className="w-12 h-12 text-primary mr-3 animate-spin-slow" />
-              <h1 className="victory-text-gradient text-5xl font-bold">
-                Tonight's Vibes
-              </h1>
-              <Sparkles className="w-8 h-8 text-primary ml-3" />
+            <div className="flex items-center justify-center mb-6">
+              <Disc3 className="w-12 h-12 text-primary mr-4 animate-spin-slow" />
+              <div className="relative">
+                <h1 className="font-street text-6xl md:text-7xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-primary via-yellow-500 to-orange-500 drop-shadow-2xl">
+                  TONIGHT'S
+                </h1>
+                <h2 className="font-urban text-4xl md:text-5xl font-bold tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-red-500 to-primary mt-2">
+                  VIBES
+                </h2>
+                <div className="absolute -top-2 -right-8 w-16 h-16 bg-gradient-to-r from-yellow-400/20 to-orange-500/20 rounded-full blur-xl animate-pulse"></div>
+              </div>
+              <Sparkles className="w-10 h-10 text-yellow-500 ml-4 animate-pulse" />
             </div>
-            <p className="text-muted-foreground text-xl mb-8">
-              Request songs, vote for favorites, and rate tonight's DJ
+            <p className="font-urban text-muted-foreground text-xl font-medium tracking-wide mb-8 uppercase">
+              Request • Vote • Rate Tonight's DJ
             </p>
           </div>
 
