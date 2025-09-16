@@ -10,6 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
 import authImage from "@/assets/ladies-at-bar.jpg";
+import victoryLogo from "@/assets/victory-logo.png";
 
 const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -265,8 +266,12 @@ const [confirmPassword, setConfirmPassword] = useState("");
       <div className="absolute inset-0 bg-black/80" />
       <Card className="relative z-10 w-full max-w-md luxury-card backdrop-blur-sm bg-card/95">
         <CardHeader className="text-center">
-          <div className="victory-text-gradient text-3xl font-bold mb-2">
-            Victory
+          <div className="mb-6">
+            <img 
+              src={victoryLogo} 
+              alt="Victory Bistro Ultra Lounge Logo" 
+              className="w-32 h-32 mx-auto object-contain"
+            />
           </div>
           <CardTitle className="text-foreground">Welcome</CardTitle>
           <CardDescription className="text-muted-foreground">
