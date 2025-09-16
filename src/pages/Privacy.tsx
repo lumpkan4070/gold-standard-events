@@ -380,7 +380,7 @@ const Privacy = () => {
                       <Phone className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
                       <div>
                         <h4 className="font-semibold text-foreground">Phone</h4>
-                        <p className="text-foreground/80 text-sm">(216) 938-7778</p>
+                        <p className="text-foreground/80 text-sm">(440) 730-1233</p>
                       </div>
                     </div>
                     

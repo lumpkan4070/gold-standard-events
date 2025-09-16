@@ -223,7 +223,7 @@ const PrivacyPolicy = () => {
                 <div className="space-y-2">
                   <p><strong>Victory Bistro Ultra Lounge</strong></p>
                   <p>19800 S Waterloo Rd, Cleveland, OH 44119</p>
-                  <p>Phone: (216) 938-7778</p>
+                  <p>Phone: (440) 730-1233</p>
                   <p>Email: privacy@victorybistro.com</p>
                 </div>
                 <div className="mt-6 p-4 bg-primary/10 rounded-lg">

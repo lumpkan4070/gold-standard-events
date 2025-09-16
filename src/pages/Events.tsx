@@ -257,7 +257,7 @@ const Events = () => {
               </Button>
               <Button size="lg" variant="outline" className="text-lg px-8 py-4 bg-white/5 border-white/20 text-white hover:bg-white/10 backdrop-blur-sm">
                 <Phone className="h-5 w-5 mr-2" />
-                Call (216) 938-7778
+                Call (440) 730-1233
               </Button>
             </div>
           </div>
@@ -568,9 +568,9 @@ const Events = () => {
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="space-y-4">
-                    <div className="flex items-center gap-3 p-3 bg-primary/5 rounded-lg hover:bg-primary/10 victory-transition cursor-pointer" onClick={() => window.location.href = 'tel:(216)938-7778'}>
+                    <div className="flex items-center gap-3 p-3 bg-primary/5 rounded-lg hover:bg-primary/10 victory-transition cursor-pointer" onClick={() => window.location.href = 'tel:(440)730-1233'}>
                       <Phone className="h-5 w-5 text-primary" />
-                      <span className="font-medium">(216) 938-7778</span>
+                      <span className="font-medium">(440) 730-1233</span>
                     </div>
                     <div className="flex items-center gap-3 p-3 bg-primary/5 rounded-lg hover:bg-primary/10 victory-transition cursor-pointer">
                       <Mail className="h-5 w-5 text-primary" />

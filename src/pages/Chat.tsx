@@ -21,11 +21,11 @@ const VICTORY_BOT_QA = [
   },
   {
     keywords: ['location', 'address', 'where'],
-    answer: "Victory Bistro is located in Cleveland, Ohio. For directions and exact address, please call us at (216) 938-7778."
+    answer: "Victory Bistro is located in Cleveland, Ohio. For directions and exact address, please call us at (440) 730-1233."
   },
   {
     keywords: ['reservation', 'book', 'table'],
-    answer: "You can make reservations by calling (216) 938-7778 or emailing events@victorybistro.com. We recommend booking in advance, especially for weekends."
+    answer: "You can make reservations by calling (440) 730-1233 or emailing events@victorybistro.com. We recommend booking in advance, especially for weekends."
   },
   {
     keywords: ['menu', 'food', 'dishes', 'eat'],
@@ -41,7 +41,7 @@ const VICTORY_BOT_QA = [
   },
   {
     keywords: ['private', 'event', 'party', 'group'],
-    answer: "Yes! We host private events and parties. Contact us at events@victorybistro.com or (216) 938-7778 to discuss your event needs."
+    answer: "Yes! We host private events and parties. Contact us at events@victorybistro.com or (440) 730-1233 to discuss your event needs."
   },
   {
     keywords: ['wine', 'drinks', 'cocktails', 'bar'],
@@ -61,7 +61,7 @@ const VICTORY_BOT_QA = [
   },
   {
     keywords: ['takeout', 'delivery', 'order'],
-    answer: "Yes, we offer takeout orders. You can place orders by calling (216) 938-7778. Currently, we don't offer delivery service."
+    answer: "Yes, we offer takeout orders. You can place orders by calling (440) 730-1233. Currently, we don't offer delivery service."
   },
   {
     keywords: ['chef', 'kitchen', 'cook'],
@@ -81,7 +81,7 @@ const VICTORY_BOT_QA = [
   },
   {
     keywords: ['happy hour', 'discount'],
-    answer: "We offer special pricing on select appetizers and drinks during certain hours. Call us at (216) 938-7778 for current happy hour details."
+    answer: "We offer special pricing on select appetizers and drinks during certain hours. Call us at (440) 730-1233 for current happy hour details."
   },
   {
     keywords: ['outdoor', 'patio', 'seating'],
@@ -89,11 +89,11 @@ const VICTORY_BOT_QA = [
   },
   {
     keywords: ['gift card', 'gift'],
-    answer: "Yes, we offer gift cards! They make perfect gifts for food lovers. Contact us at (216) 938-7778 to purchase gift cards."
+    answer: "Yes, we offer gift cards! They make perfect gifts for food lovers. Contact us at (440) 730-1233 to purchase gift cards."
   },
   {
     keywords: ['contact', 'phone', 'email'],
-    answer: "You can reach us at (216) 938-7778 or email events@victorybistro.com. We're happy to answer any questions you have!"
+    answer: "You can reach us at (440) 730-1233 or email events@victorybistro.com. We're happy to answer any questions you have!"
   }
 ];
 
@@ -157,7 +157,7 @@ const Chat = () => {
     }
     
     // Default response if no matches found
-    return "I'm here to help with questions about Victory Bistro! You can ask me about our hours, menu, reservations, location, parking, events, and more. For specific questions I can't answer, please call us at (216) 938-7778.";
+    return "I'm here to help with questions about Victory Bistro! You can ask me about our hours, menu, reservations, location, parking, events, and more. For specific questions I can't answer, please call us at (440) 730-1233.";
   };
 
   const handleSendMessage = async () => {
