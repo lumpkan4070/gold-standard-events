@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { Heart, Music, Plus, Clock, CheckCircle, XCircle, Play, Star, Disc3, Sparkles, Headphones } from "lucide-react";
+import { Heart, Music, Plus, Clock, CheckCircle, XCircle, Play, Star, Disc3, Sparkles, Headphones, Calendar, Users, Crown, Zap } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { Navigation } from "@/components/Navigation";
@@ -28,6 +28,23 @@ interface UserVote {
   song_request_id: string;
 }
 
+interface DJRating {
+  id: string;
+  rating: number;
+  comment?: string;
+  performance_date?: string;
+  created_at: string;
+  user_id: string;
+}
+
+interface DJ {
+  id: string;
+  name: string;
+  bio?: string;
+  average_rating: number;
+  total_ratings: number;
+}
+
 const SongRequests = () => {
   const [songRequests, setSongRequests] = useState<SongRequest[]>([]);
   const [userVotes, setUserVotes] = useState<UserVote[]>([]);
@@ -38,6 +55,8 @@ const SongRequests = () => {
   const [userRating, setUserRating] = useState(0);
   const [userComment, setUserComment] = useState("");
   const [user, setUser] = useState<any>(null);
+  const [currentDJ, setCurrentDJ] = useState<DJ | null>(null);
+  const [djRatings, setDJRatings] = useState<DJRating[]>([]);
   const { toast } = useToast();
   const navigate = useNavigate();
   const filter = new Filter();
@@ -71,6 +90,7 @@ const SongRequests = () => {
     if (user) {
       fetchSongRequests();
       fetchUserVotes();
+      fetchCurrentDJ();
       
       // Check if WebSocket is available - for now, always use polling to avoid WebSocket issues
       console.log('Protocol:', window.location.protocol);
@@ -81,7 +101,8 @@ const SongRequests = () => {
         console.log('Polling for updates...');
         fetchSongRequests();
         fetchUserVotes();
-      }, 5000);
+        fetchDJRatings();
+      }, 10000);
 
       return () => {
         clearInterval(interval);
@@ -108,6 +129,38 @@ const SongRequests = () => {
       });
     } else {
       setSongRequests(data || []);
+    }
+  };
+
+  const fetchCurrentDJ = async () => {
+    const { data, error } = await supabase
+      .from('djs')
+      .select('*')
+      .eq('is_active', true)
+      .limit(1)
+      .single();
+
+    if (data && !error) {
+      setCurrentDJ(data);
+      fetchDJRatings(data.id);
+    }
+  };
+
+  const fetchDJRatings = async (djId?: string) => {
+    const targetDjId = djId || currentDJ?.id;
+    if (!targetDjId) return;
+
+    const today = new Date().toISOString().split('T')[0];
+    const { data, error } = await supabase
+      .from('dj_ratings')
+      .select('*')
+      .eq('dj_id', targetDjId)
+      .eq('performance_date', today)
+      .order('created_at', { ascending: false })
+      .limit(10);
+
+    if (!error && data) {
+      setDJRatings(data);
     }
   };
 
@@ -220,6 +273,7 @@ const SongRequests = () => {
       setUserRating(0);
       setUserComment("");
       setIsRatingDialogOpen(false);
+      fetchCurrentDJ(); // Refresh DJ data to get updated ratings
     }
   };
 
@@ -367,6 +421,88 @@ const SongRequests = () => {
             </Dialog>
           </div>
 
+          {/* Tonight's DJ Section */}
+          {currentDJ && (
+            <div className="mb-12">
+              <Card className="luxury-card bg-gradient-to-r from-primary/5 via-primary/3 to-secondary/5 border-primary/20 overflow-hidden">
+                <CardHeader className="bg-gradient-to-r from-primary/10 to-secondary/10">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                      <div className="relative">
+                        <div className="w-16 h-16 bg-gradient-to-br from-primary/30 to-secondary/30 rounded-full flex items-center justify-center border-2 border-primary/50">
+                          <Crown className="w-8 h-8 text-primary" />
+                        </div>
+                        <div className="absolute -top-1 -right-1 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center animate-pulse">
+                          <Star className="w-4 h-4 text-yellow-600 fill-current" />
+                        </div>
+                      </div>
+                      <div>
+                        <div className="flex items-center space-x-2 mb-1">
+                          <h3 className="text-2xl font-bold text-foreground">Tonight's DJ: {currentDJ.name}</h3>
+                          <Badge className="bg-green-500/20 text-green-600 border-green-500/30">LIVE</Badge>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          {renderStars(currentDJ.average_rating)}
+                          <span className="text-sm text-muted-foreground font-medium">
+                            ({currentDJ.total_ratings} total reviews)
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Zap className="w-5 h-5 text-primary animate-pulse" />
+                      <span className="text-sm font-medium text-primary">SPINNING NOW</span>
+                    </div>
+                  </div>
+                  {currentDJ.bio && (
+                    <p className="text-muted-foreground mt-3 text-lg">{currentDJ.bio}</p>
+                  )}
+                </CardHeader>
+
+                {/* Live Ratings Section */}
+                {djRatings.length > 0 && (
+                  <CardContent className="pt-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center space-x-3">
+                        <Users className="w-5 h-5 text-primary" />
+                        <h4 className="font-bold text-lg">Tonight's Reviews</h4>
+                        <Badge variant="secondary" className="animate-pulse">
+                          {djRatings.length} reviews
+                        </Badge>
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {djRatings.slice(0, 6).map((rating) => (
+                        <Card key={rating.id} className="bg-gradient-to-br from-muted/20 to-primary/5 border-border/50 hover:shadow-md transition-all duration-200">
+                          <CardContent className="p-4">
+                            <div className="flex items-center justify-between mb-3">
+                              {renderStars(rating.rating)}
+                              <div className="flex items-center space-x-1 text-xs text-muted-foreground">
+                                <Calendar className="w-3 h-3" />
+                                <span>
+                                  {new Date(rating.created_at).toLocaleTimeString([], { 
+                                    hour: '2-digit', 
+                                    minute: '2-digit' 
+                                  })}
+                                </span>
+                              </div>
+                            </div>
+                            {rating.comment && (
+                              <p className="text-sm text-foreground leading-relaxed">
+                                "{rating.comment}"
+                              </p>
+                            )}
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </CardContent>
+                )}
+              </Card>
+            </div>
+          )}
+
           {/* Song Requests Grid */}
           <div className="grid gap-6">
             <div className="flex items-center justify-between mb-6">
@@ -380,17 +516,25 @@ const SongRequests = () => {
             </div>
 
             {songRequests.map((request, index) => (
-              <Card key={request.id} className="luxury-card overflow-hidden group hover:shadow-xl transition-all duration-300 border-l-4 border-l-primary/50">
+              <Card key={request.id} className="luxury-card overflow-hidden group hover:shadow-xl transition-all duration-300 border-l-4 border-l-primary/50 hover:border-l-primary">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-6">
                       <div className="relative">
-                        <div className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-primary/40 text-primary font-bold text-lg border-2 border-primary/30">
+                        <div className={`flex items-center justify-center w-14 h-14 rounded-full font-bold text-lg border-2 transition-all duration-300 ${
+                          index < 3 
+                            ? 'bg-gradient-to-br from-yellow-400/30 to-yellow-500/30 border-yellow-400/50 text-yellow-600' 
+                            : 'bg-gradient-to-br from-primary/20 to-primary/40 border-primary/30 text-primary'
+                        }`}>
                           #{index + 1}
                         </div>
                         {index < 3 && (
-                          <div className="absolute -top-1 -right-1 w-4 h-4 bg-yellow-400 rounded-full flex items-center justify-center">
-                            <Star className="w-3 h-3 text-yellow-600 fill-current" />
+                          <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center shadow-lg animate-pulse">
+                            <Crown className="w-4 h-4 text-yellow-800" />
+                          </div>
+                        )}
+                        {index === 0 && (
+                          <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full animate-ping">
                           </div>
                         )}
                       </div>
@@ -403,7 +547,8 @@ const SongRequests = () => {
                           by <span className="font-medium">{request.artist}</span>
                         </p>
                         {request.requested_by_name && (
-                          <p className="text-sm text-muted-foreground mt-1">
+                          <p className="text-sm text-muted-foreground mt-1 flex items-center">
+                            <Users className="w-3 h-3 mr-1" />
                             Requested by {request.requested_by_name}
                           </p>
                         )}
@@ -413,7 +558,7 @@ const SongRequests = () => {
                     <div className="flex items-center space-x-4">
                       <div className="flex items-center space-x-3">
                         {getStatusIcon(request.status)}
-                        <Badge className={`${getStatusColor(request.status)} font-medium px-3 py-1`}>
+                        <Badge className={`${getStatusColor(request.status)} font-medium px-3 py-1 shadow-sm`}>
                           {request.status.charAt(0).toUpperCase() + request.status.slice(1)}
                         </Badge>
                       </div>
@@ -422,18 +567,18 @@ const SongRequests = () => {
                         variant={hasUserVoted(request.id) ? "default" : "outline"}
                         size="lg"
                         onClick={() => toggleVote(request.id)}
-                        className={`min-w-[80px] ${
+                        className={`min-w-[90px] ${
                           hasUserVoted(request.id) 
-                            ? "bg-red-500 hover:bg-red-600 text-white" 
-                            : "hover:bg-primary/10 border-primary/30"
-                        } transition-all duration-200`}
+                            ? "bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white shadow-lg" 
+                            : "hover:bg-primary/10 border-primary/30 hover:border-primary/50 hover:shadow-md"
+                        } transition-all duration-200 transform hover:scale-105`}
                       >
                         <Heart 
                           className={`w-5 h-5 mr-2 ${
-                            hasUserVoted(request.id) ? "fill-current" : ""
+                            hasUserVoted(request.id) ? "fill-current animate-pulse" : ""
                           }`} 
                         />
-                        <span className="font-bold">{request.vote_count}</span>
+                        <span className="font-bold text-lg">{request.vote_count}</span>
                       </Button>
                     </div>
                   </div>
