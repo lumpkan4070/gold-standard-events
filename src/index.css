@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,56 +6,71 @@
 
 @layer base {
   :root {
-    /* Victory Bistro Ultra Lounge - High Contrast Gold Theme */
-    --background: 0 0% 3%;           /* Deeper black for better contrast */
-    --foreground: 0 0% 99%;          /* Pure white text for maximum readability */
-    --card: 0 0% 6%;                 /* Card backgrounds with better contrast */
-    --card-foreground: 0 0% 99%;
-    --popover: 0 0% 6%;
-    --popover-foreground: 0 0% 99%;
+    /* Victory Bistro Ultra Lounge - Urban Luxury Theme */
+    --background: 0 0% 2%;           /* Deeper black for premium feel */
+    --foreground: 0 0% 98%;          /* Pure white text */
+    --card: 0 0% 4%;                 /* Dark cards */
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 4%;
+    --popover-foreground: 0 0% 98%;
     
-    /* Victory Gold - Optimized for Sunlight Visibility */
-    --primary: 40 70% 50%;           /* Rich gold: #cc9900 - high contrast */
-    --primary-foreground: 0 0% 0%;   /* Black text on gold */
-    --primary-hover: 40 75% 55%;     /* Brighter hover for visibility */
-    --primary-accent: 40 80% 60%;    /* Bright accent for standout elements */
-    --primary-border: 40 70% 52%;    /* Clear borders */
-    --primary-subtle: 40 65% 48%;    /* Subtle but visible */
+    /* Deep Gold - Premium Brand Colors */
+    --primary: 45 90% 55%;           /* Rich gold: #f4d03f */
+    --primary-foreground: 0 0% 0%;   
+    --primary-hover: 45 95% 60%;     
+    --primary-accent: 45 100% 65%;   
+    --primary-border: 45 90% 55%;    
+    --primary-subtle: 45 80% 50%;    
     
-    --secondary: 0 0% 18%;           /* High contrast secondary */
-    --secondary-foreground: 40 70% 50%;
-    --muted: 0 0% 25%;               /* Higher contrast muted */
-    --muted-foreground: 40 40% 80%;  /* Gold-tinted muted text, high contrast */
-    --accent: 40 70% 50%;
+    /* Dark Burgundy */
+    --burgundy: 345 65% 25%;         /* Deep burgundy: #6b1e3b */
+    --burgundy-foreground: 0 0% 98%;
+    --burgundy-light: 345 50% 35%;
+    
+    /* Neon Accents */
+    --neon-cyan: 180 100% 50%;       /* Electric cyan: #00ffff */
+    --neon-pink: 300 100% 70%;       /* Electric pink: #ff66ff */
+    --neon-purple: 270 100% 75%;     /* Electric purple: #b366ff */
+    --neon-green: 120 100% 50%;      /* Electric green: #00ff00 */
+    
+    --secondary: 345 65% 25%;        /* Burgundy secondary */
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 15%;               
+    --muted-foreground: 45 30% 75%;  
+    --accent: 45 90% 55%;
     --accent-foreground: 0 0% 0%;
-    --destructive: 0 90% 65%;        /* Brighter red for visibility */
-    --destructive-foreground: 0 0% 99%;
-    --border: 0 0% 30%;              /* More visible borders */
-    --input: 0 0% 8%;                /* Input backgrounds with better contrast */
-    --ring: 40 70% 50%;
-    --radius: 0.75rem;
+    --destructive: 0 85% 60%;        
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 20%;              
+    --input: 0 0% 6%;                
+    --ring: 45 90% 55%;
+    --radius: 1rem;
     
-    /* Victory Gold Gradients - High Contrast */
-    --gradient-primary: linear-gradient(135deg, hsl(40 80% 60%), hsl(40 70% 50%), hsl(40 75% 55%));
-    --gradient-accent: linear-gradient(135deg, hsl(0 0% 3%), hsl(0 0% 6%));
-    --gradient-hero: linear-gradient(135deg, hsl(0 0% 3%), hsl(0 0% 6%), hsl(40 70% 15%));
-    --gradient-button: linear-gradient(135deg, hsl(40 80% 60%), hsl(40 70% 50%));
+    /* Urban Luxury Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(45 100% 65%), hsl(45 90% 55%), hsl(45 95% 60%));
+    --gradient-burgundy: linear-gradient(135deg, hsl(345 65% 25%), hsl(345 50% 35%));
+    --gradient-neon: linear-gradient(135deg, hsl(180 100% 50%), hsl(300 100% 70%), hsl(270 100% 75%));
+    --gradient-dark: linear-gradient(135deg, hsl(0 0% 2%), hsl(0 0% 4%), hsl(345 65% 8%));
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 4% / 0.8), hsl(345 30% 8% / 0.6));
     
-    /* Victory Luxury Effects - Enhanced Visibility */
-    --shadow-luxury: 0 25px 50px -12px hsl(40 70% 50% / 0.6);
-    --shadow-elegant: 0 10px 40px -10px hsl(40 70% 50% / 0.5);
-    --shadow-glow: 0 0 60px hsl(40 80% 60% / 0.8);
-    --transition-luxury: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    --font-luxury: 'Montserrat', sans-serif;
+    /* Premium Effects */
+    --shadow-neon: 0 0 30px hsl(180 100% 50% / 0.5);
+    --shadow-gold: 0 0 40px hsl(45 90% 55% / 0.6);
+    --shadow-luxury: 0 25px 50px -12px hsl(0 0% 0% / 0.8);
+    --shadow-card: 0 10px 30px -5px hsl(0 0% 0% / 0.5);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --font-heading: 'Montserrat', sans-serif;
+    --font-body: 'Poppins', sans-serif;
 
-    --sidebar-background: 0 0% 4%;
-    --sidebar-foreground: 0 0% 99%;
-    --sidebar-primary: 40 70% 50%;
+    --sidebar-background: 0 0% 3%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 45 90% 55%;
     --sidebar-primary-foreground: 0 0% 0%;
-    --sidebar-accent: 0 0% 8%;
-    --sidebar-accent-foreground: 40 70% 50%;
-    --sidebar-border: 0 0% 25%;
-    --sidebar-ring: 40 70% 50%;
+    --sidebar-accent: 0 0% 6%;
+    --sidebar-accent-foreground: 45 90% 55%;
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 45 90% 55%;
   }
 
   .dark {
@@ -96,9 +111,10 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: var(--font-luxury);
+    font-family: var(--font-body);
     font-feature-settings: "rlig" 1, "calt" 1;
     min-height: 100vh;
+    overflow-x: hidden;
   }
   
   #root {
@@ -107,71 +123,130 @@
     flex-direction: column;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-luxury);
-    font-weight: 600;
+    font-family: var(--font-heading);
+    font-weight: 700;
   }
 }
 
 @layer components {
-  /* Official Victory Brand Components */
-  .victory-gradient {
+  /* Urban Luxury Components */
+  .urban-gradient {
     background: var(--gradient-primary);
   }
   
-  .victory-button-gradient {
-    background: var(--gradient-button);
+  .burgundy-gradient {
+    background: var(--gradient-burgundy);
   }
   
-  .victory-text-gradient {
+  .neon-gradient {
+    background: var(--gradient-neon);
+  }
+  
+  .dark-gradient {
+    background: var(--gradient-dark);
+  }
+  
+  .urban-text-gradient {
     background: var(--gradient-primary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
   
-  .victory-shadow {
+  .neon-text-gradient {
+    background: var(--gradient-neon);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .neon-glow {
+    box-shadow: var(--shadow-neon);
+  }
+  
+  .gold-glow {
+    box-shadow: var(--shadow-gold);
+  }
+  
+  .luxury-shadow {
     box-shadow: var(--shadow-luxury);
   }
   
-  .victory-glow {
-    box-shadow: var(--shadow-glow);
+  .card-shadow {
+    box-shadow: var(--shadow-card);
   }
   
-  .victory-transition {
-    transition: var(--transition-luxury);
+  .smooth-transition {
+    transition: var(--transition-smooth);
   }
   
-  .victory-hero-bg {
-    background: var(--gradient-hero);
+  .bounce-transition {
+    transition: var(--transition-bounce);
   }
   
-  .glass-effect {
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    background: hsl(0 0% 3% / 0.9);
-    border: 1px solid hsl(40 70% 50% / 0.4);
+  .glass-morphism {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: var(--gradient-card);
+    border: 1px solid hsl(45 90% 55% / 0.2);
   }
   
-  .luxury-card {
-    @apply bg-card/50 backdrop-blur-sm border border-primary/20 rounded-xl victory-shadow victory-transition;
+  .premium-card {
+    @apply glass-morphism rounded-2xl card-shadow smooth-transition border border-primary/10;
   }
   
-  /* Primary Button - Official Victory Brand */
-  .luxury-button {
-    @apply victory-button-gradient text-primary-foreground font-semibold px-8 py-4 rounded-lg victory-shadow victory-transition hover:scale-105 hover:victory-glow;
+  .neon-card {
+    @apply bg-card/80 backdrop-blur-sm rounded-2xl border border-neon-cyan/30 card-shadow smooth-transition;
   }
   
-  /* Secondary Button - Black with Gold Text */
-  .luxury-button-secondary {
-    @apply bg-background border-2 border-primary text-primary font-semibold px-8 py-4 rounded-lg victory-shadow victory-transition hover:bg-primary hover:text-primary-foreground hover:scale-105;
+  /* Buttons */
+  .urban-button {
+    @apply bg-gradient-to-r from-primary to-primary-accent text-primary-foreground font-bold px-8 py-4 rounded-xl card-shadow smooth-transition hover:scale-105 hover:gold-glow;
+    font-family: var(--font-heading);
   }
   
-  /* Hover Effects with Victory Gold - High Contrast */
-  .victory-hover-gold {
-    @apply victory-transition hover:text-primary;
+  .neon-button {
+    @apply bg-gradient-to-r from-neon-cyan to-neon-purple text-background font-bold px-8 py-4 rounded-xl neon-glow smooth-transition hover:scale-105;
+    font-family: var(--font-heading);
   }
   
-  .victory-hover-glow {
-    @apply victory-transition hover:shadow-[0_0_40px_hsl(40_70%_50%_/_0.8)];
+  .burgundy-button {
+    @apply bg-gradient-to-r from-burgundy to-burgundy-light text-burgundy-foreground font-bold px-8 py-4 rounded-xl card-shadow smooth-transition hover:scale-105;
+    font-family: var(--font-heading);
+  }
+  
+  /* Card Types */
+  .swipe-card {
+    @apply premium-card transform-gpu smooth-transition cursor-grab active:cursor-grabbing hover:scale-[1.02];
+  }
+  
+  .trending-card {
+    @apply neon-card transform-gpu bounce-transition hover:scale-105 hover:neon-glow;
+  }
+  
+  /* Typography */
+  .urban-heading {
+    font-family: var(--font-heading);
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  
+  .urban-body {
+    font-family: var(--font-body);
+    font-weight: 400;
+  }
+  
+  /* Animations */
+  .pulse-neon {
+    animation: pulse-neon 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  .float-gentle {
+    animation: float-gentle 4s ease-in-out infinite;
+  }
+  
+  .glow-pulse {
+    animation: glow-pulse 3s ease-in-out infinite;
   }
 }
