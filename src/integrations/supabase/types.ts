@@ -746,6 +746,17 @@ export type Database = {
       }
     }
     Views: {
+      contest_stats: {
+        Row: {
+          age_bracket: string | null
+          daily_entries: number | null
+          entries_per_age_bracket: number | null
+          submission_date: string | null
+          total_entries: number | null
+          unique_age_brackets: number | null
+        }
+        Relationships: []
+      }
       song_requests_public: {
         Row: {
           artist: string | null
