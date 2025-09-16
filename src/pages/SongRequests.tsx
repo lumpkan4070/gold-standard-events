@@ -11,6 +11,9 @@ import { useToast } from "@/components/ui/use-toast";
 import { Navigation } from "@/components/Navigation";
 import { useNavigate } from "react-router-dom";
 import Filter from "bad-words";
+import peopleDancing from "@/assets/people-dancing-1.jpg";
+import djCrowdFun from "@/assets/dj-crowd-fun.jpg";
+import friendsCelebrating from "@/assets/friends-celebrating.jpg";
 
 interface SongRequest {
   id: string;
@@ -410,6 +413,32 @@ const SongRequests = () => {
       {/* Hero Section */}
       <div className="relative pt-20 pb-12">
         <div className="absolute inset-0 bg-gradient-to-br from-neon-cyan/5 to-neon-purple/5 animate-pulse-neon"></div>
+        
+        {/* Background Images with Overlay */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-8 left-8 w-48 h-48 rounded-2xl overflow-hidden opacity-20 animate-float-gentle">
+            <img 
+              src={peopleDancing} 
+              alt="People enjoying music" 
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="absolute top-16 right-12 w-40 h-40 rounded-2xl overflow-hidden opacity-15 animate-float-gentle" style={{ animationDelay: '1s' }}>
+            <img 
+              src={djCrowdFun} 
+              alt="DJ and crowd having fun" 
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="absolute bottom-20 left-1/4 w-36 h-36 rounded-2xl overflow-hidden opacity-20 animate-float-gentle" style={{ animationDelay: '2s' }}>
+            <img 
+              src={friendsCelebrating} 
+              alt="Friends celebrating" 
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+        
         <div className="container mx-auto px-6 relative z-10">
           <div className="text-center mb-12">
             <div className="flex items-center justify-center mb-8">
@@ -730,8 +759,16 @@ const SongRequests = () => {
 
         {/* How It Works Section */}
         <div className="mt-20">
-          <Card className="premium-card overflow-hidden">
-            <CardContent className="p-8">
+          <Card className="premium-card overflow-hidden relative">
+            {/* Background Image */}
+            <div className="absolute top-6 right-6 w-32 h-32 rounded-xl overflow-hidden opacity-30">
+              <img 
+                src={peopleDancing} 
+                alt="People enjoying music together" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <CardContent className="p-8 relative z-10">
               <div className="flex items-center mb-8">
                 <Sparkles className="w-8 h-8 text-primary mr-4 animate-pulse" />
                 <h3 className="urban-heading text-3xl text-foreground">
@@ -778,6 +815,17 @@ const SongRequests = () => {
                       <p className="urban-body text-muted-foreground">Let us know how the DJ performed to keep improving every night</p>
                     </div>
                   </div>
+                </div>
+              </div>
+              
+              {/* Additional celebration image */}
+              <div className="mt-8 text-center">
+                <div className="inline-block w-20 h-20 rounded-full overflow-hidden opacity-60 mx-auto">
+                  <img 
+                    src={friendsCelebrating} 
+                    alt="Friends celebrating at the lounge" 
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
             </CardContent>
