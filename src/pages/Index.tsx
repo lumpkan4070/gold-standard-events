@@ -268,11 +268,11 @@ const Index = () => {
           <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8 text-muted-foreground">
             <div className="flex items-center space-x-2">
               <Clock className="w-5 h-5" />
-              <span>Open Daily 5PM - 2AM</span>
+              <span>Open Daily 11AM - 1AM</span>
             </div>
             <div className="flex items-center space-x-2">
               <Phone className="w-5 h-5" />
-              <span>(216) 938-7778</span>
+              <span>(440) 730-1233</span>
             </div>
           </div>
           <p className="text-sm text-muted-foreground">

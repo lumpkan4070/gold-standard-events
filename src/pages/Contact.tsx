@@ -85,10 +85,10 @@ const Contact = () => {
                   <div className="flex items-center gap-3">
                     <Phone className="h-4 w-4 text-primary" />
                     <a 
-                      href="tel:+12169387778" 
+                      href="tel:+14407301233" 
                       className="text-foreground hover:text-primary victory-transition"
                     >
-                      (216) 938-7778
+                      (440) 730-1233
                     </a>
                   </div>
                 </CardContent>
@@ -130,10 +130,10 @@ const Contact = () => {
                   <div className="space-y-2">
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Monday - Sunday</span>
-                      <span className="text-foreground font-medium">5:00 PM - 2:00 AM</span>
+                      <span className="text-foreground font-medium">11:00 AM - 1:00 AM</span>
                     </div>
                     <p className="text-muted-foreground text-sm">
-                      Kitchen closes at 1:00 AM
+                      Kitchen closes at 12:00 AM
                     </p>
                   </div>
                 </CardContent>
