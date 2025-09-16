@@ -132,9 +132,6 @@ const Contact = () => {
                       <span className="text-muted-foreground">Monday - Sunday</span>
                       <span className="text-foreground font-medium">11:00 AM - 1:00 AM</span>
                     </div>
-                    <p className="text-muted-foreground text-sm">
-                      Kitchen closes at 12:00 AM
-                    </p>
                   </div>
                 </CardContent>
               </Card>
