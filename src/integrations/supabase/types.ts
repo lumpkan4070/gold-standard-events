@@ -74,6 +74,39 @@ export type Database = {
         }
         Relationships: []
       }
+      contest_entries: {
+        Row: {
+          age_bracket: string
+          city_state: string | null
+          email: string
+          full_name: string
+          id: string
+          ip_address: string | null
+          submitted_at: string
+          user_agent: string | null
+        }
+        Insert: {
+          age_bracket: string
+          city_state?: string | null
+          email: string
+          full_name: string
+          id?: string
+          ip_address?: string | null
+          submitted_at?: string
+          user_agent?: string | null
+        }
+        Update: {
+          age_bracket?: string
+          city_state?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          ip_address?: string | null
+          submitted_at?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       dare_prompts: {
         Row: {
           category: Database["public"]["Enums"]["prompt_category"]
@@ -580,6 +613,13 @@ export type Database = {
             referencedRelation: "song_requests"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "song_votes_song_request_id_fkey"
+            columns: ["song_request_id"]
+            isOneToOne: false
+            referencedRelation: "song_requests_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       truth_prompts: {
@@ -706,7 +746,42 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      song_requests_public: {
+        Row: {
+          artist: string | null
+          created_at: string | null
+          event_date: string | null
+          id: string | null
+          requested_by_name: string | null
+          song_title: string | null
+          status: string | null
+          user_id: string | null
+          vote_count: number | null
+        }
+        Insert: {
+          artist?: string | null
+          created_at?: string | null
+          event_date?: string | null
+          id?: string | null
+          requested_by_name?: never
+          song_title?: string | null
+          status?: string | null
+          user_id?: never
+          vote_count?: number | null
+        }
+        Update: {
+          artist?: string | null
+          created_at?: string | null
+          event_date?: string | null
+          id?: string | null
+          requested_by_name?: never
+          song_title?: string | null
+          status?: string | null
+          user_id?: never
+          vote_count?: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       admin_assign_role: {
