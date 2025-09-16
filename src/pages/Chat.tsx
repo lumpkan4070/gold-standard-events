@@ -17,7 +17,7 @@ interface Message {
 const VICTORY_BOT_QA = [
   {
     keywords: ['hours', 'open', 'close', 'time'],
-    answer: "We're open Monday-Thursday 4pm-10pm, Friday-Saturday 4pm-11pm, and Sunday 3pm-9pm. We're closed on major holidays."
+    answer: "We're open daily 11AM - 1AM. We're closed on major holidays."
   },
   {
     keywords: ['location', 'address', 'where'],

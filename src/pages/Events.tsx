@@ -548,7 +548,7 @@ const Events = () => {
                       <Clock className="h-4 w-4 text-primary" />
                       Operating Hours
                     </p>
-                    <p className="text-muted-foreground">Open Daily 5PM - 2AM</p>
+                    <p className="text-muted-foreground">Open Daily 11AM - 1AM</p>
                   </div>
                   <Badge className="bg-gradient-to-r from-primary/20 to-primary-foreground/20 text-primary">
                     <Star className="h-3 w-3 mr-1" />
