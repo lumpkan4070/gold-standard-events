@@ -81,28 +81,12 @@ const Index = () => {
 
           {/* Main Action Buttons */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 max-w-2xl mx-auto mb-8 sm:mb-16">
-            <Button 
-              onClick={() => {
-                const overlay = document.createElement('div');
-                overlay.className = 'fixed inset-0 bg-black/80 z-[99999] flex flex-col items-center justify-center animate-fade-in';
-                overlay.innerHTML = `
-                  <div class="flex flex-col items-center space-y-6 animate-scale-in">
-                    <img src="/lovable-uploads/361a8a1f-b2f4-41fc-8c31-26771715440b.png" alt="Victory Logo" class="w-32 h-32 object-contain animate-pulse" />
-                    <div class="text-white text-xl font-semibold">Ordering Victory Bistro</div>
-                    <div class="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-                  </div>
-                `;
-                document.body.appendChild(overlay);
-                setTimeout(() => {
-                  window.open('https://victorybistro.gimmegrub.com', '_blank');
-                  document.body.removeChild(overlay);
-                }, 1200);
-              }}
-              className="luxury-button w-full h-14 sm:h-16 text-base sm:text-lg"
-            >
-              <Utensils className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
-              Order Now
-            </Button>
+            <Link to="/order">
+                <Button className="luxury-button w-full h-14 sm:h-16 text-base sm:text-lg">
+                  <Utensils className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
+                  Order Now
+                </Button>
+              </Link>
             <Link to="/events">
               <Button variant="outline" className="w-full h-14 sm:h-16 text-base sm:text-lg bg-white/10 border-white/30 hover:bg-white/20 text-white backdrop-blur-sm">
                 <Calendar className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />

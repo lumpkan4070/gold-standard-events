@@ -88,26 +88,10 @@ export const Navigation = ({ user: userProp }: NavigationProps) => {
     }
   };
 
-  const handleOrderClick = () => {
-    const overlay = document.createElement('div');
-    overlay.className = 'fixed inset-0 bg-black/80 z-[99999] flex flex-col items-center justify-center animate-fade-in';
-    overlay.innerHTML = `
-      <div class="flex flex-col items-center space-y-6 animate-scale-in">
-        <img src="/lovable-uploads/361a8a1f-b2f4-41fc-8c31-26771715440b.png" alt="Victory Logo" class="w-32 h-32 object-contain animate-pulse" />
-        <div class="text-white text-xl font-semibold">Ordering Victory Bistro</div>
-        <div class="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    `;
-    document.body.appendChild(overlay);
-    setTimeout(() => {
-      window.open('https://victorybistro.gimmegrub.com', '_blank');
-      document.body.removeChild(overlay);
-    }, 1200);
-  };
 
   const menuItems = [
     { label: "Home", href: "/", icon: null },
-    { label: "Order", href: "#", icon: QrCode, onClick: handleOrderClick },
+    { label: "Order", href: "/order", icon: QrCode },
     { label: "Events", href: "/events", icon: Calendar },
     { label: "Contact", href: "/contact", icon: Phone },
     { label: "Privacy Policy", href: "/privacy", icon: FileText },
@@ -143,23 +127,13 @@ export const Navigation = ({ user: userProp }: NavigationProps) => {
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-6">
           {menuItems.map((item) => (
-            item.onClick ? (
-              <button
-                key={item.label}
-                onClick={item.onClick}
-                className="text-foreground/80 hover:text-primary victory-transition font-medium"
-              >
-                {item.label}
-              </button>
-            ) : (
-              <Link
-                key={item.label}
-                to={item.href}
-                className="text-foreground/80 hover:text-primary victory-transition font-medium"
-              >
-                {item.label}
-              </Link>
-            )
+            <Link
+              key={item.label}
+              to={item.href}
+              className="text-foreground/80 hover:text-primary victory-transition font-medium"
+            >
+              {item.label}
+            </Link>
           ))}
           
           {user ? (
@@ -191,29 +165,15 @@ export const Navigation = ({ user: userProp }: NavigationProps) => {
           <SheetContent side="right" className="w-[300px] glass-effect border-l border-primary/20 z-[99999]">
             <div className="flex flex-col space-y-6 mt-6">
               {menuItems.map((item) => (
-                item.onClick ? (
-                  <button
-                    key={item.label}
-                    onClick={() => {
-                      setIsOpen(false);
-                      item.onClick();
-                    }}
-                    className="text-foreground hover:text-primary victory-transition font-medium text-lg flex items-center space-x-3"
-                  >
-                    {item.icon && <item.icon className="w-5 h-5" />}
-                    <span>{item.label}</span>
-                  </button>
-                ) : (
-                  <Link
-                    key={item.label}
-                    to={item.href}
-                    onClick={() => setIsOpen(false)}
-                    className="text-foreground hover:text-primary victory-transition font-medium text-lg flex items-center space-x-3"
-                  >
-                    {item.icon && <item.icon className="w-5 h-5" />}
-                    <span>{item.label}</span>
-                  </Link>
-                )
+                <Link
+                  key={item.label}
+                  to={item.href}
+                  onClick={() => setIsOpen(false)}
+                  className="text-foreground hover:text-primary victory-transition font-medium text-lg flex items-center space-x-3"
+                >
+                  {item.icon && <item.icon className="w-5 h-5" />}
+                  <span>{item.label}</span>
+                </Link>
               ))}
               
               <div className="pt-4 border-t border-primary/20">
