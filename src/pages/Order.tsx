@@ -10,6 +10,7 @@ import { Utensils, CreditCard } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import victoryMenu from "@/assets/victory-menu.jpg";
+import victoryLogo from "@/assets/victory-logo.png";
 
 const Order = () => {
   const [user, setUser] = useState<any>(null);
@@ -62,11 +63,20 @@ const Order = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <img 
-                  src={victoryMenu} 
-                  alt="Victory Bistro Menu" 
-                  className="w-full h-auto rounded-lg shadow-lg"
-                />
+                <div className="relative">
+                  <img 
+                    src={victoryMenu} 
+                    alt="Victory Bistro Menu" 
+                    className="w-full h-auto rounded-lg shadow-lg"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <img 
+                      src={victoryLogo} 
+                      alt="Victory Logo" 
+                      className="w-24 h-24 object-contain opacity-90 drop-shadow-lg"
+                    />
+                  </div>
+                </div>
                 <p className="text-muted-foreground mt-4 text-center">
                   Exquisite dishes crafted with the finest ingredients
                 </p>
@@ -113,11 +123,6 @@ const Order = () => {
                   </div>
                 </div>
 
-                <div className="text-center pt-4 border-t border-border">
-                  <Button className="luxury-button w-full">
-                    Call Server for Assistance
-                  </Button>
-                </div>
               </CardContent>
             </Card>
           </div>
