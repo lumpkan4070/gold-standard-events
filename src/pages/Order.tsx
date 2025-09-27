@@ -9,7 +9,7 @@ import { Navigation } from "@/components/Navigation";
 import { Utensils, CreditCard } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
-import victoryMenu from "@/assets/victory-menu.jpg";
+import victoryMenu from "@/assets/victory-menu-elegant.jpg";
 import victoryLogo from "@/assets/victory-logo.png";
 
 const Order = () => {
