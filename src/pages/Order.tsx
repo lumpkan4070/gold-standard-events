@@ -57,10 +57,13 @@ const Order = () => {
             {/* Menu Display */}
             <Card className="luxury-card">
               <CardHeader>
-                <CardTitle className="text-foreground text-2xl flex items-center gap-2">
-                  <Utensils className="h-6 w-6" />
-                  Our Menu
-                </CardTitle>
+                <div className="flex justify-center">
+                  <img 
+                    src={victoryLogo} 
+                    alt="Victory Logo" 
+                    className="h-16 w-auto object-contain"
+                  />
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="relative">
@@ -69,11 +72,11 @@ const Order = () => {
                     alt="Victory Bistro Menu" 
                     className="w-full h-auto rounded-lg shadow-lg"
                   />
-                  <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
                     <img 
                       src={victoryLogo} 
                       alt="Victory Logo" 
-                      className="w-24 h-24 object-contain opacity-90 drop-shadow-lg"
+                      className="w-20 h-20 object-contain opacity-90 drop-shadow-lg"
                     />
                   </div>
                 </div>
