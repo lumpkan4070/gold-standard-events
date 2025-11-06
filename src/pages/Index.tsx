@@ -230,9 +230,18 @@ const Index = () => {
       {/* Footer Info */}
       <footer className="px-4 pb-8 victory-hero-bg">
         <div className="max-w-4xl mx-auto text-center space-y-6">
-          <div className="flex items-center justify-center text-muted-foreground">
-            <Phone className="w-5 h-5 mr-2" />
-            <span>(440) 730-1233</span>
+          <div className="space-y-3">
+            <div className="flex flex-col items-center space-y-2 text-muted-foreground">
+              <Clock className="w-5 h-5" />
+              <div className="text-sm">
+                <div>Monday - Saturday: 11:00 AM - 10:00 PM</div>
+                <div>Sunday: 12:00 PM - 10:00 PM</div>
+              </div>
+            </div>
+            <div className="flex items-center justify-center text-muted-foreground">
+              <Phone className="w-5 h-5 mr-2" />
+              <span>(440) 730-1233</span>
+            </div>
           </div>
           <p className="text-sm text-muted-foreground">
             19800 S Waterloo Rd, Cleveland, OH 44119
