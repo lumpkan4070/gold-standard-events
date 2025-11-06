@@ -226,38 +226,13 @@ const Index = () => {
         </section>
       )}
 
-      {/* Special Announcement Bar */}
-      <section className="px-4 pb-16 victory-hero-bg">
-        <div className="max-w-4xl mx-auto">
-          <Card className="luxury-card p-8 text-center">
-            <CardContent className="space-y-4">
-              <Star className="w-12 h-12 mx-auto text-primary" />
-              <h3 className="text-2xl font-bold victory-text-gradient">
-                Special Promotions
-              </h3>
-              <p className="text-lg text-foreground/80">
-                Join our exclusive events and enjoy premium dining experiences
-              </p>
-              <p className="text-muted-foreground">
-                Download our app for exclusive offers and VIP access
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
 
       {/* Footer Info */}
       <footer className="px-4 pb-8 victory-hero-bg">
         <div className="max-w-4xl mx-auto text-center space-y-6">
-          <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8 text-muted-foreground">
-            <div className="flex items-center space-x-2">
-              <Clock className="w-5 h-5" />
-              <span>Open Daily 11AM - 1AM</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Phone className="w-5 h-5" />
-              <span>(440) 730-1233</span>
-            </div>
+          <div className="flex items-center justify-center text-muted-foreground">
+            <Phone className="w-5 h-5 mr-2" />
+            <span>(440) 730-1233</span>
           </div>
           <p className="text-sm text-muted-foreground">
             19800 S Waterloo Rd, Cleveland, OH 44119
