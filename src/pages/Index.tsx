@@ -170,49 +170,6 @@ const Index = () => {
       </section>
 
 
-      {/* Upcoming Events Preview */}
-      {upcomingEvents.length > 0 && (
-        <section className="px-4 pb-16 victory-hero-bg">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12 victory-text-gradient">
-              Upcoming Events
-            </h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-              {upcomingEvents.map((event) => (
-                <Card key={event.id} className="luxury-card group hover:scale-105 victory-transition overflow-hidden">
-                  {event.featured_image_url && (
-                    <div className="h-32 bg-cover bg-center" style={{ backgroundImage: `url(${event.featured_image_url})` }} />
-                  )}
-                  <CardContent className="p-4">
-                    <h3 className="font-semibold text-foreground mb-2">{event.title}</h3>
-                    <p className="text-muted-foreground text-sm mb-3">
-                      {new Date(event.event_date).toLocaleDateString("en-US", {
-                        weekday: "short",
-                        month: "short",
-                        day: "numeric"
-                      })}
-                    </p>
-                    {event.description && (
-                      <p className="text-muted-foreground text-xs line-clamp-2">
-                        {event.description}
-                      </p>
-                    )}
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-            
-            <div className="text-center">
-              <Link to="/events">
-                <Button variant="outline" className="border-primary/20 text-primary hover:bg-primary/10">
-                  View All Events
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* User Engagement Section */}
       {user && (
