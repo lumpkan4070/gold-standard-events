@@ -160,7 +160,7 @@ const Index = () => {
 
 
       {/* User Engagement Section */}
-      {user}
+      {user && <UserEngagement user={user} />}
 
 
       {/* Footer Info */}
