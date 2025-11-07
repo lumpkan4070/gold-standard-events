@@ -7,71 +7,61 @@ import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import heroImage from "@/assets/hero-chef.jpg";
-
 import UserEngagement from "@/components/UserEngagement";
-
 const Index = () => {
   const [user, setUser] = useState<any>(null);
   const [greeting, setGreeting] = useState("");
   const [upcomingEvents, setUpcomingEvents] = useState<any[]>([]);
-
   useEffect(() => {
     // Set dynamic greeting based on time of day
     const hour = new Date().getHours();
-    if (hour < 12) setGreeting("Good Morning");
-    else if (hour < 17) setGreeting("Good Afternoon");
-    else setGreeting("Good Evening");
+    if (hour < 12) setGreeting("Good Morning");else if (hour < 17) setGreeting("Good Afternoon");else setGreeting("Good Evening");
 
     // Check for user session
     const checkUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: {
+          session
+        }
+      } = await supabase.auth.getSession();
       setUser(session?.user || null);
     };
     checkUser();
 
     // Load upcoming events (top 3)
     const loadUpcomingEvents = async () => {
-      const { data: eventsData } = await supabase
-        .from("events")
-        .select("*")
-        .eq("is_approved", true)
-        .gte("event_date", new Date().toISOString())
-        .order("event_date", { ascending: true })
-        .limit(3);
-      
+      const {
+        data: eventsData
+      } = await supabase.from("events").select("*").eq("is_approved", true).gte("event_date", new Date().toISOString()).order("event_date", {
+        ascending: true
+      }).limit(3);
       setUpcomingEvents(eventsData || []);
     };
     loadUpcomingEvents();
 
     // Set up auth state listener
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setUser(session?.user || null);
+    const {
+      data: {
+        subscription
       }
-    );
-
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user || null);
+    });
     return () => subscription.unsubscribe();
   }, []);
-
-  return (
-    <div className="min-h-screen">
+  return <div className="min-h-screen">
       <Navigation user={user} />
       
       {/* Hero Section */}
       <section className="relative min-h-[60vh] sm:min-h-[70vh] lg:min-h-[80vh] flex items-center justify-center overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center sm:bg-top md:bg-center bg-no-repeat transition-all duration-300"
-          style={{ backgroundImage: `url(${heroImage})` }}
-        />
+        <div className="absolute inset-0 bg-cover bg-center sm:bg-top md:bg-center bg-no-repeat transition-all duration-300" style={{
+        backgroundImage: `url(${heroImage})`
+      }} />
         <div className="absolute inset-0 bg-black/50 sm:bg-black/40 md:bg-black/60" />
         <div className="relative z-10 max-w-4xl mx-auto text-center px-4 py-8">
           {/* Logo */}
           <div className="flex flex-col items-center mb-6 sm:mb-8">
-            <img 
-              src="/lovable-uploads/2930c757-25ee-4b41-9028-6fae31095547.png" 
-              alt="Victory Bistro Ultra Lounge" 
-              className="w-48 sm:w-64 md:w-80 lg:w-96 h-auto mb-4 drop-shadow-2xl animate-fade-in"
-            />
+            <img src="/lovable-uploads/2930c757-25ee-4b41-9028-6fae31095547.png" alt="Victory Bistro Ultra Lounge" className="w-48 sm:w-64 md:w-80 lg:w-96 h-auto mb-4 drop-shadow-2xl animate-fade-in" />
           </div>
           
           {/* Dynamic Greeting */}
@@ -142,8 +132,7 @@ const Index = () => {
             </Card>
 
             {/* Games - NEW! */}
-            {user && (
-              <Card className="luxury-card p-6 text-center group hover:scale-105 victory-transition border-2 border-primary/30 relative overflow-hidden">
+            {user && <Card className="luxury-card p-6 text-center group hover:scale-105 victory-transition border-2 border-primary/30 relative overflow-hidden">
                 <div className="absolute top-2 right-2">
                   <Badge className="bg-gradient-to-r from-primary to-primary-foreground text-primary-foreground animate-pulse">
                     NEW!
@@ -163,8 +152,7 @@ const Index = () => {
                     </Button>
                   </Link>
                 </CardContent>
-              </Card>
-            )}
+              </Card>}
           </div>
         </div>
       </section>
@@ -172,16 +160,7 @@ const Index = () => {
 
 
       {/* User Engagement Section */}
-      {user && (
-        <section className="px-4 pb-16 victory-hero-bg">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12 victory-text-gradient">
-              Your Victory Experience
-            </h2>
-            <UserEngagement user={user} />
-          </div>
-        </section>
-      )}
+      {user}
 
 
       {/* Footer Info */}
@@ -209,8 +188,6 @@ const Index = () => {
         </div>
       </footer>
 
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
