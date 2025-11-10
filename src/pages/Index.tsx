@@ -171,7 +171,7 @@ const Index = () => {
               <Clock className="w-5 h-5" />
               <div className="text-sm">
                 <div>Monday - Saturday: 11:00 AM - 10:00 PM</div>
-                <div>Sunday: 12:00 PM - 10:00 PM</div>
+                <div>Sunday: 11:00 AM - 10:00 PM</div>
               </div>
             </div>
             <div className="flex items-center justify-center text-muted-foreground">
