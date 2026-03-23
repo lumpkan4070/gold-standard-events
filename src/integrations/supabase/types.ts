@@ -50,7 +50,7 @@ export type Database = {
           event_data: Json | null
           event_type: string
           id: string
-          ip_address: unknown | null
+          ip_address: unknown
           user_agent: string | null
           user_id: string | null
         }
@@ -59,7 +59,7 @@ export type Database = {
           event_data?: Json | null
           event_type: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           user_agent?: string | null
           user_id?: string | null
         }
@@ -68,7 +68,7 @@ export type Database = {
           event_data?: Json | null
           event_type?: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           user_agent?: string | null
           user_id?: string | null
         }
@@ -818,10 +818,7 @@ export type Database = {
         }
         Returns: boolean
       }
-      increment_offer_usage: {
-        Args: { offer_id: string }
-        Returns: undefined
-      }
+      increment_offer_usage: { Args: { offer_id: string }; Returns: undefined }
     }
     Enums: {
       app_role: "admin" | "user"
